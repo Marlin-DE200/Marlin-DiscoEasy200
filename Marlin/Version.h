@@ -46,7 +46,7 @@
 /**
  * Defines a generic printer name to be output to the LCD after booting Marlin.
  */
-//#define MACHINE_NAME "3D Printer"
+#define MACHINE_NAME "DiscoEasy200"
 
 /**
  * The SOURCE_CODE_URL is the location where users will find the Marlin Source
@@ -54,7 +54,7 @@
  * has a distinct Github fork— the Source Code URL should just be the main
  * Marlin repository.
  */
-//#define SOURCE_CODE_URL "github.com/MarlinFirmware/Marlin"
+//#define SOURCE_CODE_URL "github.com/Sophist-UK/Marlin-DiscoEasy200"
 
 /**
  * Default generic printer UUID.
@@ -68,7 +68,7 @@
 //#define WEBSITE_URL "marlinfw.org"
 
 /**
- * Set the vendor info the serial USB interface, if changable
+ * Set the vendor info the serial USB interface, if changeable
  * Currently only supported by DUE platform
  */
 //#define USB_DEVICE_VENDOR_ID           0x0000

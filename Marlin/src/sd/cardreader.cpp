@@ -848,6 +848,9 @@ void CardReader::write_command(char * const buf) {
     if (isMounted() && TERN1(POWER_LOSS_RECOVERY, !recovery.valid())) {
       char autoname[10];
       sprintf_P(autoname, PSTR("/auto%c.g"), '0' + autofile_index - 1);
+      if (!fileExists(autoname)) {
+        sprintf_P(autoname, PSTR("/dagoma%c.g"), '0' + autofile_index - 1);
+      }
       if (fileExists(autoname)) {
         cdroot();
         openAndPrintFile(autoname);

@@ -109,6 +109,8 @@
   #include "ramps/pins_MKS_BASE_14.h"               // ATmega2560                           env:mega2560
 #elif MB(MKS_BASE_15)
   #include "ramps/pins_MKS_BASE_15.h"               // ATmega2560                           env:mega2560
+#elif MB(MKS_BASE_15_DAGOMA)
+  #include "ramps/pins_MKS_BASE_15_DAGOMA.h"        // ATmega2560                           env:mega2560
 #elif MB(MKS_BASE_16)
   #include "ramps/pins_MKS_BASE_16.h"               // ATmega2560                           env:mega2560
 #elif MB(MKS_BASE_HEROIC)
