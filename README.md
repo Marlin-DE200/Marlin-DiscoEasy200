@@ -1,6 +1,167 @@
-<p align="center"><img src="buildroot/share/pixmaps/logo/marlin-outrun-nf-500.png" height="250" alt="MarlinFirmware's logo" /></p>
+# Marlin for Dagoma DiscoEasy200
 
-<h1 align="center">Marlin 3D Printer Firmware</h1>
+This repo is a fork of the Marlin repo configured specifically for various versions of the Dagoma DiscoEasy200 3D Printer.
+
+The intention is to support all Dagoma versions of the DiscoEasy200 including:
+
+* Bicolor
+* Extruder+ (with a filament sensor)
+* No screen (Dagoma screen is assumed - other screens may be supported in the future)
+* Black thermistor (white is assumed)
+* Trapezoidal z-screws
+* XL
+* English, French & German languages
+* Arc support (G2/G3)
+
+The configuration settings for these options have been taken
+directly from the Dagoma soure code and should work,
+however the author has only tested the stock+LCD+White Thermistor version.
+
+All these standard Dagoma options are built automatically.
+
+In addition, several selected community enhancements are also supported:
+
+* All other Marlin languages (mostly not tested - japanese / cyrilic language may need alternative fonts defining)
+* Z122 head
+* MKS standard pinouts (instead of the Dagoma special pinouts)
+* BLTouch
+
+The configuration settings for these options have been taken
+from various Thingiverse things and Github repos
+that purport to support these modifications,
+however none of these configurations have been tested.
+
+Because the number of options is multiplicative,
+adding these options to automated builds would
+produce an unreasonable number of options.
+
+However a build workflow is available on Github to build any option
+and you can then download the firmware Hex file from the Github Actions artifacts list.
+If you need help with this please open a Github issue.
+
+These builds are based on Marlin v2 and some of the more advanced functionality
+available in V2 is enabled providing more capabilities than the stock Dagoma firmware
+(that was based on the beta version of Marlin v1 available when the first DiscoVery was announced).
+The additional functionality currently enabled includes:
+
+* Support for all Marlin languages
+
+There is still a lot of newer functionality available in Marlin v2
+that has not been enabled due to lack of testing with the DE200,
+and the community would welcome users testing these options and
+submitting PRs (with before and after test evidence).
+
+In particular the following features are
+potentially available but not currently enabled
+because they will need to be tested **and** tuned:
+
+* Modified (classic) jerk settings for better corners
+* [Linear Advance[(https://marlinfw.org/docs/features/lin_advance.html)
+* [Input shaping](https://marlinfw.org/docs/features/input_shaping.html)
+* [Unified Bed Levelling](https://marlinfw.org/docs/features/unified_bed_leveling.html)
+* [S-Curve Acceleration](https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained)
+* [Model Predictive Temperature Control](https://marlinfw.org/docs/features/model_predictive_control.html)
+* Modified (classic) jerk settings for better corners
+* [Junction deviation](https://www.reddit.com/r/3Dprinting/comments/dx8bdb/here_is_why_you_should_disable_junction_deviation/)
+* Bilinear bed-levelling rather than linear bed-levelling as this handles non-flat beds better
+  ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
+  however this uses significantly more memory and may not fit the MKS_BASE_1.5
+* [Direct stepping](https://reprap.org/wiki/Direct_Stepping) / [Step Daemon](https://github.com/colinrgodsey/step-daemon)
+
+Discussions inc. feedback, Issues and Pull-Requests are all welcome,
+particularly where you have tested the improvements yourself,
+and the author is favourable to supporting
+any DE200 configuration using commonly available components
+other than already supported here.
+
+### DISCLAIMER
+
+At present this is Work in Progress.
+Most versions are untested and,
+whilst the author has made reasonable efforts to configure it correctly,
+***you use these versions at your own risk***.
+
+### Marlin-by-Dagoma vs stock Marlin
+
+A comparison of the Marlin-by-Dagoma stock firmware
+(which claims to be (based on) 1.1.0 RC6)
+against stock Marlin 1.1.0 RC6 suggests that it was indeed based on this release,
+but it was ***VERY*** heavily modified by Dagoma.
+
+To analyse each of these changes made by Dagoma
+and see whether they were included in later versions of Marlin,
+and if so whether they are compatible,
+would be a task of massive proportions -
+so to create these versions of Marlin-for-DiscoEasy200 firmware
+I have assumed that later versions of stock Marlin will work on the DE200
+without modification.
+
+The availability of other people's later versions
+of stock Marlin for DE200 suggests that it will work fine,
+and anecdotal evidence suggests that
+the print quality will be significantly better,
+presumably due to numerous bugs having been fixed in base Marlin
+which were never fixed in Marlin-by-Dagoma.
+
+Therefore as starting point,
+we have carefully configured stock Marlin v2.1.x
+to have the same configuration settings as the Marlin-by-Dagoma 1.1.0 RC6,
+leaving all newer Marlin configuration settings at default.
+This delivers all newer functionality that is enabled by default
+in Marlin.
+
+In addition, where optional (typically minor) functionality looks like it might be beneficial,
+we have enabled that too.
+
+
+### Detailed functional changes from Dagoma stock firmware
+
+This is unlikely to be a definitive list -
+please add to it when you spot something that is different.
+
+* 25% faster Z-feedrate when homing - 5mm/s instead of 4mm/s
+* More bed levelling points
+* Optimised bed-levelling Z speeds.
+* Bed size reduced from 205x205 to 204x204 because of a bug (centre calculated using integer arithmetic).
+* Bed-levellinbg margin increased from 10mm to 21mm because of a bug (to do with the inductive sensor position).
+* Quick home - X & Y homing are done at the same time.
+* XY Frequency limit - reduce shaking and ringing-artifacts on prints by limiting short zigzags to 10 per second.
+* Beep to warn you when you change the feedrate % by turning the knob when printing and on the status page.
+* Transmit buffer - to improve status OK responses to a USB host during USB printing.
+* Detect broken endstop
+* Firmware settings are automatically reset when new firmware is loaded or if they get corrupted.
+  (Firmware setting storage may not be compatible between versions.)
+* SD card CRC and retry is enabled
+* Encoder (knob) direction reversed because it makes more sense.
+* Encoder (knob) improved accuracy.
+* Fan noise reduction (using software PWM rather than hardware PWM)
+* SD-card file list sorting enabled
+* SD card autostart - menu item + support for both `autoN.g` and `dagomaN.g`
+* Scrolling status messages (that are wider than display)
+* Temp stability time for M109 reduced from 15s to Marlin default 10s
+
+### Untested versions
+
+I created this site because I wanted an up-to-date version of Marlin
+for my specific DE200 configuration stock+LCD+english),
+and the firmware for this version has been tested.
+
+However unless I get reports for other versions working OK,
+I cannot say for certainty that they will work.
+
+In most cases, due to the close simularities,
+these other versions should work just fine,
+however based on intuition I do wonder whether the following problems
+might need to be addressed (feedback requested):
+
+* For trapezoidal Z-screws do we need to keep the Z-steppers energised to prevent the head from descending?
+  (By default, z-steppers are de-energised automatically in certain circumstances.)
+  In the stock Dagoma firmware for trapezoidal screws, the z-steppers are de-energised in
+  exactly the same way as for non-trapezoidal screws, so it should be ok.
+  However, if not the fix is not difficult - so let me know.
+
+## Marlin 3D Printer Firmware
+<p align="center"><img src="buildroot/share/pixmaps/logo/marlin-outrun-nf-500.png" height="250" alt="MarlinFirmware's logo" /></p>
 
 <p align="center">
     <a href="/LICENSE"><img alt="GPL-V3.0 License" src="https://img.shields.io/github/license/marlinfirmware/marlin.svg"></a>
