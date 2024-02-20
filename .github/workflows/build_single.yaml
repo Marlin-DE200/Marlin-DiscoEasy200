@@ -1,0 +1,242 @@
+name: Build firmware - Single variant
+
+on:
+  workflow_dispatch:
+    # Note: We are at the Github maximum of 10 inputs
+    inputs:
+      lang:
+        description: 'Language:'
+        options:
+            - en
+            - an
+            - bg
+            - ca
+            - cz
+            - da
+            - de
+            - el
+            - el_CY
+            - es
+            - eu
+            - fi
+            - fr
+            - gl
+            - hr
+            - hu
+            - it
+            - jp_kana
+            - ko_KR
+            - nl
+            - pl
+            - pt
+            - pt_br
+            - ro
+            - ru
+            - sk
+            - sv
+            - tr
+            - uk
+            - vi
+            - zh_CN
+            - zh_TW
+        required: true
+        type: choice
+        default: 'en'
+      bicol:
+        description: 'Bicolor (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      filsens:
+        description: 'Extruder+ (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      trapez:
+        description: 'Trapezoidal (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      xl:
+        description: 'XL (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      nolcd:
+        description: 'No LCD (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      therm:
+        description: 'Black thermistor wires (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      bltouch:
+        description: 'BLtouch (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      pinout:
+        description: 'MKS std pinout (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      z122:
+        description: 'Z122 head (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+
+  workflow_call:
+    inputs:
+      lang:
+        description: 'Language:'
+        required: true
+        type: string
+      bicol:
+        description: 'Bicolor (0, 1):'
+        required: true
+        type: number
+      filsens:
+        description: 'Extruder+ (0, 1):'
+        required: true
+        type: number
+      trapez:
+        description: 'Trapezoidal (0, 1):'
+        required: true
+        type: number
+      xl:
+        description: 'XL (0, 1):'
+        required: true
+        type: number
+      nolcd:
+        description: 'No LCD (0, 1):'
+        required: true
+        type: number
+      therm:
+        description: 'Black thermistor wires (0, 1):'
+        required: true
+        type: number
+      bltouch:
+        description: 'BLtouch (0, 1):'
+        required: true
+        type: number
+      pinout:
+        description: 'MKS std pinout (0, 1):'
+        required: true
+        type: number
+      z122:
+        description: 'Z122 head (0, 1):'
+        required: true
+        type: number
+
+concurrency:
+  group: "\
+    ${{ github.workflow }}-${{ github.ref }}\
+    -lang:${{ inputs.lang }}\
+    -bicol:${{ inputs.bicol }}\
+    -sens:${{ inputs.filsens }}\
+    -trapez:${{ inputs.trapez }}\
+    -xl:${{ inputs.xl }}\
+    -nolcd:${{ inputs.nolcd }}\
+    -blktherm:${{ inputs.therm }}\
+    -bltouch:${{ inputs.bltouch }}\
+    -pinout:${{ inputs.pinout }}\
+    -z122:${{ inputs.z122 }}\
+    "
+  cancel-in-progress: true
+
+# If no_lcd, then name file with no_lcd instead of language
+
+jobs:
+  build:
+    env:
+        BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}',
+          github.ref_name,
+          '-',
+          (inputs.nolcd && '-nolcd') || inputs.lang,
+          (inputs.bicolor && '-bicolor') || '',
+          (inputs.filsens && '-xtrudplus') || '',
+          (inputs.trapez && '-trapez') || '',
+          (inputs.xl && '-xl') || '',
+          (inputs.therm && '-blktherm') || '',
+          (inputs.pinout && '-stdpinout') || '',
+          (inputs.z122 && '-z122') || '',
+          (inputs.bltouch && '-bltouch') || '',
+          '.hex') }}
+
+    name: "Build:[\
+        ${{ (inputs.nolcd && 'nolcd') || inputs.lang }},
+        bicol:${{ inputs.bicol }},
+        sens:${{ inputs.filsens }},
+        trapez:${{ inputs.trapez }},
+        xl:${{ inputs.xl }},
+        nolcd:${{ inputs.nolcd }},
+        therm:${{ inputs.therm }},
+        bltouch:${{ inputs.bltouch }}\
+        pinout:${{ inputs.pinout }},
+        z122:${{ inputs.z122 }},
+        ]"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.platformio/.cache
+        key: ${{ github.workflow_ref }}
+        save-always: true
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade platformio
+    - name: Build with PlatformIO
+      run: platformio run
+      env:
+        PLATFORMIO_BUILD_FLAGS: "\
+          -D DE200_LANGUAGE=${{ inputs.lang }}
+          ${{ (inputs.bicolor && '-D DE200_BICOLOR') || '' }}
+          ${{ (inputs.filsens && '-D DE200_FILAMENT_SENSOR') || '' }}
+          ${{ (inputs.trapez && '-D DE200_TRAPEZOIDAL') || '' }}
+          ${{ (inputs.xl && '-D XL') || '' }}
+          ${{ (inputs.nolcd && '-D DE200_NO_LCD') || '' }}
+          ${{ (inputs.therm && '-D DE200_BLACK_THERMISTOR') || '' }}
+          ${{ (inputs.pinout && '-D DE200_STD_PINOUT') || '' }}
+          ${{ (inputs.z122 && '-D DE200_Z122') || '' }}
+          ${{ (inputs.bltouch && '-D DE200_BLTOUCH') || '' }}
+          "
+    - name: Rename file
+      run: mv .pio/build/megaatmega2560/firmware.hex .pio/build/megaatmega2560/$BUILD_FILE
+
+    - name: Upload build
+      # uses: actions/upload-artifact@v4
+      # with:
+        # name: $BUILD_FILE
+        # path: .pio/build/megaatmega2560/firmware.hex
+        # compression-level: 9
+        # if-no-files-found: error
+      uses: nanoufo/action-upload-artifacts-and-release-assets@v2
+      with:
+        path: .pio/build/megaatmega2560/${{ env.BUILD_FILE }}
+        compression-level: 9
+        upload-release-files: ${{ github.event_name == 'release' }}
+        if-no-files-found: error
