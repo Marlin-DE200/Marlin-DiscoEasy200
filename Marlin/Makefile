@@ -211,6 +211,8 @@ else ifeq ($(HARDWARE_MOTHERBOARD),1107)
 else ifeq ($(HARDWARE_MOTHERBOARD),1108)
 # MKS BASE v1.5 with Allegro A4982 stepper drivers
 else ifeq ($(HARDWARE_MOTHERBOARD),1109)
+# MKS BASE v1.5 with Allegro A4982 stepper drivers - Dagoma non-std pinouts
+else ifeq ($(HARDWARE_MOTHERBOARD),1199)
 # MKS BASE v1.6 with Allegro A4982 stepper drivers
 else ifeq ($(HARDWARE_MOTHERBOARD),1110)
 # MKS BASE 1.0 with Heroic HR4982 stepper drivers
