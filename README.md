@@ -153,6 +153,9 @@ please add to it when you spot something that is different.
 * Scrolling status messages (that are wider than display)
 * Temp stability time for M109 reduced from 15s to Marlin default 10s
 * M701/M702 codes for filament load/unload enabled
+* Support [Host Action Commands](https://reprap.org/wiki/G-code#Action_commands)
+  so that e.g. [Octoprint](https://docs.octoprint.org/en/master/bundledplugins/action_command_prompt.html)for
+  can provide alternative functionality for printers without LCDs.
 
 The following stock functions have not been configured (because we cannot work out how)
 and probably won't work:

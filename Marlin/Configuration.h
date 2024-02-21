@@ -905,7 +905,7 @@
 #if DISABLED(DE200_NO_LCD)
   #define EXTRUDE_MAXLENGTH FILAMENT_CHANGE_UNLOAD_LENGTH
 #else
-  #define EXTRUDE_MAXLENGTH (X_BED_SIZE+Y_BES_SIZE)
+  #define EXTRUDE_MAXLENGTH (X_BED_SIZE+Y_BED_SIZE)
 #endif
 
 //===========================================================================
