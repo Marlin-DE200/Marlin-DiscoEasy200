@@ -156,8 +156,6 @@ concurrency:
     "
   cancel-in-progress: true
 
-# If no_lcd, then name file with no_lcd instead of language
-
 jobs:
   build:
     permissions:
