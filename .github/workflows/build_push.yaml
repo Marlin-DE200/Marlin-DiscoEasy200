@@ -1,4 +1,4 @@
-name: Build firmware - Push
+name: Build firmware - Push (Dagoma variants)
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - DE200-2.1.x
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow_ref }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

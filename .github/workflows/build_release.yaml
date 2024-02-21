@@ -1,4 +1,4 @@
-name: Build firmware - Release
+name: Build firmware - Release (Dagoma variants)
 
 on:
   release:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow_ref }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
