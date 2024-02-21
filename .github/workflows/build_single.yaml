@@ -142,7 +142,7 @@ on:
 
 concurrency:
   group: "\
-    ${{ github.workflow }}-${{ github.ref }}\
+    ${{ github.workflow_ref }}-${{ github.ref }}\
     -lang:${{ inputs.lang }}\
     -bicol:${{ inputs.bicol }}\
     -sens:${{ inputs.filsens }}\
@@ -159,32 +159,32 @@ concurrency:
 jobs:
   build:
     env:
-        BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}',
-          'DE200-2.1.x',
-          '-',
-          (inputs.nolcd == '1' && '-nolcd') || inputs.lang,
-          (inputs.bicolor == '1' && '-bicolor') || '',
-          (inputs.filsens == '1' && '-xtrudplus') || '',
-          (inputs.trapez == '1' && '-trapez') || '',
-          (inputs.xl == '1' && '-xl') || '',
-          (inputs.therm == '1' && '-blktherm') || '',
-          (inputs.pinout == '1' && '-stdpinout') || '',
-          (inputs.z122 == '1' && '-z122') || '',
-          (inputs.bltouch == '1' && '-bltouch') || '',
-          '.hex') }}
+      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}',
+        'DE200-2.1.x',
+        '-',
+        (inputs.nolcd == '1' && '-nolcd') || inputs.lang,
+        (inputs.bicolor == '1' && '-bicolor') || '',
+        (inputs.filsens == '1' && '-xtrudplus') || '',
+        (inputs.trapez == '1' && '-trapez') || '',
+        (inputs.xl == '1' && '-xl') || '',
+        (inputs.therm == '1' && '-blktherm') || '',
+        (inputs.pinout == '1' && '-stdpinout') || '',
+        (inputs.z122 == '1' && '-z122') || '',
+        (inputs.bltouch == '1' && '-bltouch') || '',
+        '.hex') }}
     name: "Build:[\
-        ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
-        bicol:${{ inputs.bicol }},
-        sens:${{ inputs.filsens }},
-        trapez:${{ inputs.trapez }},
-        xl:${{ inputs.xl }},
-        nolcd:${{ inputs.nolcd }},
-        therm:${{ inputs.therm }},
-        bltouch:${{ inputs.bltouch }},
-        pinout:${{ inputs.pinout }},
-        z122:${{ inputs.z122 }}\
-        ]"
-    runs-on: ubuntu-latest
+      ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
+      bicol:${{ inputs.bicol }},
+      sens:${{ inputs.filsens }},
+      trapez:${{ inputs.trapez }},
+      xl:${{ inputs.xl }},
+      nolcd:${{ inputs.nolcd }},
+      therm:${{ inputs.therm }},
+      bltouch:${{ inputs.bltouch }},
+      pinout:${{ inputs.pinout }},
+      z122:${{ inputs.z122 }}\
+      ]"
+  runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
