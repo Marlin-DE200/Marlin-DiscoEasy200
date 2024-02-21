@@ -219,8 +219,8 @@ jobs:
           ${{ (inputs.therm == '1' && '-D DE200_BLACK_THERMISTOR') || '' }}
           ${{ (inputs.pinout == '1' && '-D DE200_STD_PINOUT') || '' }}
           ${{ (inputs.z122 == '1' && '-D DE200_Z122') || '' }}
-          # ${{ (inputs.bltouch == '1' && '-D DE200_BLTOUCH') || '' }}
           "
+          # ${{ (inputs.bltouch == '1' && '-D DE200_BLTOUCH') || '' }}
     - name: Rename file
       run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE
     - name: Upload build
