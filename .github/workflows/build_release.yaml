@@ -34,6 +34,8 @@ jobs:
 
     name: Build ${{ matrix.lang }}
 
+    runs-on: ubuntu-latest
+
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
