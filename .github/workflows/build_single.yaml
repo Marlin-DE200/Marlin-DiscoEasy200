@@ -170,8 +170,8 @@ jobs:
         (inputs.therm == '1' && '-blktherm') || '',
         (inputs.pinout == '1' && '-stdpinout') || '',
         (inputs.z122 == '1' && '-z122') || '',
-        # (inputs.bltouch == '1' && '-bltouch') || '',
         '.hex') }}
+        # (inputs.bltouch == '1' && '-bltouch') || '',
     name: "Build:[\
       ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
       bicol:${{ inputs.bicol }},
@@ -182,8 +182,8 @@ jobs:
       therm:${{ inputs.therm }},
       pinout:${{ inputs.pinout }},
       z122:${{ inputs.z122 }}\
-      # bltouch:${{ inputs.bltouch }}\
       ]"
+      # bltouch:${{ inputs.bltouch }}\
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
