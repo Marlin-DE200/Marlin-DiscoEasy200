@@ -1549,7 +1549,9 @@
   // Since the FAT gets out of order with usage, SDCARD_SORT_ALPHA is recommended.
   #define SDCARD_RATHERRECENTFIRST
 
-  #define SD_MENU_CONFIRM_START             // Confirm the selected SD file before printing
+  #if DISABLED(DE200_NO_LCD)
+    #define SD_MENU_CONFIRM_START             // Confirm the selected SD file before printing
+  #endif
 
   //#define NO_SD_AUTOSTART                 // Remove auto#.g file support completely to save some Flash, SRAM
   #if DISABLED(DE200_NO_LCD)
