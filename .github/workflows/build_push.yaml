@@ -14,13 +14,14 @@ concurrency:
 
 jobs:
   build_multiple:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         lang:
           - en
-          # - fr
-          # - de
+          - fr
+          - de
         bicol: [0, 1]
         filsens: [0, 1]
         trapez: [0, 1]
@@ -33,11 +34,7 @@ jobs:
         exclude:
           - nolcd: 1
             lang: [fr, de]
-
     name: Build ${{ matrix.lang }}
-
-    runs-on: ubuntu-latest
-
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}

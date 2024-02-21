@@ -160,6 +160,9 @@ concurrency:
 
 jobs:
   build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
     env:
         BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}',
           github.ref_name,
@@ -174,7 +177,6 @@ jobs:
           (inputs.z122 && '-z122') || '',
           (inputs.bltouch && '-bltouch') || '',
           '.hex') }}
-
     name: "Build:[\
         ${{ (inputs.nolcd && 'nolcd') || inputs.lang }},
         bicol:${{ inputs.bicol }},
@@ -187,9 +189,6 @@ jobs:
         pinout:${{ inputs.pinout }},
         z122:${{ inputs.z122 }},
         ]"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -226,7 +225,6 @@ jobs:
           "
     - name: Rename file
       run: mv .pio/build/megaatmega2560/firmware.hex .pio/build/megaatmega2560/$BUILD_FILE
-
     - name: Upload build
       # uses: actions/upload-artifact@v4
       # with:
