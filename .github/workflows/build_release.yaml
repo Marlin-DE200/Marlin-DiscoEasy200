@@ -33,7 +33,7 @@ jobs:
           - nolcd: 1
             lang: [fr, de]
     name: Build ${{ matrix.lang }}
-    uses: ./.github/workflows/build_single.yaml
+    uses: Sophist-UK/Marlin-DiscoEasy200/.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
       bicol:    ${{ matrix.bicol }}
