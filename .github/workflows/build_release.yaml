@@ -38,7 +38,7 @@ jobs:
       lang:     ${{ matrix.lang }}
       bicol:    ${{ matrix.bicol }}
       filsens:  ${{ matrix.filsens }}
-      trapez:   ${{ matrix.trap }}
+      trapez:   ${{ matrix.trapez }}
       xl:       ${{ matrix.xl }}
       nolcd:    ${{ matrix.nolcd }}
       therm:    ${{ matrix.therm }}

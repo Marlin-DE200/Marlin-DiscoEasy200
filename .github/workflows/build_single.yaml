@@ -165,15 +165,15 @@ jobs:
         BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}',
           github.ref_name,
           '-',
-          (inputs.nolcd && '-nolcd') || inputs.lang,
-          (inputs.bicolor && '-bicolor') || '',
-          (inputs.filsens && '-xtrudplus') || '',
-          (inputs.trapez && '-trapez') || '',
-          (inputs.xl && '-xl') || '',
-          (inputs.therm && '-blktherm') || '',
-          (inputs.pinout && '-stdpinout') || '',
-          (inputs.z122 && '-z122') || '',
-          (inputs.bltouch && '-bltouch') || '',
+          (inputs.nolcd == '1' && '-nolcd') || inputs.lang,
+          (inputs.bicolor == '1' && '-bicolor') || '',
+          (inputs.filsens == '1' && '-xtrudplus') || '',
+          (inputs.trapez == '1' && '-trapez') || '',
+          (inputs.xl == '1' && '-xl') || '',
+          (inputs.therm == '1' && '-blktherm') || '',
+          (inputs.pinout == '1' && '-stdpinout') || '',
+          (inputs.z122 == '1' && '-z122') || '',
+          (inputs.bltouch == '1' && '-bltouch') || '',
           '.hex') }}
     name: "Build:[\
         ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
@@ -183,9 +183,9 @@ jobs:
         xl:${{ inputs.xl }},
         nolcd:${{ inputs.nolcd }},
         therm:${{ inputs.therm }},
-        bltouch:${{ inputs.bltouch }}\
+        bltouch:${{ inputs.bltouch }},
         pinout:${{ inputs.pinout }},
-        z122:${{ inputs.z122 }}
+        z122:${{ inputs.z122 }}\
         ]"
     steps:
     - name: Checkout
@@ -206,10 +206,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
-        echo "Build file:" $BUILD_FILE
     - name: Build with PlatformIO
-      run: platformio run
-      env:
+      run: |
+        echo "Build file:" $BUILD_FILE
+        platformio run
+     env:
         PLATFORMIO_BUILD_FLAGS: "\
           -D DE200_LANGUAGE=${{ inputs.lang }}
           ${{ (inputs.bicolor == '1' && '-D DE200_BICOLOR') || '' }}
@@ -223,17 +224,17 @@ jobs:
           ${{ (inputs.bltouch == '1' && '-D DE200_BLTOUCH') || '' }}
           "
     - name: Rename file
-      run: mv .pio/build/megaatmega2560/firmware.hex .pio/build/megaatmega2560/$BUILD_FILE
+      run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE
     - name: Upload build
       # uses: actions/upload-artifact@v4
       # with:
         # name: $BUILD_FILE
-        # path: .pio/build/megaatmega2560/firmware.hex
+        # path: .pio/build/mega2560/firmware.hex
         # compression-level: 9
         # if-no-files-found: error
       uses: nanoufo/action-upload-artifacts-and-release-assets@v2
       with:
-        path: .pio/build/megaatmega2560/${{ env.BUILD_FILE }}
+        path: .pio/build/mega2560/${{ env.BUILD_FILE }}
         compression-level: 9
         upload-release-files: ${{ github.event_name == 'release' }}
         if-no-files-found: error

@@ -34,13 +34,14 @@ jobs:
         exclude:
           - nolcd: 1
             lang: [fr, de]
+
     name: Build ${{ matrix.lang }}
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
       bicol:    ${{ matrix.bicol }}
       filsens:  ${{ matrix.filsens }}
-      trapez:   ${{ matrix.trap }}
+      trapez:   ${{ matrix.trapez }}
       xl:       ${{ matrix.xl }}
       nolcd:    ${{ matrix.nolcd }}
       therm:    ${{ matrix.therm }}
