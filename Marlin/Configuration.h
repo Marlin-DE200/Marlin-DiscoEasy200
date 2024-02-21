@@ -901,12 +901,9 @@
  * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
-#if EITHER(DE200_BICOLOR, DE200_FILAMENT_SENSOR)
-  //#define PREVENT_LENGTHY_EXTRUDE
-#else
-  #define PREVENT_LENGTHY_EXTRUDE
-#endif
-#define EXTRUDE_MAXLENGTH (X_MAX_POS-X_MIN_POS+Y_MAX_POS-X_MIN_POS)
+#define PREVENT_LENGTHY_EXTRUDE
+//#define EXTRUDE_MAXLENGTH (X_BED_SIZE+Y_BES_SIZE)
+#define EXTRUDE_MAXLENGTH FILAMENT_CHANGE_UNLOAD_LENGTH
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
