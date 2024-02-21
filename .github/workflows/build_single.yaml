@@ -78,12 +78,6 @@ on:
         required: true
         type: choice
         default: 0
-      bltouch:
-        description: 'BLtouch (0, 1):'
-        options: [0, 1]
-        required: true
-        type: choice
-        default: 0
       pinout:
         description: 'MKS std pinout (0, 1):'
         options: [0, 1]
@@ -96,6 +90,12 @@ on:
         required: true
         type: choice
         default: 0
+      # bltouch:
+        # description: 'BLtouch (0, 1):'
+        # options: [0, 1]
+        # required: true
+        # type: choice
+        # default: 0
 
   workflow_call:
     inputs:
@@ -127,10 +127,6 @@ on:
         description: 'Black thermistor wires (0, 1):'
         required: true
         type: number
-      bltouch:
-        description: 'BLtouch (0, 1):'
-        required: true
-        type: number
       pinout:
         description: 'MKS std pinout (0, 1):'
         required: true
@@ -139,6 +135,10 @@ on:
         description: 'Z122 head (0, 1):'
         required: true
         type: number
+      # bltouch:
+        # description: 'BLtouch (0, 1):'
+        # required: true
+        # type: number
 
 concurrency:
   group: "\
@@ -150,9 +150,9 @@ concurrency:
     -xl:${{ inputs.xl }}\
     -nolcd:${{ inputs.nolcd }}\
     -blktherm:${{ inputs.therm }}\
-    -bltouch:${{ inputs.bltouch }}\
     -pinout:${{ inputs.pinout }}\
     -z122:${{ inputs.z122 }}\
+    # -bltouch:${{ inputs.bltouch }}\
     "
   cancel-in-progress: true
 
@@ -170,7 +170,7 @@ jobs:
         (inputs.therm == '1' && '-blktherm') || '',
         (inputs.pinout == '1' && '-stdpinout') || '',
         (inputs.z122 == '1' && '-z122') || '',
-        (inputs.bltouch == '1' && '-bltouch') || '',
+        # (inputs.bltouch == '1' && '-bltouch') || '',
         '.hex') }}
     name: "Build:[\
       ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
@@ -180,9 +180,9 @@ jobs:
       xl:${{ inputs.xl }},
       nolcd:${{ inputs.nolcd }},
       therm:${{ inputs.therm }},
-      bltouch:${{ inputs.bltouch }},
       pinout:${{ inputs.pinout }},
       z122:${{ inputs.z122 }}\
+      # bltouch:${{ inputs.bltouch }}\
       ]"
     runs-on: ubuntu-latest
     steps:
@@ -219,7 +219,7 @@ jobs:
           ${{ (inputs.therm == '1' && '-D DE200_BLACK_THERMISTOR') || '' }}
           ${{ (inputs.pinout == '1' && '-D DE200_STD_PINOUT') || '' }}
           ${{ (inputs.z122 == '1' && '-D DE200_Z122') || '' }}
-          ${{ (inputs.bltouch == '1' && '-D DE200_BLTOUCH') || '' }}
+          # ${{ (inputs.bltouch == '1' && '-D DE200_BLTOUCH') || '' }}
           "
     - name: Rename file
       run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE
