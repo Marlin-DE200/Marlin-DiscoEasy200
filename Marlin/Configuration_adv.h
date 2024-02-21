@@ -2656,7 +2656,9 @@
  *
  * Enable PARK_HEAD_ON_PAUSE to add the G-code M125 Pause and Park.
  */
-#define ADVANCED_PAUSE_FEATURE // Dagoma FILAMENTCHANGEENABLE
+#if DISABLED(DE200_NO_LCD)
+  #define ADVANCED_PAUSE_FEATURE // Dagoma FILAMENTCHANGEENABLE
+#endif
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
   #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
   #define PAUSE_PARK_RETRACT_LENGTH            4.5  // (mm) Initial retract.
