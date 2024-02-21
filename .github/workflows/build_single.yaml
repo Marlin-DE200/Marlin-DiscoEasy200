@@ -90,12 +90,12 @@ on:
         required: true
         type: choice
         default: 0
-      bltouch:
-        description: 'BLtouch (0, 1):'
-        options: [0, 1]
-        required: true
-        type: choice
-        default: 0
+      # bltouch:
+        # description: 'BLtouch (0, 1):'
+        # options: [0, 1]
+        # required: true
+        # type: choice
+        # default: 0
 
   workflow_call:
     inputs:
@@ -135,10 +135,10 @@ on:
         description: 'Z122 head (0, 1):'
         required: true
         type: number
-      bltouch:
-        description: 'BLtouch (0, 1):'
-        required: true
-        type: number
+      # bltouch:
+        # description: 'BLtouch (0, 1):'
+        # required: true
+        # type: number
 
 concurrency:
   group: "\
@@ -152,7 +152,6 @@ concurrency:
     -blktherm:${{ inputs.therm }}\
     -pinout:${{ inputs.pinout }}\
     -z122:${{ inputs.z122 }}\
-    -bltouch:${{ inputs.bltouch }}\
     "
   cancel-in-progress: true
 
@@ -170,7 +169,6 @@ jobs:
         (inputs.therm == '1' && '-blktherm') || '',
         (inputs.pinout == '1' && '-stdpinout') || '',
         (inputs.z122 == '1' && '-z122') || '',
-        (inputs.bltouch == '1' && '-bltouch') || '',
         '.hex') }}
     name: "Build:[\
       ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
@@ -181,8 +179,7 @@ jobs:
       nolcd:${{ inputs.nolcd }},
       therm:${{ inputs.therm }},
       pinout:${{ inputs.pinout }},
-      z122:${{ inputs.z122 }},
-      bltouch:${{ inputs.bltouch }}\
+      z122:${{ inputs.z122 }}\
       ]"
     runs-on: ubuntu-latest
     steps:
@@ -219,7 +216,6 @@ jobs:
           ${{ (inputs.therm == '1' && '-D DE200_BLACK_THERMISTOR') || '' }}
           ${{ (inputs.pinout == '1' && '-D DE200_STD_PINOUT') || '' }}
           ${{ (inputs.z122 == '1' && '-D DE200_Z122') || '' }}
-          ${{ (inputs.bltouch == '1' && '-D DE200_BLTOUCH') || '' }}
           "
     - name: Rename file
       run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE
@@ -233,6 +229,7 @@ jobs:
       uses: nanoufo/action-upload-artifacts-and-release-assets@v2
       with:
         path: .pio/build/mega2560/${{ env.BUILD_FILE }}
+        if-no-files-found: error
         compression-level: 9
         upload-release-files: ${{ github.event_name == 'release' }}
-        if-no-files-found: error
+        release-upload-url: ${{ github.event.release.upload_url }}

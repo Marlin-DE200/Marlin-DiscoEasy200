@@ -29,7 +29,7 @@ jobs:
         therm: [0, 1]
         pinout: [0]
         z122: [0]
-        bltouch: [0]
+        # bltouch: [0]
         exclude:
           - nolcd: 1
             lang: fr
@@ -38,7 +38,7 @@ jobs:
           - bicol: 1
             filsens: 0 # bicolor implies extruder+
           - pinout: 1
-            bicol: 1   # no pinoouts for filament sensor 2 on standard pinouts
+            bicol: 1   # no pinouts for filament sensor 2 on standard pinouts
     permissions:
       contents: write
     name: Build ${{ matrix.lang }}
@@ -53,5 +53,5 @@ jobs:
       therm:    ${{ matrix.therm }}
       pinout:   ${{ matrix.pinout }}
       z122:     ${{ matrix.z122 }}
-      bltouch:  ${{ matrix.bltouch }}
+      # bltouch:  ${{ matrix.bltouch }}
     secrets: inherit
