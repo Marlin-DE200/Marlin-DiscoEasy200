@@ -12,7 +12,6 @@ concurrency:
 
 jobs:
   build_multiple:
-    runs-on: ubuntu-latest
     permissions:
       contents: write
     strategy:
