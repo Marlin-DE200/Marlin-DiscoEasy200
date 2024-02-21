@@ -78,12 +78,6 @@ on:
         required: true
         type: choice
         default: 0
-      bltouch:
-        description: 'BLtouch (0, 1):'
-        options: [0, 1]
-        required: true
-        type: choice
-        default: 0
       pinout:
         description: 'MKS std pinout (0, 1):'
         options: [0, 1]
@@ -92,6 +86,12 @@ on:
         default: 0
       z122:
         description: 'Z122 head (0, 1):'
+        options: [0, 1]
+        required: true
+        type: choice
+        default: 0
+      bltouch:
+        description: 'BLtouch (0, 1):'
         options: [0, 1]
         required: true
         type: choice
@@ -127,16 +127,16 @@ on:
         description: 'Black thermistor wires (0, 1):'
         required: true
         type: number
-      bltouch:
-        description: 'BLtouch (0, 1):'
-        required: true
-        type: number
       pinout:
         description: 'MKS std pinout (0, 1):'
         required: true
         type: number
       z122:
         description: 'Z122 head (0, 1):'
+        required: true
+        type: number
+      bltouch:
+        description: 'BLtouch (0, 1):'
         required: true
         type: number
 
@@ -150,9 +150,9 @@ concurrency:
     -xl:${{ inputs.xl }}\
     -nolcd:${{ inputs.nolcd }}\
     -blktherm:${{ inputs.therm }}\
-    -bltouch:${{ inputs.bltouch }}\
     -pinout:${{ inputs.pinout }}\
     -z122:${{ inputs.z122 }}\
+    -bltouch:${{ inputs.bltouch }}\
     "
   cancel-in-progress: true
 
@@ -180,9 +180,9 @@ jobs:
       xl:${{ inputs.xl }},
       nolcd:${{ inputs.nolcd }},
       therm:${{ inputs.therm }},
-      bltouch:${{ inputs.bltouch }},
       pinout:${{ inputs.pinout }},
       z122:${{ inputs.z122 }}\
+      bltouch:${{ inputs.bltouch }},
       ]"
     runs-on: ubuntu-latest
     steps:
