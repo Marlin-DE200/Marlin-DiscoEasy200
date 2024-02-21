@@ -36,7 +36,9 @@ jobs:
         z122: [0]
         exclude:
           - nolcd: 1
-            lang: [fr, de]
+            lang: fr
+          - nolcd: 1
+            lang: de
     permissions:
       contents: write
     name: Build ${{ matrix.lang }}
