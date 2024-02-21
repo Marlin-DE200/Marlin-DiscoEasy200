@@ -24,7 +24,6 @@ In addition, several selected community enhancements are also supported:
 * All other Marlin languages (mostly not tested - japanese / cyrilic language may need alternative fonts defining)
 * Z122 head
 * MKS standard pinouts (instead of the Dagoma special pinouts)
-* BLTouch
 
 The configuration settings for these options have been taken
 from various Thingiverse things and Github repos
@@ -68,11 +67,24 @@ because they will need to be tested **and** tuned:
   however this uses significantly more memory and may not fit the MKS_BASE_1.5
 * [Direct stepping](https://reprap.org/wiki/Direct_Stepping) / [Step Daemon](https://github.com/colinrgodsey/step-daemon)
 
+The implementation of this version has been designed to be flexible and to allow for both
+easy updating as new stock versions of Marlin are released, and
+additions of more configurations for publicly available mods such as bltouch.
+
 Discussions inc. feedback, Issues and Pull-Requests are all welcome,
 particularly where you have tested the improvements yourself,
 and the author is favourable to supporting
 any DE200 configuration using commonly available components
 other than already supported here.
+
+As an illustration of the information needed to support additional mods,
+the reasons that e.g. bltouch has not been included are:
+
+* bltouch connection pins are not standardised
+* bltouch mounting positions are not standardised - and so the nozzle-offsets are unknown
+* there are no standarised Thingiverse Things for either the mount or for the firmware that
+  can be used as the basis for configuration, the closest being a Z122 head + bltouch that does
+  not have matching firmware or the nozzle-offsets defined
 
 ### DISCLAIMER
 
@@ -86,7 +98,8 @@ whilst the author has made reasonable efforts to configure it correctly,
 A comparison of the Marlin-by-Dagoma stock firmware
 (which claims to be (based on) 1.1.0 RC6)
 against stock Marlin 1.1.0 RC6 suggests that it was indeed based on this release,
-but it was ***VERY*** heavily modified by Dagoma.
+but it was ***VERY*** heavily modified by Dagoma
+(probably to add functionality that simply didn't exist at the time).
 
 To analyse each of these changes made by Dagoma
 and see whether they were included in later versions of Marlin,
@@ -139,6 +152,13 @@ please add to it when you spot something that is different.
 * SD card autostart - menu item + support for both `autoN.g` and `dagomaN.g`
 * Scrolling status messages (that are wider than display)
 * Temp stability time for M109 reduced from 15s to Marlin default 10s
+* M701/M702 codes for filament load/unload enabled
+
+The following stock functions have not been configured (because we cannot work out how)
+and probably won't work:
+
+* Use of Y end-stop switch to pause the print
+* Filament changing without a screen
 
 ### Untested versions
 

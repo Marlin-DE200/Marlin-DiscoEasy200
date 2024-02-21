@@ -633,7 +633,7 @@
   // Marlin default is 10s, Dagoma stock value is 15s.
   #define TEMP_RESIDENCY_TIME         10  // (seconds) Time to wait for hotend to "settle" in M109
   #define TEMP_WINDOW                  3  // (°C) Temperature proximity for the "temperature reached" timer
-  #define TEMP_HYSTERESIS              3  // (°C) Temperature proximity considered "close enough" to the target
+  #define TEMP_HYSTERESIS              4  // (°C) Temperature proximity considered "close enough" to the target
 #endif
 
 #if TEMP_SENSOR_BED
@@ -820,11 +820,10 @@
   //#define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Print Bed PID debug data to the serial port.
 
-  // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 10.00
-  #define DEFAULT_bedKi .023
-  #define DEFAULT_bedKd 305.4
+  // Dagoma DiscoEasy200 heated bed
+  #define DEFAULT_bedKp 182.79
+  #define DEFAULT_bedKi  14.84
+  #define DEFAULT_bedKd 563.01
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #else
@@ -902,7 +901,11 @@
  * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
-#define PREVENT_LENGTHY_EXTRUDE
+#if EITHER(DE200_BICOLOR, DE200_FILAMENT_SENSOR)
+  //#define PREVENT_LENGTHY_EXTRUDE
+#else
+  #define PREVENT_LENGTHY_EXTRUDE
+#endif
 #define EXTRUDE_MAXLENGTH (X_MAX_POS-X_MIN_POS+Y_MAX_POS-X_MIN_POS)
 
 //===========================================================================
@@ -1412,7 +1415,9 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-//#define BLTOUCH
+#if DEFINED(DE200_BLTOUCH)
+  #define BLTOUCH
+#endif
 
 /**
  * MagLev V4 probe by MDD
@@ -1578,11 +1583,13 @@
 // 2. Use of a single min probe edge for both max and min and both x and y; and
 // 3. Incorrect Sanity Checks and possibly probe code
 // this needs to be > abs(PROBE_OFFSET_FROM_EXTRUDER)
-#if ENABLED(DE200_Z122)
-  #define PROBING_MARGIN 57
-#else
-  #define PROBING_MARGIN 21
-#endif
+#define PROBING_MARGIN 20
+// Following code commented out since we define a specific front/back probe margin for each type of probe.
+//#if ENABLED(DE200_Z122)
+//  #define PROBING_MARGIN 57
+//#else
+//  #define PROBING_MARGIN 21
+//#endif
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (133*60)
@@ -1769,7 +1776,7 @@
  */
 //#define Z_IDLE_HEIGHT Z_HOME_POS
 
-//#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT  7        // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
 //#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
@@ -1879,11 +1886,19 @@
 #if EITHER(DE200_BICOLOR, DE200_FILAMENT_SENSOR)
   #define FILAMENT_RUNOUT_SENSOR
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
-  #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
 
-  #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
+  #if DEFINED(DE200_BICOLOR)
+    #define NUM_RUNOUT_SENSORS   2          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
+  #else
+    #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
+  #endif
+
+  #define FIL_RUNOUT_STATE    HIGH        // Pin state indicating that filament is NOT present.
+  #if DEFINED(DE200_BICOLOR)
+    #define FIL_RUNOUT2_STATE    HIGH        // Pin state indicating that filament is NOT present.
+  #endif
   //#define FIL_RUNOUT_PULLUP             // Use internal pullup for filament runout pins.
-  #define FIL_RUNOUT_PULLDOWN             // Use internal pulldown for filament runout pins.
+  //#define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
   //#define WATCH_ALL_RUNOUT_SENSORS      // Execute runout script on any triggering sensor, not only for the active extruder.
                                           // This is automatically enabled for MIXING_EXTRUDERs.
 
@@ -1923,7 +1938,12 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
-  #define FILAMENT_RUNOUT_SCRIPT "M600 I-1 U5 V195 X195 Y195"
+  #if DEFINED(DE200_BICOLOR)
+    #define FILAMENT_RUNOUT_SCRIPT "M600 T0 I-1 U5 V195 X195 Y195"
+    #define FILAMENT_RUNOUT2_SCRIPT "M600 T1 I-1 U5 V195 X195 Y195"
+  #else
+    #define FILAMENT_RUNOUT_SCRIPT "M600 I-1 U5 V195 X195 Y195"
+  #endif
 
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
@@ -2128,7 +2148,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-# if DISABLED(DE200_NO_LCD)
+#if DISABLED(DE200_NO_LCD)
   #define LCD_BED_LEVELING
 #endif
 
@@ -2323,13 +2343,13 @@
 //
 #define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 180
-#define PREHEAT_1_TEMP_BED     70
+#define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_TEMP_CHAMBER 35
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "ABS"
 #define PREHEAT_2_TEMP_HOTEND 240
-#define PREHEAT_2_TEMP_BED    110
+#define PREHEAT_2_TEMP_BED     90
 #define PREHEAT_2_TEMP_CHAMBER 35
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
@@ -2346,11 +2366,11 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MAX_POS - 10), (Y_MAX_POS - 10), 20 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
   #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)

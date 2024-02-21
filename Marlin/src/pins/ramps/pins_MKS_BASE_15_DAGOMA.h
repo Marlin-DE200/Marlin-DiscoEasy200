@@ -42,3 +42,11 @@
 #define Y_MAX_PIN           3
 #define Z_MIN_PIN          15
 #define Z_MAX_PIN          -1
+
+#undef FIL_RUNOUT_PIN
+#define FIL_RUNOUT_PIN 19
+
+#if DEFINED(DE200_BICOLOR)
+  #undef FIL_RUNOUT2_PIN
+  #define FIL_RUNOUT2_PIN 14
+#endif

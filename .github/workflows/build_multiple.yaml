@@ -39,6 +39,8 @@ jobs:
             lang: fr
           - nolcd: 1
             lang: de
+          - bicol: 1
+            filsens: 0 # bicolor implies extruder+
     permissions:
       contents: write
     name: Build ${{ matrix.lang }}

@@ -163,7 +163,7 @@ jobs:
         'DE200-2.1.x',
         '-',
         (inputs.nolcd == '1' && '-nolcd') || inputs.lang,
-        (inputs.bicolor == '1' && '-bicolor') || '',
+        (inputs.bicol == '1' && '-bicolor') || '',
         (inputs.filsens == '1' && '-xtrudplus') || '',
         (inputs.trapez == '1' && '-trapez') || '',
         (inputs.xl == '1' && '-xl') || '',
@@ -211,7 +211,7 @@ jobs:
       env:
         PLATFORMIO_BUILD_FLAGS: "\
           -D DE200_LANGUAGE=${{ inputs.lang }}
-          ${{ (inputs.bicolor == '1' && '-D DE200_BICOLOR') || '' }}
+          ${{ (inputs.bicol == '1' && '-D DE200_BICOLOR') || '' }}
           ${{ (inputs.filsens == '1' && '-D DE200_FILAMENT_SENSOR') || '' }}
           ${{ (inputs.trapez == '1' && '-D DE200_TRAPEZOIDAL') || '' }}
           ${{ (inputs.xl == '1' && '-D XL') || '' }}
