@@ -1415,7 +1415,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#if DEFINED(DE200_BLTOUCH)
+#if ENABLED(DE200_BLTOUCH)
   #define BLTOUCH
 #endif
 
@@ -1887,14 +1887,14 @@
   #define FILAMENT_RUNOUT_SENSOR
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
 
-  #if DEFINED(DE200_BICOLOR)
+  #if ENABLED(DE200_BICOLOR)
     #define NUM_RUNOUT_SENSORS   2          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #else
     #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #endif
 
   #define FIL_RUNOUT_STATE    HIGH        // Pin state indicating that filament is NOT present.
-  #if DEFINED(DE200_BICOLOR)
+  #if ENABLED(DE200_BICOLOR)
     #define FIL_RUNOUT2_STATE    HIGH        // Pin state indicating that filament is NOT present.
   #endif
   //#define FIL_RUNOUT_PULLUP             // Use internal pullup for filament runout pins.
@@ -1938,7 +1938,7 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
-  #if DEFINED(DE200_BICOLOR)
+  #if ENABLED(DE200_BICOLOR)
     #define FILAMENT_RUNOUT_SCRIPT "M600 T0 I-1 U5 V195 X195 Y195"
     #define FILAMENT_RUNOUT2_SCRIPT "M600 T1 I-1 U5 V195 X195 Y195"
   #else
