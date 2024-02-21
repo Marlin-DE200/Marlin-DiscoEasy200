@@ -176,7 +176,7 @@ jobs:
           (inputs.bltouch && '-bltouch') || '',
           '.hex') }}
     name: "Build:[\
-        ${{ (inputs.nolcd && 'nolcd') || inputs.lang }},
+        ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
         bicol:${{ inputs.bicol }},
         sens:${{ inputs.filsens }},
         trapez:${{ inputs.trapez }},
@@ -185,7 +185,7 @@ jobs:
         therm:${{ inputs.therm }},
         bltouch:${{ inputs.bltouch }}\
         pinout:${{ inputs.pinout }},
-        z122:${{ inputs.z122 }},
+        z122:${{ inputs.z122 }}
         ]"
     steps:
     - name: Checkout
@@ -206,20 +206,21 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
+        echo "Build file:" $BUILD_FILE
     - name: Build with PlatformIO
       run: platformio run
       env:
         PLATFORMIO_BUILD_FLAGS: "\
           -D DE200_LANGUAGE=${{ inputs.lang }}
-          ${{ (inputs.bicolor && '-D DE200_BICOLOR') || '' }}
-          ${{ (inputs.filsens && '-D DE200_FILAMENT_SENSOR') || '' }}
-          ${{ (inputs.trapez && '-D DE200_TRAPEZOIDAL') || '' }}
-          ${{ (inputs.xl && '-D XL') || '' }}
-          ${{ (inputs.nolcd && '-D DE200_NO_LCD') || '' }}
-          ${{ (inputs.therm && '-D DE200_BLACK_THERMISTOR') || '' }}
-          ${{ (inputs.pinout && '-D DE200_STD_PINOUT') || '' }}
-          ${{ (inputs.z122 && '-D DE200_Z122') || '' }}
-          ${{ (inputs.bltouch && '-D DE200_BLTOUCH') || '' }}
+          ${{ (inputs.bicolor == '1' && '-D DE200_BICOLOR') || '' }}
+          ${{ (inputs.filsens == '1' && '-D DE200_FILAMENT_SENSOR') || '' }}
+          ${{ (inputs.trapez == '1' && '-D DE200_TRAPEZOIDAL') || '' }}
+          ${{ (inputs.xl == '1' && '-D XL') || '' }}
+          ${{ (inputs.nolcd == '1' && '-D DE200_NO_LCD') || '' }}
+          ${{ (inputs.therm == '1' && '-D DE200_BLACK_THERMISTOR') || '' }}
+          ${{ (inputs.pinout == '1' && '-D DE200_STD_PINOUT') || '' }}
+          ${{ (inputs.z122 == '1' && '-D DE200_Z122') || '' }}
+          ${{ (inputs.bltouch == '1' && '-D DE200_BLTOUCH') || '' }}
           "
     - name: Rename file
       run: mv .pio/build/megaatmega2560/firmware.hex .pio/build/megaatmega2560/$BUILD_FILE
