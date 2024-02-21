@@ -206,9 +206,9 @@ jobs:
         pip install --upgrade platformio
     - name: Build with PlatformIO
       run: |
-        echo "Build file:" $BUILD_FILE
+        echo 'Build file:' $BUILD_FILE
         platformio run
-     env:
+      env:
         PLATFORMIO_BUILD_FLAGS: "\
           -D DE200_LANGUAGE=${{ inputs.lang }}
           ${{ (inputs.bicolor == '1' && '-D DE200_BICOLOR') || '' }}
