@@ -181,8 +181,8 @@ jobs:
       nolcd:${{ inputs.nolcd }},
       therm:${{ inputs.therm }},
       pinout:${{ inputs.pinout }},
-      z122:${{ inputs.z122 }}\
-      bltouch:${{ inputs.bltouch }},
+      z122:${{ inputs.z122 }},
+      bltouch:${{ inputs.bltouch }}\
       ]"
     runs-on: ubuntu-latest
     steps:
