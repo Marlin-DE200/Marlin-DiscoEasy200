@@ -31,9 +31,9 @@ jobs:
         xl: [0, 1]
         nolcd: [0, 1]
         therm: [0, 1]
+        bltouch: [0]
         pinout: [0]
         z122: [0]
-        # bltouch: [0]
         exclude:
           - nolcd: 1
             lang: fr
@@ -53,7 +53,7 @@ jobs:
       xl:       ${{ matrix.xl }}
       nolcd:    ${{ matrix.nolcd }}
       therm:    ${{ matrix.therm }}
+      bltouch:  ${{ matrix.bltouch }}
       pinout:   ${{ matrix.pinout }}
       z122:     ${{ matrix.z122 }}
-      # bltouch:  ${{ matrix.bltouch }}
     secrets: inherit
