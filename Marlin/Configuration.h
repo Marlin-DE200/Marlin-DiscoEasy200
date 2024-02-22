@@ -1895,7 +1895,7 @@
 
   #define FIL_RUNOUT_STATE    HIGH        // Pin state indicating that filament is NOT present.
   #if ENABLED(DE200_BICOLOR)
-    #define FIL_RUNOUT2_STATE    HIGH        // Pin state indicating that filament is NOT present.
+    #define FIL_RUNOUT2_STATE HIGH        // Pin state indicating that filament is NOT present.
   #endif
   //#define FIL_RUNOUT_PULLUP             // Use internal pullup for filament runout pins.
   //#define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
@@ -1938,12 +1938,10 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
-  #if DISABLED(DE200_NO_LCD)
-    #if ENABLED(DE200_BICOLOR)
-      #define FILAMENT_RUNOUT_SCRIPT "M600 T%c I-1 U5 V195 X195 Y195"
-    #else
-      #define FILAMENT_RUNOUT_SCRIPT "M600 I-1 U5 V195 X195 Y195"
-    #endif
+  #if ENABLED(DE200_BICOLOR)
+    #define FILAMENT_RUNOUT_SCRIPT "M600 T%c I-1 U5 V195 X195 Y195"
+  #else
+    #define FILAMENT_RUNOUT_SCRIPT "M600 I-1 U5 V195 X195 Y195"
   #endif
 
   // After a runout is detected, continue printing this length of filament

@@ -39,6 +39,8 @@ jobs:
             filsens: 0 # bicolor implies extruder+
           - pinout: 1
             bicol: 1   # no pinouts for filament sensor 2 on standard pinouts
+          - nolcd: 1
+            filsens: 1  # Filament sensor (and hence filament runout and hence advanced pause) needs lcd
     permissions:
       contents: write
     name: Build ${{ matrix.lang }}
