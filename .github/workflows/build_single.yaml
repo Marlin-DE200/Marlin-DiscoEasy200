@@ -231,9 +231,6 @@ jobs:
 
     - if: ${{ github.event_name == 'release' }}
       name: Upload release
-      uses: Shopify/upload-to-release@v1
-      with:
-        name: $BUILD_FILE
-        path: .pio/build/mega2560/$BUILD_FILE
-        content_type: text/plain
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+      run: gh release upload ${{github.event.release.tag_name}} .pio/build/mega2560/$BUILD_FILE
+      env:
+        GITHUB_TOKEN: ${{ github.TOKEN }}
