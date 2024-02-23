@@ -1,24 +1,24 @@
 name: Rebase from upstream
 
 on:
-  schedule:
-  - cron: "0 0 * * 0"  # run Midnight Sunday
+  # schedule:
+  # - cron: "0 0 * * 0"  # run Midnight Sunday
   workflow_dispatch:
 
 jobs:
-  merge:
-    strategy:
-      matrix:
-        include:
-          - branch: 2.1.x
-    runs-on: ubuntu-latest
-    name: Merge ${{ matrix.branch }}=>${{ matrix.branch }}
-    steps:
-    - name: Merge ${{ matrix.branch }}
-      uses: exions/merge-upstream@v1
-      with:
-        branch: ${{ matrix.branch }}
-        upstream-branch: ${{ matrix.branch }}
+  # merge:
+    # strategy:
+      # matrix:
+        # include:
+          # - branch: 2.1.x
+    # runs-on: ubuntu-latest
+    # name: Merge ${{ matrix.branch }}=>${{ matrix.branch }}
+    # steps:
+    # - name: Merge ${{ matrix.branch }}
+      # uses: exions/merge-upstream@v1
+      # with:
+        # branch: ${{ matrix.branch }}
+        # upstream-branch: ${{ matrix.branch }}
 
   rebase:
     strategy:

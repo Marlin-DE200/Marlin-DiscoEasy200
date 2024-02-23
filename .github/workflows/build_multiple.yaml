@@ -4,9 +4,15 @@ on:
   pull_request:
     branches:
       - DE200-2.1.x
+    paths:
+      - '/.github/workflows/build_*.yaml'
+      - '/Marlin/**'
   push:
     branches:
       - DE200-2.1.x
+    paths:
+      - '/.github/workflows/build_*.yaml'
+      - '/Marlin/**'
   release:
     types:
       - published
@@ -32,15 +38,15 @@ jobs:
         # bltouch: [0]
         exclude:
           - nolcd: 1
-            lang: fr
+            lang: fr        # language is irrelevant to nolcd - english no lcd is all we need
           - nolcd: 1
-            lang: de
+            lang: de        # language is irrelevant to nolcd - english no lcd is all we need
           - bicol: 1
-            filsens: 0 # bicolor implies extruder+
+            filsens: 0      # bicolor implies extruder+
           - pinout: 1
-            bicol: 1   # no pinouts for filament sensor 2 on standard pinouts
+            bicol: 1        # no pinouts for filament sensor 2 on standard pinouts
           - nolcd: 1
-            filsens: 1  # Filament sensor (and hence filament runout and hence advanced pause) needs lcd
+            filsens: 1      # Filament sensor (and hence filament runout and hence advanced pause) needs lcd
     permissions:
       contents: write
     name: Build ${{ matrix.lang }}
