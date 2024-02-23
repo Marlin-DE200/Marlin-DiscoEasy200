@@ -161,7 +161,7 @@ jobs:
       BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}',
         'DE200-2.1.x',
         '-',
-        (inputs.nolcd == '1' && '-nolcd') || inputs.lang,
+        (inputs.nolcd == '1' && 'nolcd') || inputs.lang,
         (inputs.bicol == '1' && '-bicolor') || '',
         (inputs.filsens == '1' && '-xtrudplus') || '',
         (inputs.trapez == '1' && '-trapez') || '',
@@ -219,17 +219,21 @@ jobs:
           "
     - name: Rename file
       run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE
-    - name: Upload build
-      # uses: actions/upload-artifact@v4
-      # with:
-        # name: $BUILD_FILE
-        # path: .pio/build/mega2560/firmware.hex
-        # compression-level: 9
-        # if-no-files-found: error
-      uses: nanoufo/action-upload-artifacts-and-release-assets@v2
+
+    - if: ${{ github.event_name != 'release' }}
+      name: Upload artefact
+      uses: actions/upload-artifact@v4
       with:
-        path: .pio/build/mega2560/${{ env.BUILD_FILE }}
-        if-no-files-found: error
+        name: $BUILD_FILE
+        path: .pio/build/mega2560/$BUILD_FILE
         compression-level: 9
-        upload-release-files: ${{ github.event_name == 'release' }}
-        release-upload-url: ${{ github.event.release.upload_url }}
+        if-no-files-found: error
+
+    - if: ${{ github.event_name == 'release' }}
+      name: Upload release
+      uses: Shopify/upload-to-release@v1
+      with:
+        name: $BUILD_FILE
+        path: .pio/build/mega2560/$BUILD_FILE
+        content_type: text/plain
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
