@@ -33,21 +33,27 @@ however none of these configurations have been tested.
 Because the number of options is multiplicative,
 adding these options to automated builds would
 produce an unreasonable number of options.
+(For the 3 languages plus no-lcd, we already produce 80 builds.)
 
 However a build workflow is available on Github to build any option
 and you can then download the firmware Hex file from the Github Actions artifacts list.
 If you need help with this please open a Github issue.
 
-These builds are based on Marlin v2 and some of the more advanced functionality
-available in V2 is enabled providing more capabilities than the stock Dagoma firmware
-(that was based on the beta version of Marlin v1 available when the first DiscoVery was announced).
+The stock Dagoma firmware was based on the beta version of Marlin available
+when the DiscoVery was first launched (v1.1.0 RC6),
+with substantial bespoke functionality added to support the Dagoma hardware functions.
+
+The builds in this repo are based on the very latest Marlin v2,
+allowing some of the more advanced functionality available in V2
+to be enabled providing more capabilities than the stock Dagoma firmware,
+though this is limited by the maximum firmware size supported by the motherboard.
 The additional functionality currently enabled includes:
 
 * Support for all Marlin languages
 
 There is still a lot of newer functionality available in Marlin v2
 that has not been enabled due to lack of testing with the DE200,
-and the community would welcome users testing these options and
+and the author would welcome users testing these options and
 submitting PRs (with before and after test evidence).
 
 In particular the following features are
@@ -55,12 +61,11 @@ potentially available but not currently enabled
 because they will need to be tested **and** tuned:
 
 * Modified (classic) jerk settings for better corners
-* [Linear Advance[(https://marlinfw.org/docs/features/lin_advance.html)
+* [Linear Advance](https://marlinfw.org/docs/features/lin_advance.html)
 * [Input shaping](https://marlinfw.org/docs/features/input_shaping.html)
 * [Unified Bed Levelling](https://marlinfw.org/docs/features/unified_bed_leveling.html)
 * [S-Curve Acceleration](https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained)
 * [Model Predictive Temperature Control](https://marlinfw.org/docs/features/model_predictive_control.html)
-* Modified (classic) jerk settings for better corners
 * [Junction deviation](https://www.reddit.com/r/3Dprinting/comments/dx8bdb/here_is_why_you_should_disable_junction_deviation/)
 * Bilinear bed-levelling rather than linear bed-levelling as this handles non-flat beds better
   ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
