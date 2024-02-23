@@ -5,8 +5,8 @@ on:
     branches:
       - DE200-2.1.x
     paths:
-      - '/.github/workflows/build_*.yaml'
-      - '/Marlin/**'
+      - '.github/workflows/build_*.yaml'
+      - 'Marlin/**'
   push:
     branches:
       - DE200-2.1.x
