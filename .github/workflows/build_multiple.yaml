@@ -25,7 +25,7 @@ jobs:
       matrix:
         lang:
           - en
-        screen: Std
+        screen: [Std]
         extruder: [Std, Extruder+, Bicolor]
         z_screws: [Std, Expert]
         size: [Std, xl]
@@ -55,7 +55,7 @@ jobs:
       matrix:
         lang:
           - fr
-        screen: Std
+        screen: [Std]
         extruder: [Std, Extruder+, Bicolor]
         z_screws: [Std, Expert]
         size: [Std, xl]
@@ -85,7 +85,7 @@ jobs:
       matrix:
         lang:
           - de
-        screen: Std
+        screen: [Std]
         extruder: [Std, Extruder+, Bicolor]
         z_screws: [Std, Expert]
         size: [Std, xl]
