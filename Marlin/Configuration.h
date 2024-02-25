@@ -56,7 +56,7 @@
 // Marlin settings taken from https://github.com/JJJpnt/Marlin/tree/thingi
 //#define DE200_WARPING     // Uncomment and set to bed for atelier3d
 
-#define DE200_SCREEN_VALUE_NONE "-"
+#define DE200_SCREEN_VALUE_NONE "NoLCD"
 #define DE200_SCREEN_VALUE_STD "Std"
 #if DISABLED(DE200_SCREEN) || DE200_SCREEN == DE200_SCREEN_VALUE_NONE
   #define DE200_SCREEN_NONE
