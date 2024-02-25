@@ -218,7 +218,7 @@
   #elif ENABLED(DE200_PINOUT_STD)
     #define MOTHERBOARD BOARD_MKS_BASE_15_DAGOMA
   #else
-    #error DE200_PINOUT unknown
+    #error "DE200_PINOUT unknown"
   #endif
 #endif
 
@@ -691,7 +691,7 @@
 #elif ENABLED(DE200_THERMISTOR_BLACK)
   #define TEMP_SENSOR_0 18
 #else
-  #error "DE200_THERMISTOR unknown
+  #error "DE200_THERMISTOR unknown"
 #endif
 
 #define TEMP_SENSOR_1 0
@@ -1350,7 +1350,7 @@
 #elif ENABLED(DE200_ZSCREWS_STD)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 2560, 98 }
 #else
-  #error DE200_ZSCREWS unknown
+  #error "DE200_ZSCREWS unknown"
 #endif
 
 /**
@@ -1673,7 +1673,7 @@
 #elif ENABLED(DE200_HEAD_STD)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 21, 0 }
 #else
-  #error DE200_HEAD unknown
+  #error "DE200_HEAD unknown"
 #endif
 
 // Most probes should stay away from the edges of the bed, but
@@ -1886,17 +1886,20 @@
 
 // The size of the printable area
 // Note: Because of integer centre calculations, bed sizes need to be even integers
-#if ALL(DE200_SIZE_XL, DE200_HEAD_STD)
-  #define X_BED_SIZE 298
-  #define Y_BED_SIZE 204
-#elif ALL(DE200_SIZE_STD, DE200_HEAD_Z122)
-  #define X_BED_SIZE 182
-  #define Y_BED_SIZE 184
-#elif ALL(DE200_SIZE_STD, DE200_HEAD_STD)
+#if ALL(DE200_HEAD_STD,DE200_SIZE_STD)
   #define X_BED_SIZE 204
   #define Y_BED_SIZE 204
+#elif ALL(DE200_HEAD_STD, DE200_SIZE_XL)
+  #define X_BED_SIZE 298
+  #define Y_BED_SIZE 204
+#elif ALL(DE200_HEAD_Z122, DE200_SIZE_STD)
+  #define X_BED_SIZE 182
+  #define Y_BED_SIZE 184
+#elif ALL(DE200_HEAD_Z122, DE200_SIZE_XL)
+  #define X_BED_SIZE 276
+  #define Y_BED_SIZE 184
 #else
-  #error DE200_SIZE/HEAD combination undefined
+  #error "DE200_SIZE/HEAD combination undefined"
 #endif
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
