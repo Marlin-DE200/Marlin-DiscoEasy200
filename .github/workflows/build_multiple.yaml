@@ -25,28 +25,28 @@ jobs:
       matrix:
         lang:
           - en
-        screen:   [Std]
-        extruder: [Std, Extruder+, Bicolor]
-        zscrews:  [Std, Expert]
-        size:     [Std, xl]
-        warping:  [Std, Bed]
-        thermist: [White, Black]
-        pinout:   [Std, MKS]
-        head:     [Std, z122]
+        screen:     [STD]
+        extruder:   [STD, PLUS, BICOLOR]
+        zscrews:    [STD, EXPERT]
+        size:       [STD, XL]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD, MKS]
+        head:       [STD, Z122]
     permissions:
       contents: write
     name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:     ${{ matrix.lang }}
-      screen:   ${{ matrix.screen }}
-      extruder: ${{ matrix.extruder }}
-      zscrews:  ${{ matrix.zscrews }}
-      size:     ${{ matrix.size }}
-      warping:  ${{ matrix.warping }}
-      thermist: ${{ matrix.thermist }}
-      pinout:   ${{ matrix.pinout }}
-      head:     ${{ matrix.head }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
     secrets: inherit
 
   build_noscreen:
@@ -55,28 +55,28 @@ jobs:
       matrix:
         lang:
           - en
-        screen:   ["NoLCD"]
-        extruder: [Std]
-        zscrews:  [Std]
-        size:     [Std]
-        warping:  [Std, Bed]
-        thermist: [White, Black]
-        pinout:   [Std]
-        head:     [Std]
+        screen:     [NONE]
+        extruder:   [STD]
+        zscrews:    [STD]
+        size:       [STD]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD]
+        head:       [STD]
     permissions:
       contents: write
     name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:     ${{ matrix.lang }}
-      screen:   ${{ matrix.screen }}
-      extruder: ${{ matrix.extruder }}
-      zscrews:  ${{ matrix.zscrews }}
-      size:     ${{ matrix.size }}
-      warping:  ${{ matrix.warping }}
-      thermist: ${{ matrix.thermist }}
-      pinout:   ${{ matrix.pinout }}
-      head:     ${{ matrix.head }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
     secrets: inherit
 
   build_fr:
@@ -86,28 +86,28 @@ jobs:
       matrix:
         lang:
           - fr
-        screen:   [Std]
-        extruder: [Std, Extruder+, Bicolor]
-        zscrews:  [Std, Expert]
-        size:     [Std, xl]
-        warping:  [Std, Bed]
-        thermist: [White, Black]
-        pinout:   [Std, MKS]
-        head:     [Std, z122]
+        screen:     [STD]
+        extruder:   [STD, PLUS, BICOLOR]
+        zscrews:    [STD, EXPERT]
+        size:       [STD, XL]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD, MKS]
+        head:       [STD, Z122]
     permissions:
       contents: write
     name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:     ${{ matrix.lang }}
-      screen:   ${{ matrix.screen }}
-      extruder: ${{ matrix.extruder }}
-      zscrews:  ${{ matrix.zscrews }}
-      size:     ${{ matrix.size }}
-      warping:  ${{ matrix.warping }}
-      thermist: ${{ matrix.thermist }}
-      pinout:   ${{ matrix.pinout }}
-      head:     ${{ matrix.head }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
     secrets: inherit
 
   build_de:
@@ -117,26 +117,26 @@ jobs:
       matrix:
         lang:
           - de
-        screen:   [Std]
-        extruder: [Std, Extruder+, Bicolor]
-        zscrews:  [Std, Expert]
-        size:     [Std, xl]
-        warping:  [Std, Bed]
-        thermist: [White, Black]
-        pinout:   [Std, MKS]
-        head:     [Std, z122]
+        screen:     [STD]
+        extruder:   [STD, PLUS, BICOLOR]
+        zscrews:    [STD, EXPERT]
+        size:       [STD, XL]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD, MKS]
+        head:       [STD, Z122]
     permissions:
       contents: write
     name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:     ${{ matrix.lang }}
-      screen:   ${{ matrix.screen }}
-      extruder: ${{ matrix.extruder }}
-      zscrews:  ${{ matrix.zscrews }}
-      size:     ${{ matrix.size }}
-      warping:  ${{ matrix.warping }}
-      thermist: ${{ matrix.thermist }}
-      pinout:   ${{ matrix.pinout }}
-      head:     ${{ matrix.head }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
     secrets: inherit

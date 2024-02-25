@@ -31,112 +31,119 @@
  * DiscoEasy200 with LCD and White-Thermistor-Wires.
  *
  * All values for all options are pre-defined in this configuration file.
- * Select the correct values in the configuration values below,
- * or supply them as compiler parameters.
+ * Uncomment the correct values in the configuration values below,
+ * or supply them as compiler -D parameters.
  *
- * If you want to modify specific values for a specific machine,
+ * If you want to modify other Marlin values for your specific machine,
  * either compile manually (which means creating a local build env on your PC)
  * or simplify the github workflow to your specific needs.
  */
 
-// DE200_LANGUAGE - default: en
-//                  pre-built: en, fr, de
+// DE200_LANGUAGE - default: en; pre-built: en, fr, de
 //                  available: en, an, bg, ca, cz, da, de, el, el_CY, es, eu, fi, fr, gl, hr, hu, it,
 //                              jp_kana, ko_KR, nl, pl, pt, pt_br, ro, ru, sk, sv, tr, uk, vi, zh_CN, zh_TW
 //#define DE200_LANGUAGE en
-//#define DE200_SCREEN Std  // Uncomment and set to Std for standard screen - future support for non dagoma screens
-//#define DE200_EXTRUDER    // Uncomment for Extruder+, or set to Bicolor
-//#define DE200_ZSCREWS    // Uncomment or set to Expert - future support here for other pitches of trapezoid
-//#define DE200_SIZE        // Uncomment or set to xl - future support here for other sizes
-//#define DE200_THERMISTOR  // Uncomment or set to Black - future support here for other thermistors
-//#define DE200_PINOUT      // Uncomment or set to mks - future support here for other pinouts
-// MKS Base standard pinout instead of Dagoma non-standard
-//#define DE200_HEAD        // Uncomment and set to z122 - future support here for bltouch
-// Z122 head https://www.thingiverse.com/thing:2478810
-// Marlin settings taken from https://github.com/JJJpnt/Marlin/tree/thingi
-//#define DE200_WARPING     // Uncomment and set to bed for atelier3d
 
-#define DE200_SCREEN_VALUE_NONE "NoLCD"
-#define DE200_SCREEN_VALUE_STD "Std"
-#if DISABLED(DE200_SCREEN) || DE200_SCREEN == DE200_SCREEN_VALUE_NONE
-  #define DE200_SCREEN_NONE
-#elif DE200_SCREEN == DE200_SCREEN_VALUE_STD
+// DE200_SCREEN_* - default: STD; available: STD, NONE
+//#define DE200_SCREEN_STD
+//#define DE200_SCREEN_NONE
+
+// DE200_EXTRUDER_* - default: STD; available: STD, PLUS, BICOLOR
+//#define DE200_EXTRUDER_STD
+//#define DE200_EXTRUDER_PLUS
+//#define DE200_EXTRUDER_BICOLOR
+
+// DE200_ZSCREWS_* - default: STD; available: STD, EXPERT
+//#define DE200_ZSCREWS_STD
+//#define DE200_ZSCREWS_EXPERT
+
+// DE200_SIZE_* - default: STD; available: STD, XL
+//#define DE200_SIZE_STD
+//#define DE200_SIZE_XL
+
+// DE200_WARPING_* - default: STD; available: STD, ATELIER3D
+// Atelier3D bed: https://atelier3d-shop.fr/produit/kit-plateau-chauffant-dagoma-discoeasy200-ultimate
+//#define DE200_WARPING_STD
+//#define DE200_WARPING_ATELIER3D
+
+// DE200_THERMISTOR_* - default: WHITE; available: WHITE, BLACK
+//#define DE200_THERMISTOR_WHITE
+//#define DE200_THERMISTOR_BLACK
+
+/*
+ * Dagoma DE200 standard wiring is to non-standard pins.
+ * You can either physically stick with the Dagoma wiring,
+ * or switch to the MKS standard wiring.
+ *
+ * This is extensible with other wiring schemas
+ */
+// DE200_PINOUT_* - default: STD; available: STD, MKS
+//#define DE200_PINOUT_STD
+//#define DE200_PINOUT_MKS
+
+/*
+ * DE200_HEAD_* defines as many variants of head as needed.
+ * Each head has its own size characteristics and position of the bed sensor.
+ *
+ * At present we only know the characteristics for standard and Z122 heads
+ * both with the Dagoma standard inductive bed sensor.
+ * However this is extensible with e.g. bltouch versions etc.
+ *
+ * Z122 head https://www.thingiverse.com/thing:2478810
+ * Z122 Marlin settings taken from https://github.com/JJJpnt/Marlin/tree/thingi
+ */
+// DE200_HEAD_* - default: STD; available: STD, Z122
+//#define DE200_HEAD_STD
+//#define DE200_HEAD_Z122
+
+
+/*
+ * DE200 Validate and set derivative values
+ */
+
+#if DISABLED(DE200_LANGUAGE)
+  #define DE200_LANGUAGE en
+#endif
+
+#if NONE(DE200_SCREEN_STD, DE200_SCREEN_NONE)
   #define DE200_SCREEN_STD
+#endif
+#if ANY(DE200_SCREEN_STD)
   #define DE200_SCREEN_ANY
-#else
-  #error "DE200_SCREEN invalid value"
 #endif
 
-#define DE200_EXTRUDER_VALUE_STD "Std"
-#define DE200_EXTRUDER_VALUE_EXTRUDPLUS "Extruder+"
-#define DE200_EXTRUDER_VALUE_BICOLOR "Bicolor"
-#if ENABLED(DE200_EXTRUDER)
+#if NONE(DE200_EXTRUDER_STD, DE200_EXTRUDER_PLUS, DE200_EXTRUDER_BICOLOR)
+  #define DE200_EXTRUDER_STD
+#endif
+#if ENABLED(DE200_EXTRUDER_BICOLOR)
   #define DE200_EXTRUDER_PLUS
-  #elif DE200_EXTRUDER == DE200_EXTRUDER_VALUE_BICOLOR
-    #define DE200_BICOLOR
-  #elif DE200_EXTRUDER != "" && DE200_EXTRUDER != DE200_EXTRUDER_VALUE_EXTRUDPLUS
-    #error "DE200_EXTRUDER invalid value"
-  #endif
 #endif
 
-#define DE200_ZSCREWS_VALUE_STD "Std"
-#define DE200_ZSCREWS_VALUE_EXPERT "Expert"
-#if DISABLED(DE200_ZSCREWS) || DE200_ZSCREWS == DE200_ZSCREWS_VALUE_STD
+#if NONE(DE200_ZSCREWS_STD, DE200_ZSCREWS_EXPERT)
   #define DE200_ZSCREWS_STD
-#elif DE200_ZSCREWS == DE200_ZSCREWS_VALUE_EXPERT
-  #define DE200_ZSCREWS_EXPERT
-#else
-  #error "DE200_ZSCREWS invalid value"
 #endif
 
-#define DE200_SIZE_VALUE_STD "Std"
-#define DE200_SIZE_VALUE_XL "XL"
-#if DISABLED(DE200_SIZE) || DE200_SIZE == DE200_SIZE_VALUE_STD
+#if NONE(DE200_SIZE_STD, DE200_SIZE_XL)
   #define DE200_SIZE_STD
-#elif DE200_SIZE == DE200_SIZE_VALUE_XL
-  #define DE200_SIZE_XL
-#else
-  #error "DE200_SIZE invalid value"
 #endif
 
-#define DE200_THERMISTOR_VALUE_WHITE "White"
-#define DE200_THERMISTOR_VALUE_BLACK "Black"
-#if DISABLED(DE200_THERMISTOR) || DE200_THERMISTOR == DE200_THERMISTOR_VALUE_WHITE
-  #define DE200_THERMISTOR_WHITE
-#elif DE200_THERMISTOR == DE200_THERMISTOR_VALUE_BLACK
-  #define DE200_THERMISTOR_BLACK
-#else
-  #error "DE200_THERMISTOR invalid value"
-#endif
-
-#define DE200_PINOUT_VALUE_STD "Std"
-#define DE200_PINOUT_VALUE_MKS "MKS"
-#if DISABLED(DE200_PINOUT) || DE200_PINOUT == DE200_PINOUT_VALUE_STD
-  #define DE200_SIZE_STD
-#elif DE200_SIZE == DE200_PINOUT_VALUE_MKS
-  #define DE200_PINOUT_MKS
-#else
-  #error "DE200_PINOUT invalid value"
-#endif
-
-#define DE200_HEAD_VALUE_STD "Std"
-#define DE200_HEAD_VALUE_Z122 "Z122"
-#if DISABLED(DE200_HEAD) || DE200_HEAD == DE200_HEAD_VALUE_STD
-  #define DE200_HEAD_STD
-#elif DE200_HEAD == DE200_HEAD_VALUE_Z122
-  #define DE200_HEAD_Z122
-#else
-  #error "DE200_HEAD invalid value"
-#endif
-
-#define DE200_WARPING_VALUE_STD "Std"
-#define DE200_WARPING_VALUE_BED "Bed"
-#if DISABLED(DE200_WARPING) || DE200_WARPING == DE200_WARPING_VALUE_STD
+#if NONE(DE200_WARPING_STD, DE200_WARPING_BED_ATELIER3D)
   #define DE200_WARPING_STD
-#elif DE200_WARPING == DE200_WARPING_VALUE_BED
-  #define DE200_WARPING_BED
-#else
-  #error "DE200_WARPING invalid value"
+#endif
+#if ANY(DE200_WARPING_BED_ATELIER3D)
+  #define DE200_WARPING_BED_ANY
+#endif
+
+#if NONE(DE200_THERMISTOR_WHITE, DE200_THERMISTOR_BLACK)
+  #define DE200_THERMISTOR_WHITE
+#endif
+
+#if NONE(DE200_PINOUT_STD, DE200_PINOUT_MKS)
+  #define DE200_PINOUT_STD
+#endif
+
+#if NONE(DE200_HEAD_STD, DE200_HEAD_Z122)
+  #define DE200_HEAD_STD
 #endif
 
 /**
@@ -352,7 +359,7 @@
 
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
-#if ENABLED(DE200_BICOLOR)
+#if ENABLED(DE200_EXTRUDER_BICOLOR)
   #define EXTRUDERS 2
 #else
   #define EXTRUDERS 1
@@ -362,7 +369,7 @@
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
-#if ENABLED(DE200_BICOLOR)
+#if ENABLED(DE200_EXTRUDER_BICOLOR)
   #define SINGLENOZZLE
 #endif
 
@@ -681,7 +688,7 @@
  */
 #if ENABLED(DE200_THERMISTOR_WHITE)
   #define TEMP_SENSOR_0 17
-#elif ENABLED(DE200_THERMISTOR_BLACK) == "Black"
+#elif ENABLED(DE200_THERMISTOR_BLACK)
   #define TEMP_SENSOR_0 18
 #else
   #error "DE200_THERMISTOR unknown
@@ -694,7 +701,7 @@
 #define TEMP_SENSOR_5 0
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
-#define TEMP_SENSOR_BED TERN(DE200_WARPING_BED, 1, 0)
+#define TEMP_SENSOR_BED TERN(DE200_WARPING_BED_ANY, 1, 0)
 #define TEMP_SENSOR_PROBE 0
 #define TEMP_SENSOR_CHAMBER 0
 #define TEMP_SENSOR_COOLER 0
@@ -1507,7 +1514,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#if ENABLED(DE200_BLTOUCH)
+#if ENABLED(DE200_HEAD_BLTOUCH_ANY)
   #define BLTOUCH
 #endif
 
@@ -1971,14 +1978,14 @@
   #define FILAMENT_RUNOUT_SENSOR
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
 
-  #if ENABLED(DE200_BICOLOR)
+  #if ENABLED(DE200_EXTRUDER_BICOLOR)
     #define NUM_RUNOUT_SENSORS   2          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #else
     #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #endif
 
   #define FIL_RUNOUT_STATE    HIGH        // Pin state indicating that filament is NOT present.
-  #if ENABLED(DE200_BICOLOR)
+  #if ENABLED(DE200_EXTRUDER_BICOLOR)
     #define FIL_RUNOUT2_STATE HIGH        // Pin state indicating that filament is NOT present.
   #endif
   //#define FIL_RUNOUT_PULLUP             // Use internal pullup for filament runout pins.
@@ -2022,7 +2029,7 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
-  #if ENABLED(DE200_BICOLOR)
+  #if ENABLED(DE200_EXTRUDER_BICOLOR)
     #define FILAMENT_RUNOUT_SCRIPT "M600 T%c I-1 U5 V195 X195 Y195"
   #else
     #define FILAMENT_RUNOUT_SCRIPT "M600 I-1 U5 V195 X195 Y195"
@@ -2631,10 +2638,8 @@
  *
  * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek (Greece)', 'el_CY':'Greek (Cyprus)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'hu':'Hungarian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ro':'Romanian', 'ru':'Russian', 'sk':'Slovak', 'sv':'Swedish', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)' }
  */
-#if ENABLED(DE200_LANGUAGE)
+#if ALL(DE200_SCREEN_ANY, DE200_LANGUAGE)
   #define LCD_LANGUAGE DE200_LANGUAGE
-#else
-  #define LCD_LANGUAGE en
 #endif
 
 /**
