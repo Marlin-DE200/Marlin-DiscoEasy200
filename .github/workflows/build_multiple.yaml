@@ -35,7 +35,7 @@ jobs:
         head:     [Std, z122]
     permissions:
       contents: write
-    name: Build: ${{ matrix.lang }}
+    name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
@@ -65,7 +65,7 @@ jobs:
         head:     [Std]
     permissions:
       contents: write
-    name: Build: ${{ matrix.lang }}
+    name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
@@ -96,7 +96,7 @@ jobs:
         head:     [Std, z122]
     permissions:
       contents: write
-    name: Build: ${{ matrix.lang }}
+    name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
@@ -127,7 +127,7 @@ jobs:
         head:     [Std, z122]
     permissions:
       contents: write
-    name: Build: ${{ matrix.lang }}
+    name: "Build: ${{ matrix.lang }}"
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
