@@ -256,7 +256,7 @@ void menu_info_board() {
     STATIC_ITEM_F(F(STRING_DISTRIBUTION_DATE));                   // YYYY-MM-DD HH:MM
     STATIC_ITEM_F(F(MACHINE_NAME), SS_DEFAULT|SS_INVERT);         // My3DPrinter
     #ifdef DE200_MODEL
-      STATIC_ITEM(DE200_MODEL, SS_DEFAULT);                       // Sub-model
+      STATIC_ITEM_F(F(DE200_MODEL), SS_DEFAULT);                  // Sub-model
     #endif
     STATIC_ITEM_F(F(WEBSITE_URL));                                // www.my3dprinter.com
     PSTRING_ITEM(MSG_INFO_EXTRUDERS, STRINGIFY(EXTRUDERS), SS_CENTER); // Extruders: 2
