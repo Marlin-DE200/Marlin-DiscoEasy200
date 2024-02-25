@@ -25,83 +25,23 @@ jobs:
       matrix:
         lang:
           - en
-        screen: [Std]
+        screen:   [Std]
         extruder: [Std, Extruder+, Bicolor]
-        z_screws: [Std, Expert]
-        size: [Std, xl]
-        warping: [Std, Bed]
+        zscrews:  [Std, Expert]
+        size:     [Std, xl]
+        warping:  [Std, Bed]
         thermist: [White, Black]
-        pinout: [Std, MKS]
-        head: [Std, z122]
+        pinout:   [Std, MKS]
+        head:     [Std, z122]
     permissions:
       contents: write
-    name: Build ${{ matrix.lang }}
+    name: Build: ${{ matrix.lang }}
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
       screen:   ${{ matrix.screen }}
       extruder: ${{ matrix.extruder }}
-      z_screws: ${{ matrix.z_screws }}
-      size:     ${{ matrix.size }}
-      warping:  ${{ matrix.warping }}
-      thermist: ${{ matrix.thermist }}
-      pinout:   ${{ matrix.pinout }}
-      head:     ${{ matrix.head }}
-    secrets: inherit
-
-  build_fr:
-    strategy:
-      fail-fast: false
-      matrix:
-        lang:
-          - fr
-        screen: [Std]
-        extruder: [Std, Extruder+, Bicolor]
-        z_screws: [Std, Expert]
-        size: [Std, xl]
-        warping: [Std, Bed]
-        thermist: [White, Black]
-        pinout: [Std, MKS]
-        head: [Std, z122]
-    permissions:
-      contents: write
-    name: Build ${{ matrix.lang }}
-    uses: ./.github/workflows/build_single.yaml
-    with:
-      lang:     ${{ matrix.lang }}
-      screen:   ${{ matrix.screen }}
-      extruder: ${{ matrix.extruder }}
-      z_screws: ${{ matrix.z_screws }}
-      size:     ${{ matrix.size }}
-      warping:  ${{ matrix.warping }}
-      thermist: ${{ matrix.thermist }}
-      pinout:   ${{ matrix.pinout }}
-      head:     ${{ matrix.head }}
-    secrets: inherit
-
-  build_de:
-    strategy:
-      fail-fast: false
-      matrix:
-        lang:
-          - de
-        screen: [Std]
-        extruder: [Std, Extruder+, Bicolor]
-        z_screws: [Std, Expert]
-        size: [Std, xl]
-        warping: [Std, Bed]
-        thermist: [White, Black]
-        pinout: [Std, MKS]
-        head: [Std, z122]
-    permissions:
-      contents: write
-    name: Build ${{ matrix.lang }}
-    uses: ./.github/workflows/build_single.yaml
-    with:
-      lang:     ${{ matrix.lang }}
-      screen:   ${{ matrix.screen }}
-      extruder: ${{ matrix.extruder }}
-      z_screws: ${{ matrix.z_screws }}
+      zscrews:  ${{ matrix.zscrews }}
       size:     ${{ matrix.size }}
       warping:  ${{ matrix.warping }}
       thermist: ${{ matrix.thermist }}
@@ -115,23 +55,85 @@ jobs:
       matrix:
         lang:
           - en
-        screen: [None]
+        screen:   [None]
         extruder: [Std]
-        z_screws: [Std]
-        size: [Std]
-        warping: [Std, Bed]
+        zscrews:  [Std]
+        size:     [Std]
+        warping:  [Std, Bed]
         thermist: [White, Black]
-        pinout: [Std]
-        head: [Std]
+        pinout:   [Std]
+        head:     [Std]
     permissions:
       contents: write
-    name: Build ${{ matrix.lang }}
+    name: Build: ${{ matrix.lang }}
     uses: ./.github/workflows/build_single.yaml
     with:
       lang:     ${{ matrix.lang }}
       screen:   ${{ matrix.screen }}
       extruder: ${{ matrix.extruder }}
-      z_screws: ${{ matrix.z_screws }}
+      zscrews:  ${{ matrix.zscrews }}
+      size:     ${{ matrix.size }}
+      warping:  ${{ matrix.warping }}
+      thermist: ${{ matrix.thermist }}
+      pinout:   ${{ matrix.pinout }}
+      head:     ${{ matrix.head }}
+    secrets: inherit
+
+  build_fr:
+    needs: build_en
+    strategy:
+      fail-fast: false
+      matrix:
+        lang:
+          - fr
+        screen:   [Std]
+        extruder: [Std, Extruder+, Bicolor]
+        zscrews:  [Std, Expert]
+        size:     [Std, xl]
+        warping:  [Std, Bed]
+        thermist: [White, Black]
+        pinout:   [Std, MKS]
+        head:     [Std, z122]
+    permissions:
+      contents: write
+    name: Build: ${{ matrix.lang }}
+    uses: ./.github/workflows/build_single.yaml
+    with:
+      lang:     ${{ matrix.lang }}
+      screen:   ${{ matrix.screen }}
+      extruder: ${{ matrix.extruder }}
+      zscrews:  ${{ matrix.zscrews }}
+      size:     ${{ matrix.size }}
+      warping:  ${{ matrix.warping }}
+      thermist: ${{ matrix.thermist }}
+      pinout:   ${{ matrix.pinout }}
+      head:     ${{ matrix.head }}
+    secrets: inherit
+
+  build_de:
+    needs: build_en
+    strategy:
+      fail-fast: false
+      matrix:
+        lang:
+          - de
+        screen:   [Std]
+        extruder: [Std, Extruder+, Bicolor]
+        zscrews:  [Std, Expert]
+        size:     [Std, xl]
+        warping:  [Std, Bed]
+        thermist: [White, Black]
+        pinout:   [Std, MKS]
+        head:     [Std, z122]
+    permissions:
+      contents: write
+    name: Build: ${{ matrix.lang }}
+    uses: ./.github/workflows/build_single.yaml
+    with:
+      lang:     ${{ matrix.lang }}
+      screen:   ${{ matrix.screen }}
+      extruder: ${{ matrix.extruder }}
+      zscrews:  ${{ matrix.zscrews }}
       size:     ${{ matrix.size }}
       warping:  ${{ matrix.warping }}
       thermist: ${{ matrix.thermist }}

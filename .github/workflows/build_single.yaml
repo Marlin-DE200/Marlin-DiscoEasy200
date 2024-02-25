@@ -54,7 +54,7 @@ on:
         required: true
         type: choice
         default: Std
-      z_screws:
+      zscrews:
         description: 'Z-Screws (Std, Expert Pack):'
         options: [Std, Expert]
         required: true
@@ -105,7 +105,7 @@ on:
         description: 'extruder (Std, Extruder+, Bicolor):'
         required: true
         type: string
-      z_screws:
+      zscrews:
         description: 'Z-Screws (Std, Expert Pack):'
         required: true
         type: string
@@ -136,7 +136,7 @@ concurrency:
     -lang:${{ inputs.lang }}\
     -screen:${{ inputs.screen }}\
     -extruder:${{ inputs.extruder }}\
-    -z_screws:${{ inputs.z_screws }}\
+    -zscrews:${{ inputs.zscrews }}\
     -size:${{ inputs.size }}\
     -warping:${{ inputs.warping }}\
     -thermistor:${{ inputs.thermist }}\
@@ -155,8 +155,8 @@ jobs:
         (inputs.screen    != 'None'  && inputs.screen != 'Std' && inputs.screen) || '',
         (inputs.extruder  != 'Std'   && '_') || '',
         (inputs.extruder  != 'Std'   && inputs.extruder) || '',
-        (inputs.z_screws  != 'Std'   && '_') || '',
-        (inputs.z_screws  != 'Std'   && inputs.z_screws) || '',
+        (inputs.zscrews   != 'Std'   && '_') || '',
+        (inputs.zscrews   != 'Std'   && inputs.zscrews) || '',
         (inputs.size      != 'Std'   && '_') || '',
         (inputs.size      != 'Std'   && inputs.size) || '',
         (inputs.warping   != 'Std'   && '_') || '',
@@ -168,17 +168,17 @@ jobs:
         (inputs.head      != 'Std'   && '_') || '',
         (inputs.head      != 'Std'   && inputs.head) || '',
         '.hex') }}
-    name: "Build:[\
+    name: "Build:
       ${{ (inputs.screen == 'None' && 'nolcd') || inputs.lang }}
       ${{ (inputs.screen != 'None' && inputs.screen != 'Std' && inputs.screen) || '' }},
-      Extrud:${{ inputs.extruder }},
-      Z-screws:${{ inputs.z_screws }},
-      Size:${{ inputs.size }},
-      Thermist:${{ inputs.thermist }},
-      Pinout:${{ inputs.pinout }},
-      Head:${{ inputs.head }},
-      Warp:${{ inputs.warping }},
-      ]"
+      extrud:${{ inputs.extruder }},
+      screws:${{ inputs.zscrews }},
+      size:${{ inputs.size }},
+      thermist:${{ inputs.thermist }},
+      pinout:${{ inputs.pinout }},
+      head:${{ inputs.head }},
+      warp:${{ inputs.warping }}
+      "
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -210,8 +210,8 @@ jobs:
           ${{ (inputs.screen   != 'None' && inputs.screen) || '' }}
           ${{ (inputs.extruder != 'Std' && '-D DE200_EXTRUDER=') || '' }}\
           ${{ (inputs.extruder != 'Std' && inputs.extruder) || '' }}
-          ${{ (inputs.z_screws != 'Std' && '-D DE200_Z_SCREWS=') || '' }}\
-          ${{ (inputs.z_screws != 'Std' && inputs.z_screws) || '' }}
+          ${{ (inputs.zscrews  != 'Std' && '-D DE200_ZSCREWS=') || '' }}\
+          ${{ (inputs.zscrews  != 'Std' && inputs.zscrews) || '' }}
           ${{ (inputs.size     != 'Std' && '-D DE200_SIZE=') || '' }}\
           ${{ (inputs.size     != 'Std' && inputs.size) || '' }}
           ${{ (inputs.warping  != 'Std' && '-D DE200_WARPING=') || '' }}\

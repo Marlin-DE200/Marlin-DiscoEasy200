@@ -46,7 +46,7 @@
 //#define DE200_LANGUAGE en
 //#define DE200_SCREEN Std  // Uncomment and set to Std for standard screen - future support for non dagoma screens
 //#define DE200_EXTRUDER    // Uncomment for Extruder+, or set to Bicolor
-//#define DE200_Z_SCREWS    // Uncomment or set to Expert - future support here for other pitches of trapezoid
+//#define DE200_ZSCREWS    // Uncomment or set to Expert - future support here for other pitches of trapezoid
 //#define DE200_SIZE        // Uncomment or set to xl - future support here for other sizes
 //#define DE200_THERMISTOR  // Uncomment or set to Black - future support here for other thermistors
 //#define DE200_PINOUT      // Uncomment or set to mks - future support here for other pinouts
@@ -56,67 +56,84 @@
 // Marlin settings taken from https://github.com/JJJpnt/Marlin/tree/thingi
 //#define DE200_WARPING     // Uncomment and set to bed for atelier3d
 
-#if DISABLED(DE200_SCREEN) || DE200_SCREEN == "None"
+#define DE200_SCREEN_VALUE_NONE "None"
+#define DE200_SCREEN_VALUE_STD "Std"
+#if DISABLED(DE200_SCREEN) || DE200_SCREEN == DE200_SCREEN_VALUE_NONE
   #define DE200_SCREEN_NONE
-#elif DE200_SCREEN == "Std"
+#elif DE200_SCREEN == DE200_SCREEN_VALUE_STD
   #define DE200_SCREEN_STD
   #define DE200_SCREEN_ANY
 #else
   #error "DE200_SCREEN invalid value"
 #endif
 
+#define DE200_EXTRUDER_VALUE_STD "Std"
+#define DE200_EXTRUDER_VALUE_EXTRUDPLUS "Extruder+"
+#define DE200_EXTRUDER_VALUE_BICOLOR "Bicolor"
 #if ENABLED(DE200_EXTRUDER)
   #define DE200_EXTRUDER_PLUS
-  #elif DE200_EXTRUDER == "Bicolor"
+  #elif DE200_EXTRUDER == DE200_EXTRUDER_VALUE_BICOLOR
     #define DE200_BICOLOR
-  #elif DE200_EXTRUDER != "" && DE200_EXTRUDER != "Extruder+"
+  #elif DE200_EXTRUDER != "" && DE200_EXTRUDER != DE200_EXTRUDER_VALUE_EXTRUDPLUS
     #error "DE200_EXTRUDER invalid value"
   #endif
 #endif
 
-#if DISABLED(DE200_Z_SCREWS) || DE200_Z_SCREWS == "Std"
-  #define DE200_Z_SCREWS_STD
-#elif DE200_Z_SCREWS == "Expert"
-  #define DE200_Z_SCREWS_EXPERT
+#define DE200_ZSCREWS_VALUE_STD "Std"
+#define DE200_ZSCREWS_VALUE_EXPERT "Expert"
+#if DISABLED(DE200_ZSCREWS) || DE200_ZSCREWS == DE200_ZSCREWS_VALUE_STD
+  #define DE200_ZSCREWS_STD
+#elif DE200_ZSCREWS == DE200_ZSCREWS_VALUE_EXPERT
+  #define DE200_ZSCREWS_EXPERT
 #else
-  #error "DE200_Z_SCREWS invalid value"
+  #error "DE200_ZSCREWS invalid value"
 #endif
 
-#if DISABLED(DE200_SIZE) || DE200_SIZE == "Std"
+#define DE200_SIZE_VALUE_STD "Std"
+#define DE200_SIZE_VALUE_XL "XL"
+#if DISABLED(DE200_SIZE) || DE200_SIZE == DE200_SIZE_VALUE_STD
   #define DE200_SIZE_STD
-#elif DE200_SIZE == "xl"
+#elif DE200_SIZE == DE200_SIZE_VALUE_XL
   #define DE200_SIZE_XL
 #else
   #error "DE200_SIZE invalid value"
 #endif
 
-#if DISABLED(DE200_THERMISTOR) || DE200_THERMISTOR == "White"
+#define DE200_THERMISTOR_VALUE_WHITE "White"
+#define DE200_THERMISTOR_VALUE_BLACK "Black"
+#if DISABLED(DE200_THERMISTOR) || DE200_THERMISTOR == DE200_THERMISTOR_VALUE_WHITE
   #define DE200_THERMISTOR_WHITE
-#elif DE200_THERMISTOR == "Black"
+#elif DE200_THERMISTOR == DE200_THERMISTOR_VALUE_BLACK
   #define DE200_THERMISTOR_BLACK
 #else
   #error "DE200_THERMISTOR invalid value"
 #endif
 
-#if DISABLED(DE200_PINOUT) || DE200_PINOUT == "Std"
+#define DE200_PINOUT_VALUE_STD "Std"
+#define DE200_PINOUT_VALUE_MKS "MKS"
+#if DISABLED(DE200_PINOUT) || DE200_PINOUT == DE200_PINOUT_VALUE_STD
   #define DE200_SIZE_STD
-#elif DE200_SIZE == "mks"
+#elif DE200_SIZE == DE200_PINOUT_VALUE_MKS
   #define DE200_PINOUT_MKS
 #else
   #error "DE200_PINOUT invalid value"
 #endif
 
-#if DISABLED(DE200_HEAD) || DE200_HEAD == "Std"
+#define DE200_HEAD_VALUE_STD "Std"
+#define DE200_HEAD_VALUE_Z122 "Z122"
+#if DISABLED(DE200_HEAD) || DE200_HEAD == DE200_HEAD_VALUE_STD
   #define DE200_HEAD_STD
-#elif DE200_HEAD == "z122"
+#elif DE200_HEAD == DE200_HEAD_VALUE_Z122
   #define DE200_HEAD_Z122
 #else
   #error "DE200_HEAD invalid value"
 #endif
 
-#if DISABLED(DE200_WARPING) || DE200_WARPING == "Std"
+#define DE200_WARPING_VALUE_STD "Std"
+#define DE200_WARPING_VALUE_BED "Bed"
+#if DISABLED(DE200_WARPING) || DE200_WARPING == DE200_WARPING_VALUE_STD
   #define DE200_WARPING_STD
-#elif DE200_WARPING == "Bed"
+#elif DE200_WARPING == DE200_WARPING_VALUE_BED
   #define DE200_WARPING_BED
 #else
   #error "DE200_WARPING invalid value"
@@ -1321,12 +1338,12 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#if ENABLED(DE200_Z_SCREWS_EXPERT)
+#if ENABLED(DE200_ZSCREWS_EXPERT)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 98 }
-#elif ENABLED(DE200_Z_SCREWS_STD)
+#elif ENABLED(DE200_ZSCREWS_STD)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 2560, 98 }
 #else
-  #error DE200_Z_SCREWS unknown
+  #error DE200_ZSCREWS unknown
 #endif
 
 /**
