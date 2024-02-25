@@ -170,7 +170,7 @@ jobs:
         '.hex') }}
     name: "Build:[\
       ${{ (inputs.screen == 'None' && 'nolcd') || inputs.lang }}
-      ${{ (inputs.screen != 'None' && inputs.screen != 'Std' && inputs.screen || '' }},
+      ${{ (inputs.screen != 'None' && inputs.screen != 'Std' && inputs.screen) || '' }},
       Extrud:${{ inputs.extruder }},
       Z-screws:${{ inputs.z_screws }},
       Size:${{ inputs.size }},
