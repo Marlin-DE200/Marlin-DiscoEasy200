@@ -39,19 +39,88 @@
  * or simplify the github workflow to your specific needs.
  */
 
-//#define DE200_LANGUAGE en (done)
-//#define DE200_BICOLOR
-//#define DE200_FILAMENT_SENSOR (done)
-//#define DE200_NO_LCD
-//#define DE200_BLACK_THERMISTOR (done)
-//#define DE200_TRAPEZOIDAL (done)
-//#define DE200_XL (done)
+// DE200_LANGUAGE - default: en
+//                  pre-built: en, fr, de
+//                  available: en, an, bg, ca, cz, da, de, el, el_CY, es, eu, fi, fr, gl, hr, hu, it,
+//                              jp_kana, ko_KR, nl, pl, pt, pt_br, ro, ru, sk, sv, tr, uk, vi, zh_CN, zh_TW
+//#define DE200_LANGUAGE en
+//#define DE200_SCREEN Std  // Uncomment and set to Std for standard screen - future support for non dagoma screens
+//#define DE200_EXTRUDER    // Uncomment for Extruder+, or set to Bicolor
+//#define DE200_Z_SCREWS    // Uncomment or set to Expert - future support here for other pitches of trapezoid
+//#define DE200_SIZE        // Uncomment or set to xl - future support here for other sizes
+//#define DE200_THERMISTOR  // Uncomment or set to Black - future support here for other thermistors
+//#define DE200_PINOUT      // Uncomment or set to mks - future support here for other pinouts
 // MKS Base standard pinout instead of Dagoma non-standard
-//#define DE200_STD_PINOUT (done)
+//#define DE200_HEAD        // Uncomment and set to z122 - future support here for bltouch
 // Z122 head https://www.thingiverse.com/thing:2478810
 // Marlin settings taken from https://github.com/JJJpnt/Marlin/tree/thingi
-//#define DE200_Z122
-//#define DE200_BLTOUCH
+//#define DE200_WARPING     // Uncomment and set to bed for atelier3d
+
+#if DISABLED(DE200_SCREEN) || DE200_SCREEN == "None"
+  #define DE200_SCREEN_NONE
+#elif DE200_SCREEN == "Std"
+  #define DE200_SCREEN_STD
+  #define DE200_SCREEN_ANY
+#else
+  #error "DE200_SCREEN invalid value"
+#endif
+
+#if ENABLED(DE200_EXTRUDER)
+  #define DE200_EXTRUDER_PLUS
+  #elif DE200_EXTRUDER == "Bicolor"
+    #define DE200_BICOLOR
+  #elif DE200_EXTRUDER != "" && DE200_EXTRUDER != "Extruder+"
+    #error "DE200_EXTRUDER invalid value"
+  #endif
+#endif
+
+#if DISABLED(DE200_Z_SCREWS) || DE200_Z_SCREWS == "Std"
+  #define DE200_Z_SCREWS_STD
+#elif DE200_Z_SCREWS == "Expert"
+  #define DE200_Z_SCREWS_EXPERT
+#else
+  #error "DE200_Z_SCREWS invalid value"
+#endif
+
+#if DISABLED(DE200_SIZE) || DE200_SIZE == "Std"
+  #define DE200_SIZE_STD
+#elif DE200_SIZE == "xl"
+  #define DE200_SIZE_XL
+#else
+  #error "DE200_SIZE invalid value"
+#endif
+
+#if DISABLED(DE200_THERMISTOR) || DE200_THERMISTOR == "White"
+  #define DE200_THERMISTOR_WHITE
+#elif DE200_THERMISTOR == "Black"
+  #define DE200_THERMISTOR_BLACK
+#else
+  #error "DE200_THERMISTOR invalid value"
+#endif
+
+#if DISABLED(DE200_PINOUT) || DE200_PINOUT == "Std"
+  #define DE200_SIZE_STD
+#elif DE200_SIZE == "mks"
+  #define DE200_PINOUT_MKS
+#else
+  #error "DE200_PINOUT invalid value"
+#endif
+
+#if DISABLED(DE200_HEAD) || DE200_HEAD == "Std"
+  #define DE200_HEAD_STD
+#elif DE200_HEAD == "z122"
+  #define DE200_HEAD_Z122
+#else
+  #error "DE200_HEAD invalid value"
+#endif
+
+#if DISABLED(DE200_WARPING) || DE200_WARPING == "Std"
+  #define DE200_WARPING_STD
+#elif DE200_WARPING == "Bed"
+  #define DE200_WARPING_BED
+#else
+  #error "DE200_WARPING invalid value"
+#endif
 
 /**
  * Configuration.h
@@ -120,10 +189,12 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #if ENABLED(DE200_STD_PINOUT)
+  #if ENABLED(DE200_PINOUT_MKS)
     #define MOTHERBOARD BOARD_MKS_BASE_15
-  #else
+  #elif ENABLED(DE200_PINOUT_STD)
     #define MOTHERBOARD BOARD_MKS_BASE_15_DAGOMA
+  #else
+    #error DE200_PINOUT unknown
   #endif
 #endif
 
@@ -591,10 +662,12 @@
  *   998 : Dummy Table that ALWAYS reads 25°C or the temperature defined below.
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
-#if ENABLED(DE200_BLACK_THERMISTOR)
+#if ENABLED(DE200_THERMISTOR_WHITE)
+  #define TEMP_SENSOR_0 17
+#elif ENABLED(DE200_THERMISTOR_BLACK) == "Black"
   #define TEMP_SENSOR_0 18
 #else
-  #define TEMP_SENSOR_0 17
+  #error "DE200_THERMISTOR unknown
 #endif
 
 #define TEMP_SENSOR_1 0
@@ -604,7 +677,7 @@
 #define TEMP_SENSOR_5 0
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
-#define TEMP_SENSOR_BED 1
+#define TEMP_SENSOR_BED TERN(DE200_WARPING_BED, 1, 0)
 #define TEMP_SENSOR_PROBE 0
 #define TEMP_SENSOR_CHAMBER 0
 #define TEMP_SENSOR_COOLER 0
@@ -902,7 +975,7 @@
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
 #define PREVENT_LENGTHY_EXTRUDE
-#if DISABLED(DE200_NO_LCD)
+#if ENABLED(DE200_SCREEN_ANY)
   #define EXTRUDE_MAXLENGTH FILAMENT_CHANGE_UNLOAD_LENGTH
 #else
   #define EXTRUDE_MAXLENGTH (X_BED_SIZE+Y_BED_SIZE)
@@ -1248,10 +1321,12 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#if ENABLED(DE200_TRAPEZOIDAL)
+#if ENABLED(DE200_Z_SCREWS_EXPERT)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 98 }
-#else
+#elif ENABLED(DE200_Z_SCREWS_STD)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 2560, 98 }
+#else
+  #error DE200_Z_SCREWS unknown
 #endif
 
 /**
@@ -1263,7 +1338,7 @@
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 600, 600, 10, 50 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 600, 600, 6, 200 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -1276,7 +1351,7 @@
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
-  #define MAX_ACCEL_EDIT_VALUES       { 6000, 6000, 200, 20000 } // ...or, set your own edit limits
+  #define MAX_ACCEL_EDIT_VALUES       { 5000, 2000, 50, 20000 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -1569,27 +1644,17 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#if ENABLED(DE200_Z122)
+#if ENABLED(DE200_HEAD_Z122)
   #define NOZZLE_TO_PROBE_OFFSET { 0, -57, 0 }
-#else
+#elif ENABLED(DE200_HEAD_STD)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 21, 0 }
+#else
+  #error DE200_HEAD unknown
 #endif
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-//
-// Due to:
-// 1. Offset of probe from extruder (defined x and y); and
-// 2. Use of a single min probe edge for both max and min and both x and y; and
-// 3. Incorrect Sanity Checks and possibly probe code
-// this needs to be > abs(PROBE_OFFSET_FROM_EXTRUDER)
 #define PROBING_MARGIN 20
-// Following code commented out since we define a specific front/back probe margin for each type of probe.
-//#if ENABLED(DE200_Z122)
-//  #define PROBING_MARGIN 57
-//#else
-//  #define PROBING_MARGIN 21
-//#endif
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (133*60)
@@ -1797,15 +1862,17 @@
 
 // The size of the printable area
 // Note: Because of integer centre calculations, bed sizes need to be even integers
-#if ENABLED(DE200_XL)
+#if ALL(DE200_SIZE_XL, DE200_HEAD_STD)
   #define X_BED_SIZE 298
   #define Y_BED_SIZE 204
-#elif ENABLED(DE200_Z122)
+#elif ALL(DE200_SIZE_STD, DE200_HEAD_Z122)
   #define X_BED_SIZE 182
   #define Y_BED_SIZE 184
-#else
+#elif ALL(DE200_SIZE_STD, DE200_HEAD_STD)
   #define X_BED_SIZE 204
   #define Y_BED_SIZE 204
+#else
+  #error DE200_SIZE/HEAD combination undefined
 #endif
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
@@ -1883,7 +1950,7 @@
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
-#if EITHER(DE200_BICOLOR, DE200_FILAMENT_SENSOR)
+#if ENABLED(DE200_EXTRUDER_PLUS)
   #define FILAMENT_RUNOUT_SENSOR
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
 
@@ -2147,7 +2214,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#if DISABLED(DE200_NO_LCD)
+#if ENABLED(DE200_SCREEN_ANY)
   #define LCD_BED_LEVELING
 #endif
 
@@ -2614,13 +2681,13 @@
 // This option overrides the default number of encoder pulses needed to
 // produce one step. Should be increased for high-resolution encoders.
 //
-#define ENCODER_PULSES_PER_STEP 1
+#define ENCODER_PULSES_PER_STEP 2
 
 //
 // Use this option to override the number of step signals required to
 // move between next/prev menu items.
 //
-//#define ENCODER_STEPS_PER_MENU_ITEM 1
+#define ENCODER_STEPS_PER_MENU_ITEM 1
 
 /**
  * Encoder Direction Options
@@ -2861,7 +2928,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#if DISABLED(DE200_NO_LCD)
+#if ENABLED(DE200_SCREEN_STD)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #endif
 

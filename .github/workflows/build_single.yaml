@@ -42,60 +42,54 @@ on:
         required: true
         type: choice
         default: 'en'
-      bicol:
-        description: 'Bicolor (0, 1):'
-        options: [0, 1]
+      screen:
+        description: 'Screen (Std, None):'
+        options: [Std, None]
         required: true
         type: choice
-        default: 0
-      filsens:
-        description: 'Extruder+ (0, 1):'
-        options: [0, 1]
+        default: Std
+      extruder:
+        description: 'extruder (Std, Extruder+, Bicolor):'
+        options: [Std, Extruder+, Bicolor]
         required: true
         type: choice
-        default: 0
-      trapez:
-        description: 'Trapezoidal (0, 1):'
-        options: [0, 1]
+        default: Std
+      z_screws:
+        description: 'Z-Screws (Std, Expert Pack):'
+        options: [Std, Expert]
         required: true
         type: choice
-        default: 0
-      xl:
-        description: 'XL (0, 1):'
-        options: [0, 1]
+        default: Std
+      size:
+        description: 'Size (Std, XL):'
+        options: [Std, xl]
         required: true
         type: choice
-        default: 0
-      nolcd:
-        description: 'No LCD (0, 1):'
-        options: [0, 1]
+        default: Std
+      warping:
+        description: 'Anti-Warping (Std, Bed):'
+        options: [Std, Bed]
         required: true
         type: choice
-        default: 0
-      therm:
-        description: 'Black thermistor wires (0, 1):'
-        options: [0, 1]
+        default: Std
+      thermist:
+        description: 'Thermistor type (White, Black):'
+        options: [White, Black]
         required: true
         type: choice
-        default: 0
+        default: White
       pinout:
-        description: 'MKS std pinout (0, 1):'
-        options: [0, 1]
+        description: 'Pinout (Std, MKS):'
+        options: [Std, MKS]
         required: true
         type: choice
-        default: 0
-      z122:
-        description: 'Z122 head (0, 1):'
-        options: [0, 1]
+        default: Std
+      head:
+        description: 'Print head (Std, Z122):'
+        options: [Std, Z122]  # Future Std+BLtouch, Z122+BLtouch
         required: true
         type: choice
-        default: 0
-      # bltouch:
-        # description: 'BLtouch (0, 1):'
-        # options: [0, 1]
-        # required: true
-        # type: choice
-        # default: 0
+        default: Std
 
   workflow_call:
     inputs:
@@ -103,83 +97,87 @@ on:
         description: 'Language:'
         required: true
         type: string
-      bicol:
-        description: 'Bicolor (0, 1):'
+      screen:
+        description: 'Screen (Std, None):'
         required: true
-        type: number
-      filsens:
-        description: 'Extruder+ (0, 1):'
+        type: string
+      extruder:
+        description: 'extruder (Std, Extruder+, Bicolor):'
         required: true
-        type: number
-      trapez:
-        description: 'Trapezoidal (0, 1):'
+        type: string
+      z_screws:
+        description: 'Z-Screws (Std, Expert Pack):'
         required: true
-        type: number
-      xl:
-        description: 'XL (0, 1):'
+        type: string
+      size:
+        description: 'Size (Std, XL):'
         required: true
-        type: number
-      nolcd:
-        description: 'No LCD (0, 1):'
+        type: string
+      warping:
+        description: 'Anti-Warping (Std, Bed):'
         required: true
-        type: number
-      therm:
-        description: 'Black thermistor wires (0, 1):'
+        type: string
+      thermist:
+        description: 'Thermistor type (White, Black):'
         required: true
-        type: number
+        type: string
       pinout:
-        description: 'MKS std pinout (0, 1):'
+        description: 'Pinout (Std, MKS):'
         required: true
-        type: number
-      z122:
-        description: 'Z122 head (0, 1):'
+        type: string
+      head:
+        description: 'Print head (Std, Z122):'
         required: true
-        type: number
-      # bltouch:
-        # description: 'BLtouch (0, 1):'
-        # required: true
-        # type: number
+        type: string
 
 concurrency:
   group: "\
     ${{ github.workflow_ref }}-${{ github.ref }}\
     -lang:${{ inputs.lang }}\
-    -bicol:${{ inputs.bicol }}\
-    -sens:${{ inputs.filsens }}\
-    -trapez:${{ inputs.trapez }}\
-    -xl:${{ inputs.xl }}\
-    -nolcd:${{ inputs.nolcd }}\
-    -blktherm:${{ inputs.therm }}\
+    -screen:${{ inputs.screen }}\
+    -extruder:${{ inputs.extruder }}\
+    -z_screws:${{ inputs.z_screws }}\
+    -size:${{ inputs.size }}\
+    -warping:${{ inputs.warping }}\
+    -thermistor:${{ inputs.thermist }}\
     -pinout:${{ inputs.pinout }}\
-    -z122:${{ inputs.z122 }}\
+    -head:${{ inputs.head }}\
     "
   cancel-in-progress: true
 
 jobs:
   build:
     env:
-      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}',
-        'DE200-2.1.x',
-        '-',
-        (inputs.nolcd == '1' && 'nolcd') || inputs.lang,
-        (inputs.bicol == '1' && '-bicolor') || '',
-        (inputs.filsens == '1' && '-xtrudplus') || '',
-        (inputs.trapez == '1' && '-trapez') || '',
-        (inputs.xl == '1' && '-xl') || '',
-        (inputs.therm == '1' && '-blktherm') || '',
-        (inputs.pinout == '1' && '-stdpinout') || '',
-        (inputs.z122 == '1' && '-z122') || '',
+      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}',
+        'DE200-2.1.x_',
+        (inputs.screen == 'None' && 'nolcd') || inputs.lang,
+        (inputs.screen != 'None' && inputs.screen != 'Std' && '_') || '',
+        (inputs.screen != 'None' && inputs.screen != 'Std' && inputs.screen) || '',
+        (inputs.extruder != 'Std' && '_' || '',
+        (inputs.extruder != 'Std' && inputs.extruder) || '',
+        (inputs.z_screws != 'Std' && '_') || '',
+        (inputs.z_screws != 'Std' && inputs.z_screws) || '',
+        (inputs.size != 'Std' && '_') || '',
+        (inputs.size != 'Std' && inputs.size) || '',
+        (inputs.warping == 'Std' && '_') || '',
+        (inputs.warping == 'Std' && inputs.warping) || '',
+        (inputs.thermist != 'White' && '_') || '',
+        (inputs.thermist != 'White' && inputs.thermist) || '',
+        (inputs.pinout != 'Std' && '_') || '',
+        (inputs.pinout != 'Std' && inputs.pinout) || '',
+        (inputs.head != 'Std' && '_') || '',
+        (inputs.head != 'Std' && inputs.head) || '',
         '.hex') }}
     name: "Build:[\
-      ${{ (inputs.nolcd == '1' && 'nolcd') || inputs.lang }},
-      bicol:${{ inputs.bicol }},
-      sens:${{ inputs.filsens }},
-      trapez:${{ inputs.trapez }},
-      xl:${{ inputs.xl }},
-      nolcd:${{ inputs.nolcd }},
-      therm:${{ inputs.therm }},
-      pinout:${{ inputs.pinout }},
-      z122:${{ inputs.z122 }}\
+      ${{ (inputs.screen == 'None' && 'nolcd') || inputs.lang }}
+      ${{ (inputs.screen != 'None' && inputs.screen != 'Std' && inputs.screen || '' }},
+      Extrud:${{ inputs.extruder }},
+      Z-screws:${{ inputs.z_screws }},
+      Size:${{ inputs.size }},
+      Thermist:${{ inputs.thermist }},
+      Pinout:${{ inputs.pinout }},
+      Head:${{ inputs.head }},
+      Warp:${{ inputs.warping }},
       ]"
     runs-on: ubuntu-latest
     steps:
@@ -208,14 +206,22 @@ jobs:
       env:
         PLATFORMIO_BUILD_FLAGS: "\
           -D DE200_LANGUAGE=${{ inputs.lang }}
-          ${{ (inputs.bicol == '1' && '-D DE200_BICOLOR') || '' }}
-          ${{ (inputs.filsens == '1' && '-D DE200_FILAMENT_SENSOR') || '' }}
-          ${{ (inputs.trapez == '1' && '-D DE200_TRAPEZOIDAL') || '' }}
-          ${{ (inputs.xl == '1' && '-D XL') || '' }}
-          ${{ (inputs.nolcd == '1' && '-D DE200_NO_LCD') || '' }}
-          ${{ (inputs.therm == '1' && '-D DE200_BLACK_THERMISTOR') || '' }}
-          ${{ (inputs.pinout == '1' && '-D DE200_STD_PINOUT') || '' }}
-          ${{ (inputs.z122 == '1' && '-D DE200_Z122') || '' }}
+          ${{ (inputs.screen   != 'None' && '-D DE200_SCREEN=') || '' }}\
+          ${{ (inputs.screen   != 'None' && inputs.screen) || '' }}
+          ${{ (inputs.extruder != 'Std' && '-D DE200_EXTRUDER=') || '' }}\
+          ${{ (inputs.extruder != 'Std' && inputs.extruder) || '' }}
+          ${{ (inputs.z_screws != 'Std' && '-D DE200_Z_SCREWS=') || '' }}\
+          ${{ (inputs.z_screws != 'Std' && inputs.z_screws) || '' }}
+          ${{ (inputs.size     != 'Std' && '-D DE200_SIZE=') || '' }}\
+          ${{ (inputs.size     != 'Std' && inputs.size) || '' }}
+          ${{ (inputs.warping  != 'Std' && '-D DE200_WARPING=') || '' }}\
+          ${{ (inputs.warping  != 'Std' && inputs.warping) || '' }}
+          ${{ (inputs.thermist != 'White' && '-D DE200_THERMISTOR=') || '' }}\
+          ${{ (inputs.thermist != 'White' && inputs.thermist) || '' }}
+          ${{ (inputs.pinout   != 'Std' && '-D DE200_PINOUT=') || '' }}\
+          ${{ (inputs.pinout   != 'Std' && inputs.pinout) || '' }}
+          ${{ (inputs.head     != 'Std' && '-D DE200_HEAD=') || '' }}\
+          ${{ (inputs.head     != 'Std' && inputs.head) || '' }}
           "
     - name: Rename file
       run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE

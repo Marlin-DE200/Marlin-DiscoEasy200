@@ -24,6 +24,7 @@ In addition, several selected community enhancements are also supported:
 * All other Marlin languages (mostly not tested - japanese / cyrilic language may need alternative fonts defining)
 * Z122 head
 * MKS standard pinouts (instead of the Dagoma special pinouts)
+* Heated Bed (from atelier3d-shop.fr)
 
 The configuration settings for these options have been taken
 from various Thingiverse things and Github repos
@@ -58,7 +59,8 @@ submitting PRs (with before and after test evidence).
 
 In particular the following features are
 potentially available but not currently enabled
-because they will need to be tested **and** tuned:
+because they will need to be tested **and** tuned
+(and their memory usage will need to stay within the memory of the MKS BASe 1.5 controller):
 
 * Modified (classic) jerk settings for better corners
 * [Linear Advance](https://marlinfw.org/docs/features/lin_advance.html)
@@ -71,6 +73,7 @@ because they will need to be tested **and** tuned:
   ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
   however this uses significantly more memory and may not fit the MKS_BASE_1.5
 * [Direct stepping](https://reprap.org/wiki/Direct_Stepping) / [Step Daemon](https://github.com/colinrgodsey/step-daemon)
+* Hotend [Model Predictive Temperature Control](https://marlinfw.org/docs/features/model_predictive_control.html) for better temperature stability
 
 The implementation of this version has been designed to be flexible and to allow for both
 easy updating as new stock versions of Marlin are released, and
@@ -152,6 +155,7 @@ please add to it when you spot something that is different.
 * SD card CRC and retry is enabled
 * Encoder (knob) direction reversed because it makes more sense.
 * Encoder (knob) improved accuracy.
+* Menus return to Info screen after 20s rather than Dagoma 10s or Marlin 15s
 * Fan noise reduction (using software PWM rather than hardware PWM)
 * SD-card file list sorting enabled
 * SD card autostart - menu item + support for both `autoN.g` and `dagomaN.g`
@@ -162,11 +166,13 @@ please add to it when you spot something that is different.
   so that e.g. [Octoprint](https://docs.octoprint.org/en/master/bundledplugins/action_command_prompt.html)for
   can provide alternative functionality for printers without LCDs.
 
+
 The following stock functions have not been configured (because we cannot work out how)
 and probably won't work:
 
 * Use of Y end-stop switch to pause the print
-* Filament changing without a screen
+
+If anyone knows or can work out how to make these work, please let us know.
 
 ### Untested versions
 
