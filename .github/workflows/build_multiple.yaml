@@ -19,33 +19,110 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_multiple:
+  build_en:
     strategy:
       fail-fast: false
       matrix:
         lang:
           - en
-          - fr
-          - de
-        screen: [Std, None]
+        screen: Std
         extruder: [Std, Extruder+, Bicolor]
         z_screws: [Std, Expert]
         size: [Std, xl]
         warping: [Std, Bed]
         thermist: [White, Black]
+        pinout: [Std, MKS]
+        head: [Std, z122]
+    permissions:
+      contents: write
+    name: Build ${{ matrix.lang }}
+    uses: ./.github/workflows/build_single.yaml
+    with:
+      lang:     ${{ matrix.lang }}
+      screen:   ${{ matrix.screen }}
+      extruder: ${{ matrix.extruder }}
+      z_screws: ${{ matrix.z_screws }}
+      size:     ${{ matrix.size }}
+      warping:  ${{ matrix.warping }}
+      thermist: ${{ matrix.thermist }}
+      pinout:   ${{ matrix.pinout }}
+      head:     ${{ matrix.head }}
+    secrets: inherit
+
+  build_fr:
+    strategy:
+      fail-fast: false
+      matrix:
+        lang:
+          - fr
+        screen: Std
+        extruder: [Std, Extruder+, Bicolor]
+        z_screws: [Std, Expert]
+        size: [Std, xl]
+        warping: [Std, Bed]
+        thermist: [White, Black]
+        pinout: [Std, MKS]
+        head: [Std, z122]
+    permissions:
+      contents: write
+    name: Build ${{ matrix.lang }}
+    uses: ./.github/workflows/build_single.yaml
+    with:
+      lang:     ${{ matrix.lang }}
+      screen:   ${{ matrix.screen }}
+      extruder: ${{ matrix.extruder }}
+      z_screws: ${{ matrix.z_screws }}
+      size:     ${{ matrix.size }}
+      warping:  ${{ matrix.warping }}
+      thermist: ${{ matrix.thermist }}
+      pinout:   ${{ matrix.pinout }}
+      head:     ${{ matrix.head }}
+    secrets: inherit
+
+  build_de:
+    strategy:
+      fail-fast: false
+      matrix:
+        lang:
+          - de
+        screen: Std
+        extruder: [Std, Extruder+, Bicolor]
+        z_screws: [Std, Expert]
+        size: [Std, xl]
+        warping: [Std, Bed]
+        thermist: [White, Black]
+        pinout: [Std, MKS]
+        head: [Std, z122]
+    permissions:
+      contents: write
+    name: Build ${{ matrix.lang }}
+    uses: ./.github/workflows/build_single.yaml
+    with:
+      lang:     ${{ matrix.lang }}
+      screen:   ${{ matrix.screen }}
+      extruder: ${{ matrix.extruder }}
+      z_screws: ${{ matrix.z_screws }}
+      size:     ${{ matrix.size }}
+      warping:  ${{ matrix.warping }}
+      thermist: ${{ matrix.thermist }}
+      pinout:   ${{ matrix.pinout }}
+      head:     ${{ matrix.head }}
+    secrets: inherit
+
+  build_noscreen:
+    strategy:
+      fail-fast: false
+      matrix:
+        lang:
+          - en
+        screen: [None]
+        extruder: [Std]
+        z_screws: [Std]
+        size: [Std]
+        warping: [Std, Bed]
+        thermist: [White, Black]
         pinout: [Std]
-        head: [Std, Z122]
-        exclude:
-          - screen: None
-            lang: fr            # language is irrelevant without screen
-          - screen: None
-            lang: de            # language is irrelevant to nolcd
-          - screen: None
-            extruder: Extruder+ # Filament sensor (and hence filament runout and hence advanced pause) needs lcd
-          - screen: None
-            extruder: Bicolor  # Filament sensor (and hence filament runout and hence advanced pause) needs lcd
-          - pinout: Mks
-            extruder: Bicolor  # no pinouts for filament sensor 2 on standard pinouts
+        head: [Std]
     permissions:
       contents: write
     name: Build ${{ matrix.lang }}
