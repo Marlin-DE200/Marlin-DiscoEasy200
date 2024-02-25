@@ -392,10 +392,6 @@ void menu_main() {
 
   #if HAS_MEDIA && DISABLED(MEDIA_MENU_AT_TOP)
     // BEGIN MEDIA MENU
-    #if ENABLED(MENU_ADDAUTOSTART)
-      ACTION_ITEM(MSG_RUN_AUTO_FILES, card.autofile_begin); // Run Auto Files
-    #endif
-
     if (card_detected) {
       if (!card_open) {
         #if HAS_SD_DETECT
@@ -404,6 +400,9 @@ void menu_main() {
             GCODES_ITEM(MSG_ATTACH_USB_MEDIA, F("M21U")); // M21 Attach USB Media
           #endif
         #else                                             // - or -
+          #if ENABLED(MENU_ADDAUTOSTART)
+            ACTION_ITEM(MSG_RUN_AUTO_FILES, card.autofile_begin); // Run Auto Files
+          #endif
           ACTION_ITEM(MSG_RELEASE_MEDIA, []{              // M22 Release Media
             queue.inject(F("M22"));
             #if ENABLED(TFT_COLOR_UI)
