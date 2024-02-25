@@ -34,7 +34,8 @@ however none of these configurations have been tested.
 Because the number of options is multiplicative,
 adding these options to automated builds would
 produce an unreasonable number of options.
-(For the 3 languages plus no-lcd, we already produce 80 builds.)
+(Each language currently produces about 160 builds,
+so for the 3 languages we already produce almost 500 builds!!)
 
 However a build workflow is available on Github to build any option
 and you can then download the firmware Hex file from the Github Actions artifacts list.
@@ -51,6 +52,8 @@ though this is limited by the maximum firmware size supported by the motherboard
 The additional functionality currently enabled includes:
 
 * Support for all Marlin languages
+* Probe Offset Wizard - alternative to the Dagoma App to set the z-offset -
+  [youtube video](https://www.youtube.com/watch?v=2gRfU26aTDs)
 
 There is still a lot of newer functionality available in Marlin v2
 that has not been enabled due to lack of testing with the DE200,
@@ -165,7 +168,10 @@ please add to it when you spot something that is different.
 * Support [Host Action Commands](https://reprap.org/wiki/G-code#Action_commands)
   so that e.g. [Octoprint](https://docs.octoprint.org/en/master/bundledplugins/action_command_prompt.html)for
   can provide alternative functionality for printers without LCDs.
-
+* Probe Offset Wizard - alternative to the Dagoma App to set the z-offset -
+  [youtube video](https://www.youtube.com/watch?v=2gRfU26aTDs)
+* M73 support so that a [matching Octoprint plugin](https://plugins.octoprint.org/plugins/m73etaoverride/) can set the % progress bar.
+* Positions of Filament Change and Printer Information menus swapped.
 
 The following stock functions have not been configured (because we cannot work out how)
 and probably won't work:

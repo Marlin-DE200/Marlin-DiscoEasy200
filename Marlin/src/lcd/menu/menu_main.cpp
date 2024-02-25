@@ -364,8 +364,8 @@ void menu_main() {
     }
   #endif
 
-  #if ENABLED(LCD_INFO_MENU)
-    SUBMENU(MSG_INFO_MENU, menu_info);
+  #if ENABLED(ADVANCED_PAUSE_FEATURE) && HAS_ENCODER_WHEEL && DISABLED(DISABLE_ENCODER)
+    FILAMENT_CHANGE_ITEM();
   #endif
 
   #if ANY(LED_CONTROL_MENU, CASE_LIGHT_MENU)
@@ -499,9 +499,10 @@ void menu_main() {
     });
   #endif
 
-  #if ENABLED(ADVANCED_PAUSE_FEATURE) && HAS_ENCODER_WHEEL && DISABLED(DISABLE_ENCODER)
-    FILAMENT_CHANGE_ITEM();
+  #if ENABLED(LCD_INFO_MENU)
+    SUBMENU(MSG_INFO_MENU, menu_info);
   #endif
+
 
   END_MENU();
 }

@@ -98,7 +98,7 @@
 
 
 /*
- * DE200 Validate and set derivative values
+ * DE200: Validate options and set derivative values
  */
 
 #if DISABLED(DE200_LANGUAGE)
@@ -145,6 +145,31 @@
 #if NONE(DE200_HEAD_STD, DE200_HEAD_Z122)
   #define DE200_HEAD_STD
 #endif
+
+#if ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
+  #define DE200_MODEL "Bicolor-Expert-XL"
+#elif ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT)
+  #define DE200_MODEL "Bicolor-Expert"
+#elif ALL(DE200_EXTRUDER_BICOLOR, DE200_SIZE_XL)
+  #define DE200_MODEL "Bicolor-XL"
+#elif ALL(DE200_EXTRUDER_BICOLOR)
+  #define DE200_MODEL "Bicolor"
+#elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
+  #define DE200_MODEL "ExtrPlus-Expert-XL"
+#elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT)
+  #define DE200_MODEL "ExtrPlus-Expert"
+#elif ALL(DE200_EXTRUDER_PLUS, DE200_SIZE_XL)
+  #define DE200_MODEL "ExtrPlus-XL"
+#elif ALL(DE200_EXTRUDER_PLUS)
+  #define DE200_MODEL "ExtrPlus"
+#elif ALL(DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
+  #define DE200_MODEL "Expert-XL"
+#elif ALL(DE200_ZSCREWS_EXPERT)
+  #define DE200_MODEL "Expert"
+#elif ALL(DE200_SIZE_XL)
+  #define DE200_MODEL "XL"
+#endif
+
 
 /**
  * Configuration.h
@@ -2712,7 +2737,7 @@
 // Use this option to override the number of step signals required to
 // move between next/prev menu items.
 //
-#define ENCODER_STEPS_PER_MENU_ITEM 1
+#define ENCODER_STEPS_PER_MENU_ITEM 2
 
 /**
  * Encoder Direction Options
