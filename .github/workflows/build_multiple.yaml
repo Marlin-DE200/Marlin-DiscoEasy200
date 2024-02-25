@@ -55,7 +55,7 @@ jobs:
       matrix:
         lang:
           - en
-        screen:   [None]
+        screen:   ["-"]
         extruder: [Std]
         zscrews:  [Std]
         size:     [Std]

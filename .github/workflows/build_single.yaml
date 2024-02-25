@@ -43,7 +43,7 @@ on:
         type: choice
         default: 'en'
       screen:
-        description: 'Screen (Std, None):'
+        description: 'Screen (Std, "-"):'
         options: [Std, None]
         required: true
         type: choice
