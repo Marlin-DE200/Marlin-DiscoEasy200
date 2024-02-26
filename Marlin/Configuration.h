@@ -1529,7 +1529,11 @@
   #endif
 #endif
 
-#define DEFAULT_EJERK    5.0  // May be used by Linear Advance
+#if DISABLED(DE200_EXPERIMENT_LIN_ADV)
+  #define DEFAULT_EJERK    5.0  // Normal
+#else
+  #define DEFAULT_EJERK   10.0  // Linear Advance
+#endif
 
 /**
  * Junction Deviation Factor

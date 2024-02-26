@@ -90,8 +90,8 @@ on:
         required: true
         type: choice
         default: STD
-      experimental:
-        description: 'Experimental features:'
+      experiment:
+        description: 'experiment features:'
         options: [NONE, BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
         required: true
         type: choice
@@ -135,8 +135,8 @@ on:
         description: 'Print head (Std, Z122):'
         required: true
         type: string
-      experimental:
-        description: 'Experimental Marlin features:'
+      experiment:
+        description: 'experiment Marlin features:'
         required: true
         type: string
 
@@ -152,14 +152,14 @@ concurrency:
     -thermistor:${{ inputs.thermistor }}\
     -pinout:${{ inputs.pinout }}\
     -head:${{ inputs.head }}\
-    -experimental:${{ inputs.experimental }}\
+    -experiment:${{ inputs.experiment }}\
     "
   cancel-in-progress: true
 
 jobs:
   build:
     env:
-      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}',
+      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}{20}',
         'DE200_2.1.2.2-',
         (inputs.screen       == 'NONE'  && 'NoLCD') || inputs.lang,
         (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && '-') || '',
@@ -178,8 +178,8 @@ jobs:
         (inputs.pinout       != 'STD'   && inputs.pinout) || '',
         (inputs.head         != 'STD'   && '-') || '',
         (inputs.head         != 'STD'   && inputs.head) || '',
-        (inputs.experimental != 'NONE'  && '-') || '',
-        (inputs.experimental != 'NONE'  && inputs.experimental) || '',
+        (inputs.experiment != 'NONE'  && '-') || '',
+        (inputs.experiment != 'NONE'  && inputs.experiment) || '',
         '.hex') }}
     name: "Build:
       ${{ (inputs.screen == 'NONE' && 'nolcd') || inputs.lang }}
@@ -191,7 +191,7 @@ jobs:
       thermistor:${{ inputs.thermistor }}
       pinout:${{ inputs.pinout }}
       head:${{ inputs.head }}
-      exp:${{ inputs.experimental }}
+      exp:${{ inputs.experiment }}
       "
     runs-on: ubuntu-latest
     steps:
@@ -228,7 +228,7 @@ jobs:
           -D DE200_THERMISTOR_${{ inputs.thermistor }}
           -D DE200_PINOUT_${{ inputs.pinout }}
           -D DE200_HEAD_${{ inputs.head }}
-          -D DE200_EXPERIMENT_${{ inputs.experimental }}\
+          -D DE200_EXPERIMENT_${{ inputs.experiment }}\
           "
     - name: Rename file
       run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE

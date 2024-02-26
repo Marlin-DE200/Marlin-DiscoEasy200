@@ -20,52 +20,53 @@ on:
 
 jobs:
   basic:
+    name: "Build: Basic"
     strategy:
       fail-fast: false
       matrix:
-        lang:         [en]
-        screen:       [STD]
-        extruder:     [STD]
-        zscrews:      [STD]
-        size:         [STD]
-        warping:      [STD]
-        thermistor:   [WHITE]
-        pinout:       [STD]
-        head:         [STD]
-        experimental: [NONE, BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
+        lang:       [en]
+        screen:     [STD]
+        extruder:   [STD]
+        zscrews:    [STD]
+        size:       [STD]
+        warping:    [STD]
+        thermistor: [WHITE]
+        pinout:     [STD]
+        head:       [STD]
+        experiment: [NONE]
     permissions:
       contents: write
-    name: "Build: ${{ github.job }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:         ${{ matrix.lang }}
-      screen:       ${{ matrix.screen }}
-      extruder:     ${{ matrix.extruder }}
-      zscrews:      ${{ matrix.zscrews }}
-      size:         ${{ matrix.size }}
-      warping:      ${{ matrix.warping }}
-      thermistor:   ${{ matrix.thermistor }}
-      pinout:       ${{ matrix.pinout }}
-      head:         ${{ matrix.head }}
-      experimental: ${{ matrix.experimental }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
+      experiment: ${{ matrix.experiment }}
     secrets: inherit
 
   en:
+    name: "Build: en"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
       fail-fast: false
       matrix:
-        lang:         [en]
-        screen:       [STD]
-        extruder:     [STD, PLUS, BICOLOR]
-        zscrews:      [STD, EXPERT]
-        size:         [STD, XL]
-        warping:      [STD, BED_ATELIER3D]
-        thermistor:   [WHITE, BLACK]
-        pinout:       [STD, MKS]
-        head:         [STD, Z122]
-        experimental: [NONE]
+        lang:       [en]
+        screen:     [STD]
+        extruder:   [STD, PLUS, BICOLOR]
+        zscrews:    [STD, EXPERT]
+        size:       [STD, XL]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD, MKS]
+        head:       [STD, Z122]
+        experiment: [NONE]
         exclude:
           - pinout:   MKS       # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
             extruder: BICOLOR
@@ -78,125 +79,157 @@ jobs:
             head:         STD
     permissions:
       contents: write
-    name: "Build: ${{ github.job }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:         ${{ matrix.lang }}
-      screen:       ${{ matrix.screen }}
-      extruder:     ${{ matrix.extruder }}
-      zscrews:      ${{ matrix.zscrews }}
-      size:         ${{ matrix.size }}
-      warping:      ${{ matrix.warping }}
-      thermistor:   ${{ matrix.thermistor }}
-      pinout:       ${{ matrix.pinout }}
-      head:         ${{ matrix.head }}
-      experimental: ${{ matrix.experimental }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
+      experiment: ${{ matrix.experiment }}
     secrets: inherit
 
   fr:
+    name: "Build: fr"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
       fail-fast: false
       matrix:
-        lang:         [fr]
-        screen:       [STD]
-        extruder:     [STD, PLUS, BICOLOR]
-        zscrews:      [STD, EXPERT]
-        size:         [STD, XL]
-        warping:      [STD, BED_ATELIER3D]
-        thermistor:   [WHITE, BLACK]
-        pinout:       [STD, MKS]
-        head:         [STD, Z122]
-        experimental: [NONE]
+        lang:       [fr]
+        screen:     [STD]
+        extruder:   [STD, PLUS, BICOLOR]
+        zscrews:    [STD, EXPERT]
+        size:       [STD, XL]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD, MKS]
+        head:       [STD, Z122]
+        experiment: [NONE]
         exclude:
           - pinout:   MKS
             extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
     permissions:
       contents: write
-    name: "Build: ${{ github.job }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:         ${{ matrix.lang }}
-      screen:       ${{ matrix.screen }}
-      extruder:     ${{ matrix.extruder }}
-      zscrews:      ${{ matrix.zscrews }}
-      size:         ${{ matrix.size }}
-      warping:      ${{ matrix.warping }}
-      thermistor:   ${{ matrix.thermistor }}
-      pinout:       ${{ matrix.pinout }}
-      head:         ${{ matrix.head }}
-      experimental: ${{ matrix.experimental }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
+      experiment: ${{ matrix.experiment }}
     secrets: inherit
 
   de:
+    name: "Build: de"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
       fail-fast: false
       matrix:
-        lang:         [de]
-        screen:       [STD]
-        extruder:     [STD, PLUS, BICOLOR]
-        zscrews:      [STD, EXPERT]
-        size:         [STD, XL]
-        warping:      [STD, BED_ATELIER3D]
-        thermistor:   [WHITE, BLACK]
-        pinout:       [STD, MKS]
-        head:         [STD, Z122]
-        experimental: [NONE]
+        lang:       [de]
+        screen:     [STD]
+        extruder:   [STD, PLUS, BICOLOR]
+        zscrews:    [STD, EXPERT]
+        size:       [STD, XL]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD, MKS]
+        head:       [STD, Z122]
+        experiment: [NONE]
         exclude:
           - pinout:   MKS
             extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
     permissions:
       contents: write
-    name: "Build: ${{ github.job }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:         ${{ matrix.lang }}
-      screen:       ${{ matrix.screen }}
-      extruder:     ${{ matrix.extruder }}
-      zscrews:      ${{ matrix.zscrews }}
-      size:         ${{ matrix.size }}
-      warping:      ${{ matrix.warping }}
-      thermistor:   ${{ matrix.thermistor }}
-      pinout:       ${{ matrix.pinout }}
-      head:         ${{ matrix.head }}
-      experimental: ${{ matrix.experimental }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
+      experiment: ${{ matrix.experiment }}
     secrets: inherit
 
-  noscreen:
+  nolcd:
+    name: "Build: nolcd"
     strategy:
       fail-fast: false
       matrix:
-        lang:         [en]
-        screen:       [NONE]
-        extruder:     [STD]
-        zscrews:      [STD]
-        size:         [STD]
-        warping:      [STD, BED_ATELIER3D]
-        thermistor:   [WHITE, BLACK]
-        pinout:       [STD]
-        head:         [STD]
-        experimental: [NONE]
+        lang:       [en]
+        screen:     [NONE]
+        extruder:   [STD]
+        zscrews:    [STD]
+        size:       [STD]
+        warping:    [STD, BED_ATELIER3D]
+        thermistor: [WHITE, BLACK]
+        pinout:     [STD]
+        head:       [STD]
+        experiment: [NONE]
     permissions:
       contents: write
-    name: "Build: ${{ github.job }}"
     uses: ./.github/workflows/build_single.yaml
     with:
-      lang:         ${{ matrix.lang }}
-      screen:       ${{ matrix.screen }}
-      extruder:     ${{ matrix.extruder }}
-      zscrews:      ${{ matrix.zscrews }}
-      size:         ${{ matrix.size }}
-      warping:      ${{ matrix.warping }}
-      thermistor:   ${{ matrix.thermistor }}
-      pinout:       ${{ matrix.pinout }}
-      head:         ${{ matrix.head }}
-      experimental: ${{ matrix.experimental }}
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
+      experiment: ${{ matrix.experiment }}
+    secrets: inherit
+
+  experiment:
+    name: "Build: experiment"
+    needs: basic
+    strategy:
+      fail-fast: false
+      matrix:
+        lang:       [en]
+        screen:     [STD]
+        extruder:   [STD]
+        zscrews:    [STD]
+        size:       [STD]
+        warping:    [STD]
+        thermistor: [WHITE]
+        pinout:     [STD]
+        head:       [STD]
+        experiment: [BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build_single.yaml
+    with:
+      lang:       ${{ matrix.lang }}
+      screen:     ${{ matrix.screen }}
+      extruder:   ${{ matrix.extruder }}
+      zscrews:    ${{ matrix.zscrews }}
+      size:       ${{ matrix.size }}
+      warping:    ${{ matrix.warping }}
+      thermistor: ${{ matrix.thermistor }}
+      pinout:     ${{ matrix.pinout }}
+      head:       ${{ matrix.head }}
+      experiment: ${{ matrix.experiment }}
     secrets: inherit
 
   # lesimprimantes3d:
+    # name: "Build: lesimprimantes3d"
     # if: ${{ github.event_name == 'release' }}
     # needs: basic
     # strategy:
@@ -211,12 +244,12 @@ jobs:
         # thermistor: [WHITE]
         # pinout:     [MKS]
         # head:       [STD-BLTOUCH]
+        # experiment: [NONE]
         # exclude:
           # - pinout: MKS
             # extruder: BICOLOR   # Pinout for Extruder 2 not defined in standard MKS_BASE_1.5
     # permissions:
       # contents: write
-    # name: "Build: ${{ github.job }}"
     # uses: ./.github/workflows/build_single.yaml
     # with:
       # lang:       ${{ matrix.lang }}
@@ -228,4 +261,5 @@ jobs:
       # thermistor: ${{ matrix.thermistor }}
       # pinout:     ${{ matrix.pinout }}
       # head:       ${{ matrix.head }}
+      # experiment: ${{ matrix.experiment }}
     # secrets: inherit
