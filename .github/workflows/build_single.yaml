@@ -227,7 +227,7 @@ jobs:
           -D DE200_WARPING_${{ inputs.warping }}
           -D DE200_THERMISTOR_${{ inputs.thermistor }}
           -D DE200_PINOUT_${{ inputs.pinout }}
-          -D DE200_HEAD_${{ inputs.head }}\
+          -D DE200_HEAD_${{ inputs.head }}
           -D DE200_EXPERIMENT_${{ inputs.experimental }}\
           "
     - name: Rename file
