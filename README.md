@@ -56,27 +56,29 @@ The additional functionality currently enabled includes:
   [youtube video](https://www.youtube.com/watch?v=2gRfU26aTDs)
 
 There is still a lot of newer functionality available in Marlin v2
-that has not been enabled due to lack of testing with the DE200,
+that has not been enabled as standard due to lack of testing with the DE200,
 and the author would welcome users testing these options and
 submitting PRs (with before and after test evidence).
 
 In particular the following features are
-potentially available but not currently enabled
+available as experimental features using the Single Build workflow,
+but not currently enabled for standard builds
 because they will need to be tested **and** tuned
 (and their memory usage will need to stay within the memory of the MKS BASe 1.5 controller):
 
-* Modified (classic) jerk settings for better corners
+* Bilinear bed-levelling rather than linear bed-levelling as this handles non-flat beds better
+  ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
+* [Unified Bed Levelling](https://marlinfw.org/docs/features/unified_bed_leveling.html)
 * [Linear Advance](https://marlinfw.org/docs/features/lin_advance.html)
 * [Input shaping](https://marlinfw.org/docs/features/input_shaping.html)
-* [Unified Bed Levelling](https://marlinfw.org/docs/features/unified_bed_leveling.html)
 * [S-Curve Acceleration](https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained)
 * [Model Predictive Temperature Control](https://marlinfw.org/docs/features/model_predictive_control.html)
 * [Junction deviation](https://www.reddit.com/r/3Dprinting/comments/dx8bdb/here_is_why_you_should_disable_junction_deviation/)
-* Bilinear bed-levelling rather than linear bed-levelling as this handles non-flat beds better
-  ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
-  however this uses significantly more memory and may not fit the MKS_BASE_1.5
+
+The following advanced Marlin features are available for evaluation,
+but do not currently have even Single Build support
+
 * [Direct stepping](https://reprap.org/wiki/Direct_Stepping) / [Step Daemon](https://github.com/colinrgodsey/step-daemon)
-* Hotend [Model Predictive Temperature Control](https://marlinfw.org/docs/features/model_predictive_control.html) for better temperature stability
 
 The implementation of this version has been designed to be flexible and to allow for both
 easy updating as new stock versions of Marlin are released, and

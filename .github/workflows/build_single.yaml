@@ -49,14 +49,14 @@ on:
         type: choice
         default: STD
       extruder:
-        description: 'Extruder (Std, Extruder+, Bicolor):'
-        options: [STD, EXTRUDER_PLUS, BICOLOR]
+        description: 'Extruder (Std, Extruder+, Bicolor, MK8):'
+        options: [STD, EXTRUDER_PLUS, BICOLOR, MK8]
         required: true
         type: choice
         default: STD
       zscrews:
-        description: 'Z-Screws (Std, Expert Pack):'
-        options: [STD, EXPERT]
+        description: 'Z-Screws (Std, Expert (T8-4), T8-8, T8-2):'
+        options: [STD, EXPERT, T8_8, T8_2]
         required: true
         type: choice
         default: STD
@@ -85,11 +85,17 @@ on:
         type: choice
         default: STD
       head:
-        description: 'Print head (Std, Z122):'
-        options: [STD, Z122]  # Future Std+BLtouch, Z122+BLtouch
+        description: 'Print head (Std, BLtouch, Z122):'
+        options: [STD, STD_BLTOUCH, Z122, Z122_BLTOUCH]
         required: true
         type: choice
         default: STD
+      experimental:
+        description: 'Experimental features:'
+        options: [NONE, BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
+        required: true
+        type: choice
+        default: NONE
 
   workflow_call:
     inputs:
@@ -129,6 +135,10 @@ on:
         description: 'Print head (Std, Z122):'
         required: true
         type: string
+      experimental:
+        description: 'Experimental Marlin features:'
+        required: true
+        type: string
 
 concurrency:
   group: "\
@@ -142,6 +152,7 @@ concurrency:
     -thermistor:${{ inputs.thermistor }}\
     -pinout:${{ inputs.pinout }}\
     -head:${{ inputs.head }}\
+    -experimental:${{ inputs.experimental }}\
     "
   cancel-in-progress: true
 
@@ -149,24 +160,26 @@ jobs:
   build:
     env:
       BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}',
-        'DE200_2.1.x-',
-        (inputs.screen     == 'NONE'  && 'NoLCD') || inputs.lang,
-        (inputs.screen     != 'NONE'  && inputs.screen != 'STD' && '-') || '',
-        (inputs.screen     != 'NONE'  && inputs.screen != 'STD' && inputs.screen) || '',
-        (inputs.extruder   != 'STD'   && '-') || '',
-        (inputs.extruder   != 'STD'   && inputs.extruder) || '',
-        (inputs.zscrews    != 'STD'   && '-') || '',
-        (inputs.zscrews    != 'STD'   && inputs.zscrews) || '',
-        (inputs.size       != 'STD'   && '-') || '',
-        (inputs.size       != 'STD'   && inputs.size) || '',
-        (inputs.warping    != 'STD'   && '-') || '',
-        (inputs.warping    != 'STD'   && inputs.warping) || '',
-        (inputs.thermistor != 'WHITE' && '-') || '',
-        (inputs.thermistor != 'WHITE' && inputs.thermistor) || '',
-        (inputs.pinout     != 'STD'   && '-') || '',
-        (inputs.pinout     != 'STD'   && inputs.pinout) || '',
-        (inputs.head       != 'STD'   && '-') || '',
-        (inputs.head       != 'STD'   && inputs.head) || '',
+        'DE200_2.1.2.2-',
+        (inputs.screen       == 'NONE'  && 'NoLCD') || inputs.lang,
+        (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && '-') || '',
+        (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && inputs.screen) || '',
+        (inputs.extruder     != 'STD'   && '-') || '',
+        (inputs.extruder     != 'STD'   && inputs.extruder) || '',
+        (inputs.zscrews      != 'STD'   && '-') || '',
+        (inputs.zscrews      != 'STD'   && inputs.zscrews) || '',
+        (inputs.size         != 'STD'   && '-') || '',
+        (inputs.size         != 'STD'   && inputs.size) || '',
+        (inputs.warping      != 'STD'   && '-') || '',
+        (inputs.warping      != 'STD'   && inputs.warping) || '',
+        (inputs.thermistor   != 'WHITE' && '-') || '',
+        (inputs.thermistor   != 'WHITE' && inputs.thermistor) || '',
+        (inputs.pinout       != 'STD'   && '-') || '',
+        (inputs.pinout       != 'STD'   && inputs.pinout) || '',
+        (inputs.head         != 'STD'   && '-') || '',
+        (inputs.head         != 'STD'   && inputs.head) || '',
+        (inputs.experimental != 'NONE'  && '-') || '',
+        (inputs.experimental != 'NONE'  && inputs.experimental) || '',
         '.hex') }}
     name: "Build:
       ${{ (inputs.screen == 'NONE' && 'nolcd') || inputs.lang }}
@@ -178,6 +191,7 @@ jobs:
       thermistor:${{ inputs.thermistor }}
       pinout:${{ inputs.pinout }}
       head:${{ inputs.head }}
+      exp:${{ inputs.experimental }}
       "
     runs-on: ubuntu-latest
     steps:
@@ -214,6 +228,7 @@ jobs:
           -D DE200_THERMISTOR_${{ inputs.thermistor }}
           -D DE200_PINOUT_${{ inputs.pinout }}
           -D DE200_HEAD_${{ inputs.head }}\
+          -D DE200_EXPERIMENT_${{ inputs.experimental }}\
           "
     - name: Rename file
       run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE

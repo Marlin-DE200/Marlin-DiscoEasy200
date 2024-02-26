@@ -48,14 +48,17 @@
 //#define DE200_SCREEN_STD
 //#define DE200_SCREEN_NONE
 
-// DE200_EXTRUDER_* - default: STD; available: STD, PLUS, BICOLOR
+// DE200_EXTRUDER_* - default: STD; available: STD, PLUS, BICOLOR, MK8
 //#define DE200_EXTRUDER_STD
 //#define DE200_EXTRUDER_PLUS
 //#define DE200_EXTRUDER_BICOLOR
+//#define DE200_EXTRUDER_MK8
 
-// DE200_ZSCREWS_* - default: STD; available: STD, EXPERT
+// DE200_ZSCREWS_* - default: STD; available: STD, EXPERT (T8-4), T8_8, T8_2
 //#define DE200_ZSCREWS_STD
-//#define DE200_ZSCREWS_EXPERT
+//#define DE200_ZSCREWS_EXPERT // T8_4
+//#define DE200_ZSCREWS_T8_8
+//#define DE200_ZSCREWS_T8_2
 
 // DE200_SIZE_* - default: STD; available: STD, XL
 //#define DE200_SIZE_STD
@@ -94,13 +97,24 @@
  */
 // DE200_HEAD_* - default: STD; available: STD, Z122
 //#define DE200_HEAD_STD
+//#define DE200_HEAD_STD_BLTOUCH
 //#define DE200_HEAD_Z122
+//#define DE200_HEAD_Z122_BLTOUCH
+
+// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV
+//#define DE200_EXPERIMENT_NONE
+//#define DE200_EXPERIMENT_BED_BILINEAR
+//#define DE200_EXPERIMENT_BED_UNIFIED
+//#define DE200_EXPERIMENT_LIN_ADV
+//#define DE200_EXPERIMENT_INP_SHAPE
+//#define DE200_EXPERIMENT_S_CURVE
+//#define DE200_EXPERIMENT_MPC
+//#define DE200_EXPERIMENT_JUNC_DEV
 
 
 /*
  * DE200: Validate options and set derivative values
  */
-
 #if DISABLED(DE200_LANGUAGE)
   #define DE200_LANGUAGE en
 #endif
@@ -112,14 +126,14 @@
   #define DE200_SCREEN_ANY
 #endif
 
-#if NONE(DE200_EXTRUDER_STD, DE200_EXTRUDER_PLUS, DE200_EXTRUDER_BICOLOR)
+#if NONE(DE200_EXTRUDER_STD, DE200_EXTRUDER_PLUS, DE200_EXTRUDER_BICOLOR, DE200_EXTRUDER_MK8)
   #define DE200_EXTRUDER_STD
 #endif
 #if ENABLED(DE200_EXTRUDER_BICOLOR)
   #define DE200_EXTRUDER_PLUS
 #endif
 
-#if NONE(DE200_ZSCREWS_STD, DE200_ZSCREWS_EXPERT)
+#if NONE(DE200_ZSCREWS_STD, DE200_ZSCREWS_EXPERT, DE200_ZSCREWS_T8_8, DE200_ZSCREWS_T8_2)
   #define DE200_ZSCREWS_STD
 #endif
 
@@ -142,32 +156,90 @@
   #define DE200_PINOUT_STD
 #endif
 
-#if NONE(DE200_HEAD_STD, DE200_HEAD_Z122)
+#if NONE(DE200_HEAD_STD, DE200_HEAD_STD_BLTOUCH, DE200_HEAD_Z122, DE200_HEAD_Z122_BLTOUCH)
   #define DE200_HEAD_STD
 #endif
+#if ANY(DE200_HEAD_STD, DE200_HEAD_STD_BLTOUCH)
+  #define DE200_HEAD_STD_ANY
+#endif
+#if ANY(DE200_HEAD_Z122, DE200_HEAD_Z122_BLTOUCH)
+  #define DE200_HEAD_Z122_ANY
+#endif
+#if ANY(DE200_HEAD_STD_BLTOUCH, DE200_HEAD_Z122_BLTOUCH)
+  #define DE200_HEAD_BLTOUCH_ANY
+#endif
 
-#if ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
-  #define DE200_MODEL "Bicolor-Expert-XL"
-#elif ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT)
-  #define DE200_MODEL "Bicolor-Expert"
-#elif ALL(DE200_EXTRUDER_BICOLOR, DE200_SIZE_XL)
-  #define DE200_MODEL "Bicolor-XL"
-#elif ALL(DE200_EXTRUDER_BICOLOR)
-  #define DE200_MODEL "Bicolor"
-#elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
-  #define DE200_MODEL "ExtrPlus-Expert-XL"
-#elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT)
-  #define DE200_MODEL "ExtrPlus-Expert"
-#elif ALL(DE200_EXTRUDER_PLUS, DE200_SIZE_XL)
-  #define DE200_MODEL "ExtrPlus-XL"
-#elif ALL(DE200_EXTRUDER_PLUS)
-  #define DE200_MODEL "ExtrPlus"
-#elif ALL(DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
-  #define DE200_MODEL "Expert-XL"
-#elif ALL(DE200_ZSCREWS_EXPERT)
-  #define DE200_MODEL "Expert"
-#elif ALL(DE200_SIZE_XL)
-  #define DE200_MODEL "XL"
+#if NONE(DE200_EXPERIMENT_NONE, DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED, \
+  DE200_EXPERIMENT_LIN_ADV, DE200_EXPERIMENT_INP_SHAPE, DE200_EXPERIMENT_S_CURVE, \
+  DE200_EXPERIMENT_MPC, DE200_EXPERIMENT_JUNC_DEV)
+  #define DE200_EXPERIMENT_NONE
+#endif
+
+
+/*
+ * DE200: About printer information - max 19 chars per line
+ */
+#if ENABLED(DE200_SCREEN_ANY)
+  // Dagoma standard features
+  #if ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
+    #define MACHINE_ABOUT_LINE1 "Bicolor,Expert,XL"
+  #elif ALL(DE200_EXTRUDER_BICOLOR, DE200_ZSCREWS_EXPERT)
+    #define MACHINE_ABOUT_LINE1 "Bicolor,Expert"
+  #elif ALL(DE200_EXTRUDER_BICOLOR, DE200_SIZE_XL)
+    #define MACHINE_ABOUT_LINE1 "Bicolor,XL"
+  #elif ALL(DE200_EXTRUDER_BICOLOR)
+    #define MACHINE_ABOUT_LINE1 "Bicolor"
+  #elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
+    #define MACHINE_ABOUT_LINE1 "ExtrPlus,Expert,XL"
+  #elif ALL(DE200_EXTRUDER_PLUS, DE200_ZSCREWS_EXPERT)
+    #define MACHINE_ABOUT_LINE1 "ExtrPlus,Expert"
+  #elif ALL(DE200_EXTRUDER_PLUS, DE200_SIZE_XL)
+    #define MACHINE_ABOUT_LINE1 "ExtrPlus,XL"
+  #elif ALL(DE200_EXTRUDER_PLUS)
+    #define MACHINE_ABOUT_LINE1 "ExtrPlus"
+  #elif ALL(DE200_ZSCREWS_EXPERT, DE200_SIZE_XL)
+    #define MACHINE_ABOUT_LINE1 "Expert,XL"
+  #elif ALL(DE200_ZSCREWS_EXPERT)
+    #define MACHINE_ABOUT_LINE1 "Expert"
+  #elif ALL(DE200_SIZE_XL)
+    #define MACHINE_ABOUT_LINE1 "XL"
+  #endif
+  // Non-Dagoma features
+  #if ALL(DE200_ZSCREWS_T8_8, DE200_HEAD_Z122, DE200_EXTRUDER_MK8)
+    #define MACHINE_ABOUT_LINE2 "T8-8,Z122,MK8-Extr."
+  #elif ALL(DE200_ZSCREWS_T8_8, DE200_HEAD_Z122)
+    #define MACHINE_ABOUT_LINE2 "T8-8,Z122"
+  #elif ALL(DE200_ZSCREWS_T8_8, DE200_EXTRUDER_MK8)
+    #define MACHINE_ABOUT_LINE2 "T8-8,MK8-Extr."
+  #elif ALL(DE200_ZSCREWS_T8_8)
+    #define MACHINE_ABOUT_LINE2 "T8-8"
+  #elif ALL(DE200_ZSCREWS_T8_2, DE200_HEAD_Z122, DE200_EXTRUDER_MK8)
+    #define MACHINE_ABOUT_LINE2 "T8-2,Z122,MK8-Extr."
+  #elif ALL(DE200_ZSCREWS_T8_2, DE200_HEAD_Z122)
+    #define MACHINE_ABOUT_LINE2 "T8-2,Z122"
+  #elif ALL(DE200_ZSCREWS_T8_2, DE200_EXTRUDER_MK8)
+    #define MACHINE_ABOUT_LINE2 "T8-2,MK8-Extr."
+  #elif ALL(DE200_ZSCREWS_T8_2)
+    #define MACHINE_ABOUT_LINE2 "T8-2"
+  #elif ALL(DE200_HEAD_Z122, DE200_EXTRUDER_MK8)
+    #define MACHINE_ABOUT_LINE2 "Z122,MK8-Extr."
+  #elif ALL(DE200_HEAD_Z122)
+    #define MACHINE_ABOUT_LINE2 "Z122"
+  #elif ALL(DE200_EXTRUDER_MK8)
+    #define MACHINE_ABOUT_LINE2 "MK8-Extr."
+  #endif
+  // Advanced Marlin features
+  #if ENABLED(DE200_EXPERIMENT_LIN_ADV)
+    #define MACHINE_ABOUT_LINE3 "X:Linear Advance"
+  #elif ENABLED(DE200_EXPERIMENT_INP_SHAPE)
+    #define MACHINE_ABOUT_LINE3 "X:Input Shaping"
+  #elif ENABLED(DE200_EXPERIMENT_S_CURVE)
+    #define MACHINE_ABOUT_LINE3 "X:S-Curve Accel."
+  #elif ENABLED(DE200_EXPERIMENT_MPC)
+    #define MACHINE_ABOUT_LINE3 "X:Model Predict Ctl"
+  #elif ENABLED(DE200_EXPERIMENT_JUNC_DEV)
+    #define MACHINE_ABOUT_LINE3 "X:Juction Deviation"
+  #endif
 #endif
 
 
@@ -836,8 +908,11 @@
  * PIDTEMP : PID temperature control (~4.1K)
  * MPCTEMP : Predictive Model temperature control. (~1.8K without auto-tune)
  */
-#define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
-//#define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
+#if DISABLED(DE200_EXPERIMENT_MPC)
+  #define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
+#else
+  #define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
+#endif
 
 #define PID_MAX  255      // Limit hotend current while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 #define PID_K1     0.95   // Smoothing factor within any PID loop
@@ -1370,10 +1445,19 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#if ENABLED(DE200_ZSCREWS_EXPERT)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 98 }
-#elif ENABLED(DE200_ZSCREWS_STD)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 2560, 98 }
+#if ENABLED(DE200_EXTRUDER_MX8)
+  #define DE200_EXTRUDER_STEPS_MM 133
+#else
+  #define DE200_EXTRUDER_STEPS_MM 98
+#endif
+#if ENABLED(DE200_ZSCREWS_STD)
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 2560, DE200_EXTRUDER_STEPS_MM }
+#elif ENABLED(DE200_ZSCREWS_EXPERT)
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80,  800, DE200_EXTRUDER_STEPS_MM }
+#elif ENABLED(DE200_ZSCREWS_T8_2)
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 1600, DE200_EXTRUDER_STEPS_MM }
+#elif ENABLED(DE200_ZSCREWS_T8_8)
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80,  400, DE200_EXTRUDER_STEPS_MM }
 #else
   #error "DE200_ZSCREWS unknown"
 #endif
@@ -1423,7 +1507,9 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#define CLASSIC_JERK
+#if DISABLED(DE200_EXPERIMENT_JUNC_DEV)
+  #define CLASSIC_JERK
+#endif
 #if ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK 20.0
   #define DEFAULT_YJERK 20.0
@@ -1453,7 +1539,12 @@
  *   https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
  */
 #if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
+  //#define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
+
+  // DE200: According to https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
+  // d = 0.4 * Jerk^2 / Acceleration
+  #define JUNCTION_DEVIATION_MM (0.4 * DEFAULT_XJERK * DEFAULT_YJERK / DEFAULT_ACCELERATION)
+
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
@@ -1466,7 +1557,9 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-//#define S_CURVE_ACCELERATION
+#if ENABLED(DE200_EXPERIMENT_S_CURVE)
+  #define S_CURVE_ACCELERATION
+#endif
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -1539,7 +1632,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#if ENABLED(DE200_HEAD_BLTOUCH_ANY)
+#if ANY(DE200_HEAD_STD_BLTOUCH, DE200_HEAD_Z122_BLTOUCH)
   #define BLTOUCH
 #endif
 
@@ -1693,10 +1786,14 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#if ENABLED(DE200_HEAD_Z122)
-  #define NOZZLE_TO_PROBE_OFFSET { 0, -57, 0 }
-#elif ENABLED(DE200_HEAD_STD)
+#if ENABLED(DE200_HEAD_STD)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 21, 0 }
+#elif ENABLED(DE200_HEAD_STD_BLTOUCH)
+  #define NOZZLE_TO_PROBE_OFFSET { 0, -21, 0 }
+#elif ENABLED(DE200_HEAD_Z122)
+  #define NOZZLE_TO_PROBE_OFFSET { 0, -57, 0 }
+#elif ENABLED(DE200_HEAD_Z122_BLTOUCH)
+  #define NOZZLE_TO_PROBE_OFFSET { 0, -57, 0 }
 #else
   #error "DE200_HEAD unknown"
 #endif
@@ -1911,16 +2008,16 @@
 
 // The size of the printable area
 // Note: Because of integer centre calculations, bed sizes need to be even integers
-#if ALL(DE200_HEAD_STD,DE200_SIZE_STD)
+#if ALL(DE200_HEAD_STD_ANY, DE200_SIZE_STD)
   #define X_BED_SIZE 204
   #define Y_BED_SIZE 204
-#elif ALL(DE200_HEAD_STD, DE200_SIZE_XL)
+#elif ALL(DE200_HEAD_STD_ANY, DE200_SIZE_XL)
   #define X_BED_SIZE 298
   #define Y_BED_SIZE 204
-#elif ALL(DE200_HEAD_Z122, DE200_SIZE_STD)
+#elif ALL(DE200_HEAD_Z122_ANY, DE200_SIZE_STD)
   #define X_BED_SIZE 182
   #define Y_BED_SIZE 184
-#elif ALL(DE200_HEAD_Z122, DE200_SIZE_XL)
+#elif ALL(DE200_HEAD_Z122_ANY, DE200_SIZE_XL)
   #define X_BED_SIZE 276
   #define Y_BED_SIZE 184
 #else
@@ -2115,9 +2212,13 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT
-#define AUTO_BED_LEVELING_LINEAR
-//#define AUTO_BED_LEVELING_BILINEAR
-//#define AUTO_BED_LEVELING_UBL
+#if ENABLED(DE200_EXPERIMENT_BED_BILINEAR)
+  #define AUTO_BED_LEVELING_BILINEAR
+#elif ENABLED(DE200_EXPERIMENT_BED_UNIFIED)
+  #define AUTO_BED_LEVELING_UBL
+#else
+  #define AUTO_BED_LEVELING_LINEAR
+#endif
 //#define MESH_BED_LEVELING
 
 /**

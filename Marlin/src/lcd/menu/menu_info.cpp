@@ -255,10 +255,15 @@ void menu_info_board() {
     STATIC_ITEM_F(F(SHORT_BUILD_VERSION));                        // x.x.x-Branch
     STATIC_ITEM_F(F(STRING_DISTRIBUTION_DATE));                   // YYYY-MM-DD HH:MM
     STATIC_ITEM_F(F(MACHINE_NAME), SS_DEFAULT|SS_INVERT);         // My3DPrinter
-    #ifdef DE200_MODEL
-      STATIC_ITEM_F(F(DE200_MODEL), SS_DEFAULT);                  // Sub-model
+    #ifdef MACHINE_ABOUT_LINE1
+      STATIC_ITEM_F(F(MACHINE_ABOUT_LINE1), SS_DEFAULT);          // About1
     #endif
-    STATIC_ITEM_F(F(WEBSITE_URL));                                // www.my3dprinter.com
+    #ifdef MACHINE_ABOUT_LINE2
+      STATIC_ITEM_F(F(MACHINE_ABOUT_LINE2), SS_DEFAULT);          // About2
+    #endif
+    #ifdef MACHINE_ABOUT_LINE3
+      STATIC_ITEM_F(F(MACHINE_ABOUT_LINE3), SS_DEFAULT);          // About3
+    #endif
     PSTRING_ITEM(MSG_INFO_EXTRUDERS, STRINGIFY(EXTRUDERS), SS_CENTER); // Extruders: 2
     #if HAS_LEVELING
       STATIC_ITEM(
@@ -269,6 +274,7 @@ void menu_info_board() {
         TERN_(MESH_BED_LEVELING, MSG_MESH_LEVELING)               // Mesh Leveling
       );
     #endif
+    STATIC_ITEM_F(F(WEBSITE_URL));                                // www.my3dprinter.com
     END_SCREEN();
   }
 
