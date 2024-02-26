@@ -20,7 +20,7 @@ on:
 
 jobs:
   basic:
-    name: "Build: Basic"
+    name: "Build: Basic ${{ matrix.lang }}"
     strategy:
       fail-fast: false
       matrix:
@@ -33,7 +33,7 @@ jobs:
         thermistor: [WHITE]
         pinout:     [STD]
         head:       [STD]
-        experiment: [NONE]
+        experiment: [NONE, BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
     permissions:
       contents: write
     uses: ./.github/workflows/build_single.yaml
@@ -51,7 +51,7 @@ jobs:
     secrets: inherit
 
   en:
-    name: "Build: en"
+    name: "Build: ${{ matrix.lang }}"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -94,7 +94,7 @@ jobs:
     secrets: inherit
 
   fr:
-    name: "Build: fr"
+    name: "Build: ${{ matrix.lang }}"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -130,7 +130,7 @@ jobs:
     secrets: inherit
 
   de:
-    name: "Build: de"
+    name: "Build: ${{ matrix.lang }}"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -166,7 +166,7 @@ jobs:
     secrets: inherit
 
   nolcd:
-    name: "Build: nolcd"
+    name: "Build: nolcd ${{ matrix.lang }}"
     strategy:
       fail-fast: false
       matrix:
@@ -196,40 +196,8 @@ jobs:
       experiment: ${{ matrix.experiment }}
     secrets: inherit
 
-  experiment:
-    name: "Build: experiment"
-    needs: basic
-    strategy:
-      fail-fast: false
-      matrix:
-        lang:       [en]
-        screen:     [STD]
-        extruder:   [STD]
-        zscrews:    [STD]
-        size:       [STD]
-        warping:    [STD]
-        thermistor: [WHITE]
-        pinout:     [STD]
-        head:       [STD]
-        experiment: [BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
-    permissions:
-      contents: write
-    uses: ./.github/workflows/build_single.yaml
-    with:
-      lang:       ${{ matrix.lang }}
-      screen:     ${{ matrix.screen }}
-      extruder:   ${{ matrix.extruder }}
-      zscrews:    ${{ matrix.zscrews }}
-      size:       ${{ matrix.size }}
-      warping:    ${{ matrix.warping }}
-      thermistor: ${{ matrix.thermistor }}
-      pinout:     ${{ matrix.pinout }}
-      head:       ${{ matrix.head }}
-      experiment: ${{ matrix.experiment }}
-    secrets: inherit
-
   # lesimprimantes3d:
-    # name: "Build: lesimprimantes3d"
+    # name: "Build: ${{ matrix.lang }} lesimprimantes3d"
     # if: ${{ github.event_name == 'release' }}
     # needs: basic
     # strategy:
