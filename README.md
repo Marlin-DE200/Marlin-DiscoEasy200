@@ -63,8 +63,7 @@ submitting PRs (with before and after test evidence).
 In particular the following features are
 available as experimental features using the Single Build workflow,
 but not currently enabled for standard builds
-because they will need to be tested **and** tuned
-(and their memory usage will need to stay within the memory of the MKS BASe 1.5 controller):
+because they will need to be tested **and** tuned.
 
 * Bilinear bed-levelling rather than linear bed-levelling as this handles non-flat beds better
   ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
@@ -79,6 +78,10 @@ The following advanced Marlin features are available for evaluation,
 but do not currently have even Single Build support
 
 * [Direct stepping](https://reprap.org/wiki/Direct_Stepping) / [Step Daemon](https://github.com/colinrgodsey/step-daemon)
+
+Memory usage does not appear to be a major issue at present.
+The largest current build is the experimental Unified Bed Levelling
+which comes in at c. 187k of a maximum 248KB.
 
 The implementation of this version has been designed to be flexible and to allow for both
 easy updating as new stock versions of Marlin are released, and

@@ -29,8 +29,8 @@ jobs:
         extruder:   [STD]
         zscrews:    [STD]
         size:       [STD]
-        warping:    [STD]
         thermistor: [WHITE]
+        warping:    [STD]
         pinout:     [STD]
         head:       [STD]
         experiment: [NONE, BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
@@ -43,8 +43,8 @@ jobs:
       extruder:   ${{ matrix.extruder }}
       zscrews:    ${{ matrix.zscrews }}
       size:       ${{ matrix.size }}
-      warping:    ${{ matrix.warping }}
       thermistor: ${{ matrix.thermistor }}
+      warping:    ${{ matrix.warping }}
       pinout:     ${{ matrix.pinout }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
@@ -62,8 +62,8 @@ jobs:
         extruder:   [STD, PLUS, BICOLOR]
         zscrews:    [STD, EXPERT]
         size:       [STD, XL]
-        warping:    [STD, BED_ATELIER3D]
         thermistor: [WHITE, BLACK]
+        warping:    [STD, BED_ATELIER3D]
         pinout:     [STD, MKS]
         head:       [STD, Z122]
         experiment: [NONE]
@@ -73,8 +73,8 @@ jobs:
           - extruder:     STD
             zscrews:      STD
             size:         STD
-            warping:      STD
             thermistor:   WHITE
+            warping:      STD
             pinout:       STD
             head:         STD
     permissions:
@@ -86,8 +86,8 @@ jobs:
       extruder:   ${{ matrix.extruder }}
       zscrews:    ${{ matrix.zscrews }}
       size:       ${{ matrix.size }}
-      warping:    ${{ matrix.warping }}
       thermistor: ${{ matrix.thermistor }}
+      warping:    ${{ matrix.warping }}
       pinout:     ${{ matrix.pinout }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
@@ -105,8 +105,8 @@ jobs:
         extruder:   [STD, PLUS, BICOLOR]
         zscrews:    [STD, EXPERT]
         size:       [STD, XL]
-        warping:    [STD, BED_ATELIER3D]
         thermistor: [WHITE, BLACK]
+        warping:    [STD, BED_ATELIER3D]
         pinout:     [STD, MKS]
         head:       [STD, Z122]
         experiment: [NONE]
@@ -122,8 +122,8 @@ jobs:
       extruder:   ${{ matrix.extruder }}
       zscrews:    ${{ matrix.zscrews }}
       size:       ${{ matrix.size }}
-      warping:    ${{ matrix.warping }}
       thermistor: ${{ matrix.thermistor }}
+      warping:    ${{ matrix.warping }}
       pinout:     ${{ matrix.pinout }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
@@ -141,8 +141,8 @@ jobs:
         extruder:   [STD, PLUS, BICOLOR]
         zscrews:    [STD, EXPERT]
         size:       [STD, XL]
-        warping:    [STD, BED_ATELIER3D]
         thermistor: [WHITE, BLACK]
+        warping:    [STD, BED_ATELIER3D]
         pinout:     [STD, MKS]
         head:       [STD, Z122]
         experiment: [NONE]
@@ -158,8 +158,8 @@ jobs:
       extruder:   ${{ matrix.extruder }}
       zscrews:    ${{ matrix.zscrews }}
       size:       ${{ matrix.size }}
-      warping:    ${{ matrix.warping }}
       thermistor: ${{ matrix.thermistor }}
+      warping:    ${{ matrix.warping }}
       pinout:     ${{ matrix.pinout }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
@@ -175,8 +175,8 @@ jobs:
         extruder:   [STD]
         zscrews:    [STD]
         size:       [STD]
-        warping:    [STD, BED_ATELIER3D]
         thermistor: [WHITE, BLACK]
+        warping:    [STD, BED_ATELIER3D]
         pinout:     [STD]
         head:       [STD]
         experiment: [NONE]
@@ -189,8 +189,8 @@ jobs:
       extruder:   ${{ matrix.extruder }}
       zscrews:    ${{ matrix.zscrews }}
       size:       ${{ matrix.size }}
-      warping:    ${{ matrix.warping }}
       thermistor: ${{ matrix.thermistor }}
+      warping:    ${{ matrix.warping }}
       pinout:     ${{ matrix.pinout }}
       head:       ${{ matrix.head }}
       experiment: ${{ matrix.experiment }}
@@ -208,8 +208,8 @@ jobs:
         # extruder:   [MK8]
         # zscrews:    [T8_8]
         # size:       [STD]
-        # warping:    [BED_ATELIER3D]
         # thermistor: [WHITE]
+        # warping:    [BED_ATELIER3D]
         # pinout:     [MKS]
         # head:       [STD-BLTOUCH]
         # experiment: [NONE]
@@ -225,8 +225,8 @@ jobs:
       # extruder:   ${{ matrix.extruder }}
       # zscrews:    ${{ matrix.zscrews }}
       # size:       ${{ matrix.size }}
-      # warping:    ${{ matrix.warping }}
       # thermistor: ${{ matrix.thermistor }}
+      # warping:    ${{ matrix.warping }}
       # pinout:     ${{ matrix.pinout }}
       # head:       ${{ matrix.head }}
       # experiment: ${{ matrix.experiment }}

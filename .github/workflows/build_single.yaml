@@ -66,18 +66,18 @@ on:
         required: true
         type: choice
         default: STD
-      warping:
-        description: 'Anti-Warping (Std, Atelier3D):'
-        options: [STD, BED_ATELIER3D]
-        required: true
-        type: choice
-        default: STD
       thermistor:
         description: 'Thermistor type (White, Black):'
         options: [WHITE, BLACK]
         required: true
         type: choice
         default: WHITE
+      warping:
+        description: 'Anti-Warping (Std, Atelier3D):'
+        options: [STD, BED_ATELIER3D]
+        required: true
+        type: choice
+        default: STD
       pinout:
         description: 'Pinout (Std, MKS):'
         options: [STD, MKS]
@@ -119,12 +119,12 @@ on:
         description: 'Size (Std, XL):'
         required: true
         type: string
-      warping:
-        description: 'Anti-Warping (Std, Atelier3D):'
-        required: true
-        type: string
       thermistor:
         description: 'Thermistor type (White, Black):'
+        required: true
+        type: string
+      warping:
+        description: 'Anti-Warping (Std, Atelier3D):'
         required: true
         type: string
       pinout:
@@ -148,8 +148,8 @@ concurrency:
     -extruder:${{ inputs.extruder }}\
     -zscrews:${{ inputs.zscrews }}\
     -size:${{ inputs.size }}\
-    -warping:${{ inputs.warping }}\
     -thermistor:${{ inputs.thermistor }}\
+    -warping:${{ inputs.warping }}\
     -pinout:${{ inputs.pinout }}\
     -head:${{ inputs.head }}\
     -experiment:${{ inputs.experiment }}\
@@ -170,15 +170,15 @@ jobs:
         (inputs.zscrews      != 'STD'   && inputs.zscrews) || '',
         (inputs.size         != 'STD'   && '-') || '',
         (inputs.size         != 'STD'   && inputs.size) || '',
-        (inputs.warping      != 'STD'   && '-') || '',
-        (inputs.warping      != 'STD'   && inputs.warping) || '',
         (inputs.thermistor   != 'WHITE' && '-') || '',
         (inputs.thermistor   != 'WHITE' && inputs.thermistor) || '',
+        (inputs.warping      != 'STD'   && '-') || '',
+        (inputs.warping      != 'STD'   && inputs.warping) || '',
         (inputs.pinout       != 'STD'   && '-') || '',
         (inputs.pinout       != 'STD'   && inputs.pinout) || '',
         (inputs.head         != 'STD'   && '-') || '',
         (inputs.head         != 'STD'   && inputs.head) || '',
-        (inputs.experiment != 'NONE'  && '-') || '',
+        (inputs.experiment != 'NONE'  && '-EXPERIMENTAL-') || '',
         (inputs.experiment != 'NONE'  && inputs.experiment) || '',
         '.hex') }}
     name: "Build:
@@ -187,8 +187,8 @@ jobs:
       extrud:${{ inputs.extruder }}
       screws:${{ inputs.zscrews }}
       size:${{ inputs.size }}
-      warp:${{ inputs.warping }}
       thermistor:${{ inputs.thermistor }}
+      warp:${{ inputs.warping }}
       pinout:${{ inputs.pinout }}
       head:${{ inputs.head }}
       exp:${{ inputs.experiment }}
@@ -213,10 +213,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
-    - name: Build with PlatformIO
-      run: |
-        echo 'Build file:' $BUILD_FILE
-        platformio run
+    - name: PlatformIO: ${{ env.BUILD_FILE }}.hex
+      run: platformio run
       env:
         PLATFORMIO_BUILD_FLAGS: "\
           -D DE200_LANGUAGE=${{ inputs.lang }}
@@ -224,14 +222,23 @@ jobs:
           -D DE200_EXTRUDER_${{ inputs.extruder }}
           -D DE200_ZSCREWS_${{ inputs.zscrews }}
           -D DE200_SIZE_${{ inputs.size }}
-          -D DE200_WARPING_${{ inputs.warping }}
           -D DE200_THERMISTOR_${{ inputs.thermistor }}
+          -D DE200_WARPING_${{ inputs.warping }}
           -D DE200_PINOUT_${{ inputs.pinout }}
           -D DE200_HEAD_${{ inputs.head }}
           -D DE200_EXPERIMENT_${{ inputs.experiment }}\
           "
-    - name: Rename file
-      run: mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE
+    - name: Post build script
+      run: |
+        # Display filesize
+        ls -l .pio/build/mega2560/firmware.hex
+        # Builds must use no more than 253,952 bytes of firmware memory.
+        # Hex build file records use c. 45 bytes for each 16 bytes of firmware.
+        # End of file is an extra 15 bytes.
+        # So build file should be no more than 714,255 bytes in size.
+        # Fail job if build file is bigger than this.
+        # Otherwise calculate approx memory as xKB_of_248KB and add to end of filename.
+        mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE.hex
 
     - if: ${{ github.event_name != 'release' }}
       name: Upload artefact
@@ -239,12 +246,12 @@ jobs:
       # https://github.com/marketplace/actions/upload-a-build-artifact
       with:
         name: ${{ env.BUILD_FILE }}
-        path: .pio/build/mega2560/${{ env.BUILD_FILE }}
+        path: .pio/build/mega2560/${{ env.BUILD_FILE }}.hex
         compression-level: 9
         if-no-files-found: error
 
     - if: ${{ github.event_name == 'release' }}
       name: Upload release
-      run: gh release upload ${{github.event.release.tag_name}} .pio/build/mega2560/$BUILD_FILE
+      run: gh release upload ${{github.event.release.tag_name}} .pio/build/mega2560/$BUILD_FILE.hex
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
