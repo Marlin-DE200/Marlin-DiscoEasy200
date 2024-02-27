@@ -19,6 +19,10 @@ on:
   workflow_dispatch:
 
 jobs:
+  # temp_branch:
+    # Create a temp branch for this run (based on this or master branch) and named with the run no.
+    # and empty/commit the builds directory.
+
   basic:
     name: "Build: Basic ${{ matrix.lang }}"
     strategy:
@@ -231,3 +235,8 @@ jobs:
       # head:       ${{ matrix.head }}
       # experiment: ${{ matrix.experiment }}
     # secrets: inherit
+
+  # finalise:
+    # needs: [basic, nolcd, en, fr, de]
+    # if: always()
+    # run: # If release and successful, merge the temp branch and delete it.

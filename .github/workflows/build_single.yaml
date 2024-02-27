@@ -240,8 +240,8 @@ jobs:
         # Otherwise calculate approx memory as xKB_of_248KB and add to end of filename.
         mv .pio/build/mega2560/firmware.hex .pio/build/mega2560/$BUILD_FILE.hex
 
-    - if: ${{ github.event_name != 'release' }}
-      name: Upload artefact
+    - name: Upload artefact
+      if: ${{ github.event_name != 'release' }}
       uses: actions/upload-artifact@v4
       # https://github.com/marketplace/actions/upload-a-build-artifact
       with:
@@ -250,8 +250,13 @@ jobs:
         compression-level: 9
         if-no-files-found: error
 
-    - if: ${{ github.event_name == 'release' }}
-      name: Upload release
+    - name: Upload release
+      if: ${{ github.event_name == 'release' }}
       run: gh release upload ${{github.event.release.tag_name}} .pio/build/mega2560/$BUILD_FILE.hex
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
+
+    # - name: Save build to repo
+      # if temp branch exists
+      # Add/commit the build file to the temp branch
+      # https://github.com/marketplace/actions/add-commit
