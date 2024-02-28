@@ -19,7 +19,7 @@ however the author has only tested the stock+LCD+White Thermistor version.
 
 All these standard Dagoma options are built automatically.
 
-In addition, several selected community enhancements are also supported:
+In addition, several selected community enhancements are also supported as options:
 
 * All other Marlin languages (mostly not tested - japanese / cyrilic language may need alternative fonts defining)
 * Z122 head
@@ -54,6 +54,9 @@ The additional functionality currently enabled includes:
 * Support for all Marlin languages
 * Probe Offset Wizard - alternative to the Dagoma App to set the z-offset -
   [youtube video](https://www.youtube.com/watch?v=2gRfU26aTDs)
+* [Linear Advance](https://marlinfw.org/docs/features/lin_advance.html)
+  is enabled as standard with a factor of 0 (= off).
+  Changing the K value from the screen or using M900 K (and M500).
 
 There is still a lot of newer functionality available in Marlin v2
 that has not been enabled as standard due to lack of testing with the DE200,
@@ -68,7 +71,6 @@ because they will need to be tested **and** tuned.
 * Bilinear bed-levelling rather than linear bed-levelling as this handles non-flat beds better
   ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
 * [Unified Bed Levelling](https://marlinfw.org/docs/features/unified_bed_leveling.html)
-* [Linear Advance](https://marlinfw.org/docs/features/lin_advance.html)
 * [Input shaping](https://marlinfw.org/docs/features/input_shaping.html)
 * [S-Curve Acceleration](https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained)
 * [Model Predictive Temperature Control](https://marlinfw.org/docs/features/model_predictive_control.html)
@@ -177,6 +179,7 @@ please add to it when you spot something that is different.
   [youtube video](https://www.youtube.com/watch?v=2gRfU26aTDs)
 * M73 support so that a [matching Octoprint plugin](https://plugins.octoprint.org/plugins/m73etaoverride/) can set the % progress bar.
 * Positions of Filament Change and Printer Information menus swapped.
+* G26 enabled for Bilinear or Unified Bed levelling testing plus a custom menu
 
 The following stock functions have not been configured (because we cannot work out how)
 and probably won't work:

@@ -37,7 +37,7 @@ jobs:
         warping:    [STD]
         pinout:     [STD]
         head:       [STD]
-        experiment: [NONE, BED_BILINEAR, BED_UNIFIED, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV]
+        experiment: [NONE, BED_BILINEAR, BED_UNIFIED, INP_SHAPE, S_CURVE, MPC, JUNC_DEV, BACKLASH, ADAPTIVE_SMOOTHING] # STATUS_ICONS
     permissions:
       contents: write
     uses: ./.github/workflows/build_single.yaml

@@ -101,15 +101,17 @@
 //#define DE200_HEAD_Z122
 //#define DE200_HEAD_Z122_BLTOUCH
 
-// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, LIN_ADV, INP_SHAPE, S_CURVE, MPC, JUNC_DEV
+// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, INP_SHAPE, S_CURVE, MPC, JUNC_DEV, STATUS_ICONS, BACKLASH, ADAPTIVE_SMOOTHING
 //#define DE200_EXPERIMENT_NONE
 //#define DE200_EXPERIMENT_BED_BILINEAR
 //#define DE200_EXPERIMENT_BED_UNIFIED
-//#define DE200_EXPERIMENT_LIN_ADV
 //#define DE200_EXPERIMENT_INP_SHAPE
 //#define DE200_EXPERIMENT_S_CURVE
 //#define DE200_EXPERIMENT_MPC
 //#define DE200_EXPERIMENT_JUNC_DEV
+//#define DE200_EXPERIMENT_STATUS_ICONS
+//#define DE200_EXPERIMENT_BACKLASH
+//#define DE200_EXPERIMENT_ADAPTIVE_SMOOTHING
 
 
 /*
@@ -170,11 +172,13 @@
 #endif
 
 #if NONE(DE200_EXPERIMENT_NONE, DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED, \
-  DE200_EXPERIMENT_LIN_ADV, DE200_EXPERIMENT_INP_SHAPE, DE200_EXPERIMENT_S_CURVE, \
-  DE200_EXPERIMENT_MPC, DE200_EXPERIMENT_JUNC_DEV)
+  DE200_EXPERIMENT_INP_SHAPE, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_MPC, DE200_EXPERIMENT_JUNC_DEV, \
+  DE200_EXPERIMENT_STATUS_ICONS, DE200_EXPERIMENT_BACKLASH, DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
   #define DE200_EXPERIMENT_NONE
 #endif
-
+#if NONE(DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED)
+  #define DE200_EXPERIMENT_BED_LINEAR
+#endif
 
 /*
  * DE200: About printer information - max 19 chars per line
@@ -229,9 +233,7 @@
     #define MACHINE_ABOUT_LINE2 "MK8-Extr."
   #endif
   // Advanced Marlin features
-  #if ENABLED(DE200_EXPERIMENT_LIN_ADV)
-    #define MACHINE_ABOUT_LINE3 "X:Linear Advance"
-  #elif ENABLED(DE200_EXPERIMENT_INP_SHAPE)
+  #if ENABLED(DE200_EXPERIMENT_INP_SHAPE)
     #define MACHINE_ABOUT_LINE3 "X:Input Shaping"
   #elif ENABLED(DE200_EXPERIMENT_S_CURVE)
     #define MACHINE_ABOUT_LINE3 "X:S-Curve Accel."
@@ -239,6 +241,12 @@
     #define MACHINE_ABOUT_LINE3 "X:Model Predict Ctl"
   #elif ENABLED(DE200_EXPERIMENT_JUNC_DEV)
     #define MACHINE_ABOUT_LINE3 "X:Juction Deviation"
+  #elif ENABLED(DE200_EXPERIMENT_STATUS_ICONS)
+    #define MACHINE_ABOUT_LINE3 "X:Status Icons"
+  #elif ENABLED(DE200_EXPERIMENT_BACKLASH)
+    #define MACHINE_ABOUT_LINE3 "X:Backlash"
+  #elif ENABLED(DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
+    #define MACHINE_ABOUT_LINE3 "X:Adaptive Smooth"
   #endif
 #endif
 
@@ -947,8 +955,8 @@
  * @section mpctemp
  */
 #if ENABLED(MPCTEMP)
-  //#define MPC_EDIT_MENU                             // Add MPC editing to the "Advanced Settings" menu. (~1.3K bytes of flash)
-  //#define MPC_AUTOTUNE_MENU                         // Add MPC auto-tuning to the "Advanced Settings" menu. (~350 bytes of flash)
+  #define MPC_EDIT_MENU                               // Add MPC editing to the "Advanced Settings" menu. (~1.3K bytes of flash)
+  #define MPC_AUTOTUNE_MENU                           // Add MPC auto-tuning to the "Advanced Settings" menu. (~350 bytes of flash)
 
   #define MPC_MAX 255                                 // (0..255) Current to nozzle while MPC is active.
   #define MPC_HEATER_POWER { 40.0f }                  // (W) Heat cartridge powers.
@@ -1078,8 +1086,8 @@
   #define PID_FUNCTIONAL_RANGE 10 // If the temperature difference between the target temperature and the actual temperature
                                   // is more than PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
 
-  //#define PID_EDIT_MENU         // Add PID editing to the "Advanced Settings" menu. (~700 bytes of flash)
-  //#define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of flash)
+  #define PID_EDIT_MENU         // Add PID editing to the "Advanced Settings" menu. (~700 bytes of flash)
+  #define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of flash)
 #endif
 
 // @section safety
@@ -1511,7 +1519,7 @@
   #define CLASSIC_JERK
 #endif
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK 20.0
+  #define DEFAULT_XJERK 20.0  // If you change X/YJERK then the Junction Deviation distance will need recalculating
   #define DEFAULT_YJERK 20.0
   #define DEFAULT_ZJERK  0.4
   //#define DEFAULT_IJERK  0.3
@@ -1529,11 +1537,7 @@
   #endif
 #endif
 
-#if DISABLED(DE200_EXPERIMENT_LIN_ADV)
-  #define DEFAULT_EJERK    5.0  // Normal
-#else
-  #define DEFAULT_EJERK   10.0  // Linear Advance
-#endif
+#define DEFAULT_EJERK   10.0  // Linear Advance requires minimum of 10.0
 
 /**
  * Junction Deviation Factor
@@ -1547,7 +1551,7 @@
 
   // DE200: According to https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
   // d = 0.4 * Jerk^2 / Acceleration = 0.4 * DEFAULT_XJERK * DEFAULT_YJERK / DEFAULT_ACCELERATION
-  #define JUNCTION_DEVIATION_MM (0.4 * 0.2 * 0.2 / DEFAULT_ACCELERATION)
+  #define JUNCTION_DEVIATION_MM (0.4 * 20 * 20 / DEFAULT_ACCELERATION) // For normal Dagoma settings 0.05333
 
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
@@ -1636,7 +1640,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#if ANY(DE200_HEAD_STD_BLTOUCH, DE200_HEAD_Z122_BLTOUCH)
+#if ENABLED(DE200_HEAD_BLTOUCH_ANY)
   #define BLTOUCH
 #endif
 
@@ -1813,7 +1817,7 @@
 #define Z_PROBE_FEEDRATE_FAST (5*60) // Dagoma value (4*60)
 
 // Feedrate (mm/min) for the "accurate" probe of each point
-#define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 4)
+#define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 5)
 
 /**
  * Probe Activation Switch
@@ -2216,12 +2220,14 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT
-#if ENABLED(DE200_EXPERIMENT_BED_BILINEAR)
+#if ENABLED(DE200_EXPERIMENT_BED_LINEAR)
+  #define AUTO_BED_LEVELING_LINEAR
+#elif ENABLED(DE200_EXPERIMENT_BED_BILINEAR)
   #define AUTO_BED_LEVELING_BILINEAR
 #elif ENABLED(DE200_EXPERIMENT_BED_UNIFIED)
   #define AUTO_BED_LEVELING_UBL
 #else
-  #define AUTO_BED_LEVELING_LINEAR
+  #error DE200_BED_LEVELING undefined
 #endif
 //#define MESH_BED_LEVELING
 
@@ -2236,7 +2242,7 @@
  * these options to restore the prior leveling state or to always enable
  * leveling immediately after G28.
  */
-//#define RESTORE_LEVELING_AFTER_G28
+#define RESTORE_LEVELING_AFTER_G28
 //#define ENABLE_LEVELING_AFTER_G28
 
 /**
@@ -2291,15 +2297,17 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  //#define G26_MESH_VALIDATION
+  #if ANY(DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED)
+    #define G26_MESH_VALIDATION
+  #endif
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for G26.
     #define MESH_TEST_HOTEND_TEMP  205    // (°C) Default nozzle temperature for G26.
     #define MESH_TEST_BED_TEMP      60    // (°C) Default bed temperature for G26.
-    #define G26_XY_FEEDRATE         20    // (mm/s) Feedrate for G26 XY moves.
-    #define G26_XY_FEEDRATE_TRAVEL 100    // (mm/s) Feedrate for G26 XY travel moves.
-    #define G26_RETRACT_MULTIPLIER   1.0  // G26 Q (retraction) used by default between mesh test elements.
+    #define G26_XY_FEEDRATE         40    // (mm/s) Feedrate for G26 XY moves.
+    #define G26_XY_FEEDRATE_TRAVEL  90    // (mm/s) Feedrate for G26 XY travel moves.
+    #define G26_RETRACT_MULTIPLIER   5.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
 
 #endif
@@ -2836,13 +2844,13 @@
 // This option overrides the default number of encoder pulses needed to
 // produce one step. Should be increased for high-resolution encoders.
 //
-#define ENCODER_PULSES_PER_STEP 2
+#define ENCODER_PULSES_PER_STEP 4
 
 //
 // Use this option to override the number of step signals required to
 // move between next/prev menu items.
 //
-#define ENCODER_STEPS_PER_MENU_ITEM 2
+#define ENCODER_STEPS_PER_MENU_ITEM 1
 
 /**
  * Encoder Direction Options
@@ -3576,7 +3584,7 @@
 
 // Set number of user-controlled fans. Disable to use all board-defined fans.
 // :[1,2,3,4,5,6,7,8]
-//#define NUM_M106_FANS 1
+#define NUM_M106_FANS 1
 
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
