@@ -55,7 +55,7 @@ jobs:
     secrets: inherit
 
   en:
-    name: "Build: ${{ matrix.lang }}"
+    name: "Build: en"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -98,7 +98,7 @@ jobs:
     secrets: inherit
 
   fr:
-    name: "Build: ${{ matrix.lang }}"
+    name: "Build: fr"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -134,7 +134,7 @@ jobs:
     secrets: inherit
 
   de:
-    name: "Build: ${{ matrix.lang }}"
+    name: "Build: de"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -170,7 +170,7 @@ jobs:
     secrets: inherit
 
   nolcd:
-    name: "Build: nolcd ${{ matrix.lang }}"
+    name: "Build: NoLcd"
     strategy:
       fail-fast: false
       matrix:
@@ -201,7 +201,7 @@ jobs:
     secrets: inherit
 
   # lesimprimantes3d:
-    # name: "Build: ${{ matrix.lang }} lesimprimantes3d"
+    # name: "Build: lesimprimantes3d"
     # if: ${{ github.event_name == 'release' }}
     # needs: basic
     # strategy:
