@@ -728,7 +728,7 @@
 // enable this option. Override at any time with M120, M121.
 #if ALL(SDSUPPORT, DE200_SCREEN_NONE)
   #define ENDSTOPS_ALWAYS_ON_DEFAULT
-endif
+#endif
 
 // @section extras
 
