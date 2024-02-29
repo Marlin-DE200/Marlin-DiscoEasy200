@@ -24,7 +24,7 @@ jobs:
     # and empty/commit the builds directory.
 
   basic:
-    name: "Build: Basic ${{ matrix.lang }}"
+    name: "Build: Basic ${{ inputs.null }}"
     strategy:
       fail-fast: false
       matrix:
@@ -55,7 +55,7 @@ jobs:
     secrets: inherit
 
   en:
-    name: "Build: en"
+    name: "Build: en ${{ inputs.null }}"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -98,7 +98,7 @@ jobs:
     secrets: inherit
 
   fr:
-    name: "Build: fr"
+    name: "Build: fr ${{ inputs.null }}"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -134,7 +134,7 @@ jobs:
     secrets: inherit
 
   de:
-    name: "Build: de"
+    name: "Build: de ${{ inputs.null }}"
     if: ${{ github.event_name == 'release' }}
     needs: basic
     strategy:
@@ -201,7 +201,7 @@ jobs:
     secrets: inherit
 
   # lesimprimantes3d:
-    # name: "Build: lesimprimantes3d"
+    # name: "Build: lesimprimantes3d ${{ inputs.null }}"
     # if: ${{ github.event_name == 'release' }}
     # needs: basic
     # strategy:

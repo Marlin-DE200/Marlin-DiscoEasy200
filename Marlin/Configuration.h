@@ -840,7 +840,7 @@
 
 #if TEMP_SENSOR_BED
   #define TEMP_BED_RESIDENCY_TIME     10  // (seconds) Time to wait for bed to "settle" in M190
-  #define TEMP_BED_WINDOW              1  // (°C) Temperature proximity for the "temperature reached" timer
+  #define TEMP_BED_WINDOW              3  // (°C) Temperature proximity for the "temperature reached" timer
   #define TEMP_BED_HYSTERESIS          3  // (°C) Temperature proximity considered "close enough" to the target
 #endif
 
@@ -938,9 +938,17 @@
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
     // Dagoma DiscoEasy200 hotend E3D-v6 1,75mm
-    #define DEFAULT_Kp  32.48
-    #define DEFAULT_Ki   6.40
-    #define DEFAULT_Kd  41.25
+
+    // Dagoma values (from before PID autotuning)
+    // #define DEFAULT_Kp  32.48
+    // #define DEFAULT_Ki   6.40
+    // #define DEFAULT_Kd  41.25
+
+    // Discussion on how following values were obtained at:
+    // https://github.com/Marlin-DE200/Marlin-DiscoEasy200/wiki/Hotend:Bed-PID-Tuning
+    #define DEFAULT_Kp  64.3
+    #define DEFAULT_Ki  12.6
+    #define DEFAULT_Kd  81.8
   #endif
 #else
   #define BANG_MAX 255    // Limit hotend current while in bang-bang mode; 255=full current
@@ -959,7 +967,7 @@
   #define MPC_AUTOTUNE_MENU                           // Add MPC auto-tuning to the "Advanced Settings" menu. (~350 bytes of flash)
 
   #define MPC_MAX 255                                 // (0..255) Current to nozzle while MPC is active.
-  #define MPC_HEATER_POWER { 40.0f }                  // (W) Heat cartridge powers.
+  #define MPC_HEATER_POWER { 30.0f }                  // (W) Heat cartridge powers - E3D v6 24v 1.75mm bowden.
 
   #define MPC_INCLUDE_FAN                             // Model the fan speed?
 
@@ -1019,8 +1027,9 @@
  *
  * With this option disabled, bang-bang will be used. BED_LIMIT_SWITCHING enables hysteresis.
  */
-//#define PIDTEMPBED
-
+#if ENABLED(DE200_WARPING_BED_ANY)
+  #define PIDTEMPBED
+#endif
 #if ENABLED(PIDTEMPBED)
   //#define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Print Bed PID debug data to the serial port.
@@ -2163,9 +2172,9 @@
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
   #if ENABLED(DE200_EXTRUDER_BICOLOR)
-    #define FILAMENT_RUNOUT_SCRIPT "M600 T%c I-1 U5 V195 X195 Y195"
+    #define FILAMENT_RUNOUT_SCRIPT "M600 T%c
   #else
-    #define FILAMENT_RUNOUT_SCRIPT "M600 I-1 U5 V195 X195 Y195"
+    #define FILAMENT_RUNOUT_SCRIPT "M600"
   #endif
 
   // After a runout is detected, continue printing this length of filament
@@ -2307,7 +2316,8 @@
     #define MESH_TEST_BED_TEMP      60    // (°C) Default bed temperature for G26.
     #define G26_XY_FEEDRATE         40    // (mm/s) Feedrate for G26 XY moves.
     #define G26_XY_FEEDRATE_TRAVEL  90    // (mm/s) Feedrate for G26 XY travel moves.
-    #define G26_RETRACT_MULTIPLIER   5.0  // G26 Q (retraction) used by default between mesh test elements.
+    // E3D v6 retraction must be < 5mm according to datasheet.
+    #define G26_RETRACT_MULTIPLIER   4.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
 
 #endif
@@ -2601,7 +2611,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MAX_POS - 10), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS - 10), 20 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
   #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)

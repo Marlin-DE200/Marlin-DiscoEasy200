@@ -179,8 +179,8 @@ jobs:
         (inputs.head         != 'STD'   && '-') || '',
         (inputs.head         != 'STD'   && inputs.head) || '',
         (inputs.experiment != 'NONE'  && '-EXPERIMENTAL-') || '',
-        (inputs.experiment != 'NONE'  && inputs.experiment) || '',
-        '.hex') }}
+        (inputs.experiment != 'NONE'  && inputs.experiment) || ''
+        }}
     name: "Build:
       ${{ (inputs.screen == 'NONE' && 'nolcd') || inputs.lang }}
       ${{ (inputs.screen != 'NONE' && inputs.screen != 'STD' && inputs.screen) || '' }}
@@ -245,7 +245,7 @@ jobs:
       uses: actions/upload-artifact@v4
       # https://github.com/marketplace/actions/upload-a-build-artifact
       with:
-        name: ${{ env.BUILD_FILE }}
+        name: ${{ env.BUILD_FILE }}.hex
         path: .pio/build/mega2560/${{ env.BUILD_FILE }}.hex
         compression-level: 9
         if-no-files-found: error

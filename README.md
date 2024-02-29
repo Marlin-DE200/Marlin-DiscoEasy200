@@ -4,20 +4,22 @@ This repo is a fork of the Marlin repo configured specifically for various versi
 
 The intention is to support all Dagoma versions of the DiscoEasy200 including:
 
+* Screen / No screen (Dagoma screen is assumed - other screens may be supported in the future)
 * Bicolor
 * Extruder+ (with a filament sensor)
-* No screen (Dagoma screen is assumed - other screens may be supported in the future)
 * Black thermistor (white is assumed)
-* Trapezoidal z-screws
+* Expert pack - Trapezoidal z-screws
 * XL
 * English, French & German languages
-* Arc support (G2/G3)
 
 The configuration settings for these options have been taken
-directly from the Dagoma soure code and should work,
-however the author has only tested the stock+LCD+White Thermistor version.
+directly from the Dagoma soure code and should work.
 
-All these standard Dagoma options are built automatically.
+All these standard Dagoma options are built automatically based on common configuration settings,
+so all functionality tested on the author's stock+LCD+White Thermistor DE200 should work fine
+on these other variants.
+
+Every combination of the above are compiled automatically for each formal release.
 
 In addition, several selected community enhancements are also supported as options:
 
@@ -29,166 +31,27 @@ In addition, several selected community enhancements are also supported as optio
 The configuration settings for these options have been taken
 from various Thingiverse things and Github repos
 that purport to support these modifications,
-however none of these configurations have been tested.
+however none of these configurations have been tested either.
 
-Because the number of options is multiplicative,
-adding these options to automated builds would
-produce an unreasonable number of options.
-(Each language currently produces about 160 builds,
-so for the 3 languages we already produce almost 500 builds!!)
+Some combinations of these options with Standard builds are compiled for the release,
+but a firmware build every single combination of options can be manually initiated and
+built automatically using the same Github Actions workflow.
 
-However a build workflow is available on Github to build any option
-and you can then download the firmware Hex file from the Github Actions artifacts list.
-If you need help with this please open a Github issue.
+### Documentation
 
-The stock Dagoma firmware was based on the beta version of Marlin available
-when the DiscoVery was first launched (v1.1.0 RC6),
-with substantial bespoke functionality added to support the Dagoma hardware functions.
+There is a [wiki](https://github.com/Marlin-DE200/Marlin-DiscoEasy200/wiki)
+which already gives a lot more detail about these builds,
+with an intention to extend this further.
 
-The builds in this repo are based on the very latest Marlin v2,
-allowing some of the more advanced functionality available in V2
-to be enabled providing more capabilities than the stock Dagoma firmware,
-though this is limited by the maximum firmware size supported by the motherboard.
-The additional functionality currently enabled includes:
+### Open Source
 
-* Support for all Marlin languages
-* Probe Offset Wizard - alternative to the Dagoma App to set the z-offset -
-  [youtube video](https://www.youtube.com/watch?v=2gRfU26aTDs)
-* [Linear Advance](https://marlinfw.org/docs/features/lin_advance.html)
-  is enabled as standard with a factor of 0 (= off).
-  Changing the K value from the screen or using M900 K (and M500).
-
-There is still a lot of newer functionality available in Marlin v2
-that has not been enabled as standard due to lack of testing with the DE200,
-and the author would welcome users testing these options and
-submitting PRs (with before and after test evidence).
-
-In particular the following features are
-available as experimental features using the Single Build workflow,
-but not currently enabled for standard builds
-because they will need to be tested **and** tuned.
-
-* Bilinear bed-levelling rather than linear bed-levelling as this handles non-flat beds better
-  ([as recommended by Marlin](https://marlinfw.org/docs/features/auto_bed_leveling.html))
-* [Unified Bed Levelling](https://marlinfw.org/docs/features/unified_bed_leveling.html)
-* [Input shaping](https://marlinfw.org/docs/features/input_shaping.html)
-* [S-Curve Acceleration](https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained)
-* [Model Predictive Temperature Control](https://marlinfw.org/docs/features/model_predictive_control.html)
-* [Junction deviation](https://www.reddit.com/r/3Dprinting/comments/dx8bdb/here_is_why_you_should_disable_junction_deviation/)
-
-The following advanced Marlin features are available for evaluation,
-but do not currently have even Single Build support
-
-* [Direct stepping](https://reprap.org/wiki/Direct_Stepping) / [Step Daemon](https://github.com/colinrgodsey/step-daemon)
-
-Memory usage does not appear to be a major issue at present.
-The largest current build is the experimental Unified Bed Levelling
-which comes in at c. 187k of a maximum 248KB.
-
-The implementation of this version has been designed to be flexible and to allow for both
-easy updating as new stock versions of Marlin are released, and
-additions of more configurations for publicly available mods such as bltouch.
-
-Discussions inc. feedback, Issues and Pull-Requests are all welcome,
-particularly where you have tested the improvements yourself,
-and the author is favourable to supporting
-any DE200 configuration using commonly available components
-other than already supported here.
-
-As an illustration of the information needed to support additional mods,
-the reasons that e.g. bltouch has not been included are:
-
-* bltouch connection pins are not standardised
-* bltouch mounting positions are not standardised - and so the nozzle-offsets are unknown
-* there are no standarised Thingiverse Things for either the mount or for the firmware that
-  can be used as the basis for configuration, the closest being a Z122 head + bltouch that does
-  not have matching firmware or the nozzle-offsets defined
+The source code is open, and you are welcome to copy this for your own use -
+however the author believes that a single flexible source for DE200 Firmware
+would be the best solution for the community and would like to open
+the administration and ownership of this to the DE200 community
+for use as a shared resource.
 
 ### DISCLAIMER
-
-At present this is Work in Progress.
-Most versions are untested and,
-whilst the author has made reasonable efforts to configure it correctly,
-***you use these versions at your own risk***.
-
-### Marlin-by-Dagoma vs stock Marlin
-
-A comparison of the Marlin-by-Dagoma stock firmware
-(which claims to be (based on) 1.1.0 RC6)
-against stock Marlin 1.1.0 RC6 suggests that it was indeed based on this release,
-but it was ***VERY*** heavily modified by Dagoma
-(probably to add functionality that simply didn't exist at the time).
-
-To analyse each of these changes made by Dagoma
-and see whether they were included in later versions of Marlin,
-and if so whether they are compatible,
-would be a task of massive proportions -
-so to create these versions of Marlin-for-DiscoEasy200 firmware
-I have assumed that later versions of stock Marlin will work on the DE200
-without modification.
-
-The availability of other people's later versions
-of stock Marlin for DE200 suggests that it will work fine,
-and anecdotal evidence suggests that
-the print quality will be significantly better,
-presumably due to numerous bugs having been fixed in base Marlin
-which were never fixed in Marlin-by-Dagoma.
-
-Therefore as starting point,
-we have carefully configured stock Marlin v2.1.x
-to have the same configuration settings as the Marlin-by-Dagoma 1.1.0 RC6,
-leaving all newer Marlin configuration settings at default.
-This delivers all newer functionality that is enabled by default
-in Marlin.
-
-In addition, where optional (typically minor) functionality looks like it might be beneficial,
-we have enabled that too.
-
-
-### Detailed functional changes from Dagoma stock firmware
-
-This is unlikely to be a definitive list -
-please add to it when you spot something that is different.
-
-* 25% faster Z-feedrate when homing - 5mm/s instead of 4mm/s
-* More bed levelling points
-* Optimised bed-levelling Z speeds.
-* Bed size reduced from 205x205 to 204x204 because of a bug (centre calculated using integer arithmetic).
-* Bed-levellinbg margin increased from 10mm to 21mm because of a bug (to do with the inductive sensor position).
-* Quick home - X & Y homing are done at the same time.
-* XY Frequency limit - reduce shaking and ringing-artifacts on prints by limiting short zigzags to 10 per second.
-* Beep to warn you when you change the feedrate % by turning the knob when printing and on the status page.
-* Transmit buffer - to improve status OK responses to a USB host during USB printing.
-* Detect broken endstop
-* Firmware settings are automatically reset when new firmware is loaded or if they get corrupted.
-  (Firmware setting storage may not be compatible between versions.)
-* SD card CRC and retry is enabled
-* Encoder (knob) direction reversed because it makes more sense.
-* Encoder (knob) improved accuracy.
-* Menus return to Info screen after 20s rather than Dagoma 10s or Marlin 15s
-* Fan noise reduction (using software PWM rather than hardware PWM)
-* SD-card file list sorting enabled
-* SD card autostart - menu item + support for both `autoN.g` and `dagomaN.g`
-* Scrolling status messages (that are wider than display)
-* Temp stability time for M109 reduced from 15s to Marlin default 10s
-* M701/M702 codes for filament load/unload enabled
-* Support [Host Action Commands](https://reprap.org/wiki/G-code#Action_commands)
-  so that e.g. [Octoprint](https://docs.octoprint.org/en/master/bundledplugins/action_command_prompt.html)for
-  can provide alternative functionality for printers without LCDs.
-* Probe Offset Wizard - alternative to the Dagoma App to set the z-offset -
-  [youtube video](https://www.youtube.com/watch?v=2gRfU26aTDs)
-* M73 support so that a [matching Octoprint plugin](https://plugins.octoprint.org/plugins/m73etaoverride/) can set the % progress bar.
-* Positions of Filament Change and Printer Information menus swapped.
-* G26 enabled for Bilinear or Unified Bed levelling testing plus a custom menu
-
-The following stock functions have not been configured (because we cannot work out how)
-and probably won't work:
-
-* Use of Y end-stop switch to pause the print
-
-If anyone knows or can work out how to make these work, please let us know.
-
-### Untested versions
 
 I created this site because I wanted an up-to-date version of Marlin
 for my specific DE200 configuration stock+LCD+english),
@@ -197,16 +60,17 @@ and the firmware for this version has been tested.
 However unless I get reports for other versions working OK,
 I cannot say for certainty that they will work.
 
-In most cases, due to the close simularities,
-these other versions should work just fine,
-however based on intuition I do wonder whether the following problems
-might need to be addressed (feedback requested):
+That said, the Marlin software is tried and tested,
+I have comprehensively tested the Stock+LCD+White-Thermistor variant on
+my own DE200 and use it in production,
+and all other variants are minor variations of the standard configuration.
 
-* For trapezoidal Z-screws do we need to keep the Z-steppers energised to prevent the head from descending?
-  (By default, z-steppers are de-energised automatically in certain circumstances.)
-  In the stock Dagoma firmware for trapezoidal screws, the z-steppers are de-energised in
-  exactly the same way as for non-trapezoidal screws, so it should be ok.
-  However, if not the fix is not difficult - so let me know.
+However, in the end most versions are untested and,
+whilst the author has made reasonable efforts to configure them correctly,
+***you load these version onto your printer and use them at your own risk***.
+
+The author will provide support to the best of his ability,
+and is extremely open to sharing support and ownership with other community experts.
 
 ## Marlin 3D Printer Firmware
 <p align="center"><img src="buildroot/share/pixmaps/logo/marlin-outrun-nf-500.png" height="250" alt="MarlinFirmware's logo" /></p>

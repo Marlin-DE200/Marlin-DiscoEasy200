@@ -170,3 +170,4 @@ tags
 *.bak
 *.zip
 /*.pdf
+!/docs/*.pdf
