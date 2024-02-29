@@ -178,9 +178,9 @@ jobs:
         (inputs.pinout       != 'STD'   && inputs.pinout) || '',
         (inputs.head         != 'STD'   && '-') || '',
         (inputs.head         != 'STD'   && inputs.head) || '',
-        (inputs.experiment != 'NONE'  && '-EXPERIMENTAL-') || '',
-        (inputs.experiment != 'NONE'  && inputs.experiment) || ''
-        }}
+        (inputs.experiment   != 'NONE'  && '-EXPERIMENTAL-') || '',
+        (inputs.experiment   != 'NONE'  && inputs.experiment) || ''
+        ) }}
     name: "Build:
       ${{ (inputs.screen == 'NONE' && 'nolcd') || inputs.lang }}
       ${{ (inputs.screen != 'NONE' && inputs.screen != 'STD' && inputs.screen) || '' }}
