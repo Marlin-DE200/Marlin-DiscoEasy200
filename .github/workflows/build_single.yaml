@@ -159,7 +159,7 @@ concurrency:
 jobs:
   build:
     env:
-      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}{20}',
+      BUILD_FILE: ${{ format('{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}{12}{13}{14}{15}{16}{17}{18}{19}',
         'DE200_2.1.2.2-',
         (inputs.screen       == 'NONE'  && 'NoLCD') || inputs.lang,
         (inputs.screen       != 'NONE'  && inputs.screen != 'STD' && '-') || '',
