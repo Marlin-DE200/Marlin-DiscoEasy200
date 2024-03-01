@@ -68,18 +68,24 @@
 // From Github PRs for other boards
 // Alter timing for graphical display
 #if HAS_MARLINUI_U8GLIB
-  // #ifndef BOARD_ST7920_DELAY_1
+  #ifndef BOARD_ST7920_DELAY_1
     //#define BOARD_ST7920_DELAY_1    DELAY_NS(96)
     // #define BOARD_ST7920_DELAY_1   DELAY_NS(120)
-  // #endif
-  // #ifndef BOARD_ST7920_DELAY_2
+    // From https://marlinfw.org/docs/basics/troubleshooting.html
+    #define BOARD_ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
+  #endif
+  #ifndef BOARD_ST7920_DELAY_2
     //#define BOARD_ST7920_DELAY_2    DELAY_NS(48)
     // #define BOARD_ST7920_DELAY_2    DELAY_NS(80)
-  // #endif
+    // From https://marlinfw.org/docs/basics/troubleshooting.html
+    #define BOARD_ST7920_DELAY_2 DELAY_NS(400) // After DAT
+  #endif
   #ifndef BOARD_ST7920_DELAY_3
     //#define BOARD_ST7920_DELAY_3   DELAY_NS(600)
     // #define BOARD_ST7920_DELAY_3   DELAY_NS(580)
     // From reprap site for RRD_FGDC
-    #define BOARD_ST7920_DELAY_3   DELAY_NS(63)
+    //#define BOARD_ST7920_DELAY_3   DELAY_NS(63)
+    // From https://marlinfw.org/docs/basics/troubleshooting.html
+    #define BOARD_ST7920_DELAY_3 DELAY_NS(200) // After CLK HIGH
   #endif
 #endif
