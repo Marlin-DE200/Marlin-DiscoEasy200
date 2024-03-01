@@ -170,7 +170,7 @@ jobs:
     secrets: inherit
 
   nolcd:
-    name: "Build: NoLcd"
+    name: "Build: NoLcd ${{ inputs.null }}"
     strategy:
       fail-fast: false
       matrix:

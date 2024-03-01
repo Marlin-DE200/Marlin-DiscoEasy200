@@ -1441,7 +1441,7 @@
 
 #if EITHER(HAS_DISPLAY, DWIN_LCD_PROUI)
   // The timeout to return to the status screen from sub-menus
-  #define LCD_TIMEOUT_TO_STATUS 20000   // (ms) - Dagoma default 10s, Marlin default 15s
+  #define LCD_TIMEOUT_TO_STATUS 30000   // (ms) - Dagoma default 10s, Marlin default 15s
 
   #if ENABLED(SHOW_BOOTSCREEN)
     #define BOOTSCREEN_TIMEOUT 1000       // (ms) Total Duration to display the boot screen(s)
