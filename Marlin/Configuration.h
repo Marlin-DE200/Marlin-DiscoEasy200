@@ -1497,8 +1497,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-//#define DEFAULT_MAX_ACCELERATION      { 3000, 1000, 20, 10000 }
-#define DEFAULT_MAX_ACCELERATION      { 3000, 1000, 16, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 3000, 1000, 20, 10000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1531,7 +1530,8 @@
 #if ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK 20.0  // If you change X/YJERK then the Junction Deviation distance will need recalculating
   #define DEFAULT_YJERK 20.0
-  #define DEFAULT_ZJERK  0.4
+  //#define DEFAULT_ZJERK  0.4
+  #define DEFAULT_ZJERK  0.2
   //#define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
   //#define DEFAULT_KJERK  0.3
@@ -2291,7 +2291,7 @@
    * at which point movement will be level to the machine's XY plane.
    * The height can be set with M420 Z<height>
    */
-  #define ENABLE_LEVELING_FADE_HEIGHT
+  //#define ENABLE_LEVELING_FADE_HEIGHT
   #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
     #define DEFAULT_LEVELING_FADE_HEIGHT 5.0 // (mm) Default fade height.
   #endif

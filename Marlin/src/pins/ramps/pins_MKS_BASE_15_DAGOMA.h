@@ -30,6 +30,10 @@
 /**
  * Dagoma modifications
  */
+
+#undef BOARD_INFO_NAME
+#define BOARD_INFO_NAME "MKS BASE 1.5 Dagoma"
+
 #undef X_MIN_PIN
 #undef X_MAX_PIN
 #undef Y_MIN_PIN
@@ -47,3 +51,35 @@
 #undef FIL_RUNOUT2_PIN
 #define FIL_RUNOUT_PIN 19
 #define FIL_RUNOUT2_PIN 14
+
+// From https://github.com/MarlinFirmware/Marlin/issues/12003
+// #if IS_U8GLIB_ST7920
+  // #define BOARD_ST7920_DELAY_1                 0
+  // #define BOARD_ST7920_DELAY_2               250 or 400
+  // #define BOARD_ST7920_DELAY_3                 0
+// #endif
+
+// From https://github.com/MarlinFirmware/Marlin/issues/12003 for long cables
+// #define ST7920_DELAY_1 DELAY_NS (0)
+// #define ST7920_DELAY_2 DELAY_NS (250)
+// #define ST7920_DELAY_3 DELAY_NS (250)
+
+
+// From Github PRs for other boards
+// Alter timing for graphical display
+#if HAS_MARLINUI_U8GLIB
+  // #ifndef BOARD_ST7920_DELAY_1
+    //#define BOARD_ST7920_DELAY_1    DELAY_NS(96)
+    // #define BOARD_ST7920_DELAY_1   DELAY_NS(120)
+  // #endif
+  // #ifndef BOARD_ST7920_DELAY_2
+    //#define BOARD_ST7920_DELAY_2    DELAY_NS(48)
+    // #define BOARD_ST7920_DELAY_2    DELAY_NS(80)
+  // #endif
+  #ifndef BOARD_ST7920_DELAY_3
+    //#define BOARD_ST7920_DELAY_3   DELAY_NS(600)
+    // #define BOARD_ST7920_DELAY_3   DELAY_NS(580)
+    // From reprap site for RRD_FGDC
+    #define BOARD_ST7920_DELAY_3   DELAY_NS(63)
+  #endif
+#endif
