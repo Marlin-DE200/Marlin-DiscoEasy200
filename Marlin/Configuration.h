@@ -2173,7 +2173,7 @@
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
   #if ENABLED(DE200_EXTRUDER_BICOLOR)
-    #define FILAMENT_RUNOUT_SCRIPT "M600 T%c
+    #define FILAMENT_RUNOUT_SCRIPT "M600 T%c"
   #else
     #define FILAMENT_RUNOUT_SCRIPT "M600"
   #endif
