@@ -3105,6 +3105,10 @@
 //
 #if ENABLED(DE200_SCREEN_STD)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+  // Prevent minor graphic corruption
+  #define ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
+  #define ST7920_DELAY_2 DELAY_NS(400) // After DAT
+  #define ST7920_DELAY_3 DELAY_NS(200) // After CLK HIGH
 #endif
 
 //
