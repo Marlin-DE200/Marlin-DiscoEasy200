@@ -101,13 +101,13 @@
 //#define DE200_HEAD_Z122
 //#define DE200_HEAD_Z122_BLTOUCH
 
-// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, INP_SHAPE, S_CURVE, MPC, JUNC_DEV, STATUS_ICONS, BACKLASH, ADAPTIVE_SMOOTHING
+// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, INP_SHAPE, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, BACKLASH, ADAPTIVE_SMOOTHING
 //#define DE200_EXPERIMENT_NONE
 //#define DE200_EXPERIMENT_BED_BILINEAR
 //#define DE200_EXPERIMENT_BED_UNIFIED
 //#define DE200_EXPERIMENT_INP_SHAPE
 //#define DE200_EXPERIMENT_S_CURVE
-//#define DE200_EXPERIMENT_MPC
+//#define DE200_EXPERIMENT_PID     // Revert to PID from more advanced MPC
 //#define DE200_EXPERIMENT_JUNC_DEV
 //#define DE200_EXPERIMENT_STATUS_ICONS
 //#define DE200_EXPERIMENT_BACKLASH
@@ -172,7 +172,7 @@
 #endif
 
 #if NONE(DE200_EXPERIMENT_NONE, DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED, \
-  DE200_EXPERIMENT_INP_SHAPE, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_MPC, DE200_EXPERIMENT_JUNC_DEV, \
+  DE200_EXPERIMENT_INP_SHAPE, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_PID, DE200_EXPERIMENT_JUNC_DEV, \
   DE200_EXPERIMENT_STATUS_ICONS, DE200_EXPERIMENT_BACKLASH, DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
   #define DE200_EXPERIMENT_NONE
 #endif
@@ -237,8 +237,8 @@
     #define MACHINE_ABOUT_LINE3 "X:Input Shaping"
   #elif ENABLED(DE200_EXPERIMENT_S_CURVE)
     #define MACHINE_ABOUT_LINE3 "X:S-Curve Accel."
-  #elif ENABLED(DE200_EXPERIMENT_MPC)
-    #define MACHINE_ABOUT_LINE3 "X:Model Predict Ctl"
+  #elif ENABLED(DE200_EXPERIMENT_PID)
+    #define MACHINE_ABOUT_LINE3 "X:Hotend-PID"
   #elif ENABLED(DE200_EXPERIMENT_JUNC_DEV)
     #define MACHINE_ABOUT_LINE3 "X:Juction Deviation"
   #elif ENABLED(DE200_EXPERIMENT_STATUS_ICONS)
@@ -916,7 +916,7 @@
  * PIDTEMP : PID temperature control (~4.1K)
  * MPCTEMP : Predictive Model temperature control. (~1.8K without auto-tune)
  */
-#if DISABLED(DE200_EXPERIMENT_MPC)
+#if ENABLED(DE200_EXPERIMENT_PID)
   #define PIDTEMP           // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
 #else
   #define MPCTEMP         // ** EXPERIMENTAL ** See https://marlinfw.org/docs/features/model_predictive_control.html
@@ -2467,8 +2467,7 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-//#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (5*60) } // Dagoma value (4*60)
-#define HOMING_FEEDRATE_MM_M { (100*60), (100*60), (5*60) } // Dagoma value (4*60)
+#define HOMING_FEEDRATE_MM_M { (100*60), (100*60), (5*60) } // Dagoma values (50*60, 50*60, 4*60)
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2585,14 +2584,14 @@
 // Preheat Constants - Up to 10 are supported without changes
 //
 #define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 180
+#define PREHEAT_1_TEMP_HOTEND 200
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_TEMP_CHAMBER 35
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "ABS"
 #define PREHEAT_2_TEMP_HOTEND 240
-#define PREHEAT_2_TEMP_BED     90
+#define PREHEAT_2_TEMP_BED    100
 #define PREHEAT_2_TEMP_CHAMBER 35
 #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
@@ -2613,9 +2612,9 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MIN_POS + 5), (Y_MAX_POS - 5), 7 }
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
-  #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
+  #define NOZZLE_PARK_Z_RAISE_MIN   7   // (mm) Always raise Z by at least this distance
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE    5   // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
@@ -3105,10 +3104,28 @@
 //
 #if ENABLED(DE200_SCREEN_STD)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
-  // Prevent minor graphic corruption
-  #define ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
-  #define ST7920_DELAY_2 DELAY_NS(400) // After DAT
-  #define ST7920_DELAY_3 DELAY_NS(200) // After CLK HIGH
+  /*
+   * With the standard build and the robotlink.com version of this graphic card
+   * there are occasional screen glitches when adjusting firmware values
+   * if you turn the encoder too fast and the numbers change rapidly.
+   * It may be because my screen ribbon cables are a bit long,
+   * or because this is a clone, or just a general issue.
+   *
+   * According to the Marlin Troubleshooting page https://marlinfw.org/docs/basics/troubleshooting.html
+   * the following lines are a starting point for fixing this,
+   * however I tried these values and they didn't work,
+   * and I don't have the time to fix this minor glitch.
+   *
+   * However if anyone else is experiencing this and wants to:
+   *
+   * 1. Iterate all these upwards (by 100 each time) until it stops glitching; and
+   * 2. Iterate each individually downwards by binary search until they just still work.
+   *
+   * As you can imagine, this will take a reasonable effort.
+   */
+  // #define ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
+  // #define ST7920_DELAY_2 DELAY_NS(400) // After DAT
+  // #define ST7920_DELAY_3 DELAY_NS(200) // After CLK HIGH
 #endif
 
 //
