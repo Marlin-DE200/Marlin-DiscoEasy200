@@ -2,6 +2,13 @@
 
 This repo is a fork of the Marlin repo configured specifically for various versions of the Dagoma DiscoEasy200 3D Printer.
 
+This is based on Marlin v2.1.2.2 which is a lot more developed than the Dagoma stock firmware
+that was based on a beta version of Marlin v1.1 with a lot of Dagoma bespoke development
+for functionality that was not available in Marlin at the time but now is.
+
+Consequently you should now be able to achieve a higher quality of printing
+and benefit from significantly more advanced functionality.
+
 The intention is to support all Dagoma versions of the DiscoEasy200 including:
 
 * Screen / No screen (Dagoma screen is assumed - other screens may be supported in the future)
@@ -15,9 +22,15 @@ The intention is to support all Dagoma versions of the DiscoEasy200 including:
 The configuration settings for these options have been taken
 directly from the Dagoma soure code and should work.
 
-All these standard Dagoma options are built automatically based on common configuration settings,
-so all functionality tested on the author's stock+LCD+White Thermistor DE200 should work fine
-on these other variants.
+At present only the stock D200 + LCD + White Thermistor has been tested,
+however all these standard Dagoma options are built automatically
+based on common configuration settings,
+so all functionality tested on the author's stock+LCD+White
+should work fine on these other variants and,
+until someone else has tested the different options
+and they are verified here,
+you do need to run some tests when you first load
+this firmware build onto your DE200.
 
 Every combination of the above are compiled automatically for each formal release.
 
@@ -30,11 +43,11 @@ In addition, several selected community enhancements are also supported as optio
 
 The configuration settings for these options have been taken
 from various Thingiverse things and Github repos
-that purport to support these modifications,
-however none of these configurations have been tested either.
+that have previously been built to support these modifications,
+however none of these configurations have yet been tested either.
 
-Some combinations of these options with Standard builds are compiled for the release,
-but a firmware build every single combination of options can be manually initiated and
+Some combinations of these options with Standard builds are compiled automatically for each release,
+but an individual build for a single combination of any of these options can be manually initiated and
 built automatically using the same Github Actions workflow.
 
 ### Documentation
@@ -42,6 +55,10 @@ built automatically using the same Github Actions workflow.
 There is a [wiki](https://github.com/Marlin-DE200/Marlin-DiscoEasy200/wiki)
 which already gives a lot more detail about these builds,
 with an intention to extend this further.
+
+This wiki also gives some guidance on how to test out the firmware for your own variant.
+If you want help with testing the build for your variant,
+please raise a Github issue and the author will do his best to support you.
 
 ### Open Source
 
@@ -65,8 +82,7 @@ I have comprehensively tested the Stock+LCD+White-Thermistor variant on
 my own DE200 and use it in production,
 and all other variants are minor variations of the standard configuration.
 
-However, in the end most versions are untested and,
-whilst the author has made reasonable efforts to configure them correctly,
+However, whilst the author has made reasonable efforts to configure them correctly,
 ***you load these version onto your printer and use them at your own risk***.
 
 The author will provide support to the best of his ability,
