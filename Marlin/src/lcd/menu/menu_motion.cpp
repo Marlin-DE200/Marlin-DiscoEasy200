@@ -359,13 +359,6 @@ void menu_motion() {
   #endif
 
   //
-  // Probe Offset Wizard
-  //
-  #if ENABLED(PROBE_OFFSET_WIZARD)
-    SUBMENU(MSG_PROBE_WIZARD, goto_probe_offset_wizard);
-  #endif
-
-  //
   // Assisted Bed Tramming
   //
   #if ENABLED(ASSISTED_TRAMMING_WIZARD)
