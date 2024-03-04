@@ -1759,7 +1759,7 @@
    *
    * :[ 'LCD', 'ONBOARD', 'CUSTOM_CABLE' ]
    */
-  #if (DE200_SCREEN_ANY)
+  #if ENABLED(DE200_SCREEN_ANY)
     #define SDCARD_CONNECTION LCD
   #else
     #define SDCARD_CONNECTION ONBOARD
