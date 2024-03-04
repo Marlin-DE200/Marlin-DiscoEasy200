@@ -1170,9 +1170,7 @@
 // Backlash Compensation
 // Adds extra movement to axes on direction-changes to account for backlash.
 //
-#if ENABLED(DE200_EXPERIMENT_BACKLASH)
-  #define BACKLASH_COMPENSATION
-#endif
+#define BACKLASH_COMPENSATION
 #if ENABLED(BACKLASH_COMPENSATION)
   // Define values for backlash distance and correction.
   // If BACKLASH_GCODE is enabled these values are the defaults.

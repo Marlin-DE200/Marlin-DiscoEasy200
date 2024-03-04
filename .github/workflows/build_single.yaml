@@ -92,7 +92,7 @@ on:
         default: STD
       experiment:
         description: 'experiment features:'
-        options: [NONE, BED_BILINEAR, BED_UNIFIED, INP_SHAPE, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, BACKLASH, ADAPTIVE_SMOOTHING]
+        options: [NONE, BED_BILINEAR, BED_UNIFIED, INP_SHAPE, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, ADAPTIVE_SMOOTHING]
         required: true
         type: choice
         default: NONE
