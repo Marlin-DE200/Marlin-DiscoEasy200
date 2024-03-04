@@ -101,20 +101,21 @@
 //#define DE200_HEAD_Z122
 //#define DE200_HEAD_Z122_BLTOUCH
 
-// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, INP_SHAPE, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, ADAPTIVE_SMOOTHING
+// DE200_EXPERIMENT_* - default NONE; available NONE, BED_BILINEAR, INPUT_SHAPING, S_CURVE, PID, JUNC_DEV, STATUS_ICONS, ADAPTIVE_SMOOTHING, FWRETRACT
 //#define DE200_EXPERIMENT_NONE
 //#define DE200_EXPERIMENT_BED_BILINEAR
 //#define DE200_EXPERIMENT_BED_UNIFIED
-//#define DE200_EXPERIMENT_INP_SHAPE
+//#define DE200_EXPERIMENT_INPUT_SHAPING
 //#define DE200_EXPERIMENT_S_CURVE
 //#define DE200_EXPERIMENT_PID     // Revert to PID from more advanced MPC
 //#define DE200_EXPERIMENT_JUNC_DEV
 //#define DE200_EXPERIMENT_STATUS_ICONS
 //#define DE200_EXPERIMENT_ADAPTIVE_SMOOTHING
+//#define DE200_EXPERIMENT_FWRETRACT
 
 
 /*
- * DE200: Validate options and set derivative values
+ * DE200: Validate options and set default and derivative values
  */
 #if DISABLED(DE200_LANGUAGE)
   #define DE200_LANGUAGE en
@@ -171,8 +172,8 @@
 #endif
 
 #if NONE(DE200_EXPERIMENT_NONE, DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED, \
-  DE200_EXPERIMENT_INP_SHAPE, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_PID, \
-  DE200_EXPERIMENT_JUNC_DEV, DE200_EXPERIMENT_STATUS_ICONS, DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
+  DE200_EXPERIMENT_INPUT_SHAPING, DE200_EXPERIMENT_S_CURVE, DE200_EXPERIMENT_PID, DE200_EXPERIMENT_JUNC_DEV, \
+  DE200_EXPERIMENT_STATUS_ICONS, DE200_EXPERIMENT_ADAPTIVE_SMOOTHING, DE200_EXPERIMENT_FWRETRACT)
   #define DE200_EXPERIMENT_NONE
 #endif
 #if NONE(DE200_EXPERIMENT_BED_BILINEAR, DE200_EXPERIMENT_BED_UNIFIED)
@@ -232,7 +233,7 @@
     #define MACHINE_ABOUT_LINE2 "MK8-Extr."
   #endif
   // Advanced Marlin features
-  #if ENABLED(DE200_EXPERIMENT_INP_SHAPE)
+  #if ENABLED(DE200_EXPERIMENT_INPUT_SHAPING)
     #define MACHINE_ABOUT_LINE3 "X:Input Shaping"
   #elif ENABLED(DE200_EXPERIMENT_S_CURVE)
     #define MACHINE_ABOUT_LINE3 "X:S-Curve Accel."
@@ -244,6 +245,8 @@
     #define MACHINE_ABOUT_LINE3 "X:Status Icons"
   #elif ENABLED(DE200_EXPERIMENT_ADAPTIVE_SMOOTHING)
     #define MACHINE_ABOUT_LINE3 "X:Adaptive Smooth"
+  #elif ENABLED(DE200_EXPERIMENT_FWRETRACT)
+    #define MACHINE_ABOUT_LINE3 "X:Firmware Retract"
   #endif
 #endif
 
@@ -803,7 +806,7 @@
 #define TEMP_SENSOR_5 0
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
-#define TEMP_SENSOR_BED TERN(DE200_WARPING_BED_ANY, 1, 0)
+#define TEMP_SENSOR_BED TERN(DE200_WARPING_BED_ANY, 75, 0)
 #define TEMP_SENSOR_PROBE 0
 #define TEMP_SENSOR_CHAMBER 0
 #define TEMP_SENSOR_COOLER 0
@@ -2529,7 +2532,7 @@
   #endif
 
   // Enable this option for M852 to set skew at runtime
-  //#define SKEW_CORRECTION_GCODE
+  #define SKEW_CORRECTION_GCODE
 #endif
 
 //=============================================================================
@@ -2547,13 +2550,13 @@
  *   M501 - Read settings from EEPROM. (i.e., Throw away unsaved changes)
  *   M502 - Revert settings to "factory" defaults. (Follow with M500 to init the EEPROM.)
  */
-#define EEPROM_SETTINGS     // Persistent storage with M500 and M501
-//#define DISABLE_M503        // Saves ~2700 bytes of flash. Disable for release!
+#define EEPROM_SETTINGS       // Persistent storage with M500 and M501
+//#define DISABLE_M503        // Saves ~2700 bytes of flash.
 #define EEPROM_CHITCHAT       // Give feedback on EEPROM commands. Disable to save flash.
 #define EEPROM_BOOT_SILENT    // Keep M503 quiet and only give errors during first load
 #if ENABLED(EEPROM_SETTINGS)
-  #define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.
-  #define EEPROM_INIT_NOW   // Init EEPROM on first boot after a new build.
+  #define EEPROM_AUTO_INIT    // Init EEPROM automatically on any errors.
+  #define EEPROM_INIT_NOW     // Init EEPROM on first boot after a new build.
 #endif
 
 // @section host

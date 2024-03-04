@@ -101,9 +101,9 @@
 #elif THERMISTOR_ID == 15
   #define THERMISTOR_NAME "100k JGAurora A5"
 #elif THERMISTOR_ID == 17
-  #define THERMISTOR_NAME "100k Dagoma NTC"
+  #define THERMISTOR_NAME "100k NTC Dagoma Wht"
 #elif THERMISTOR_ID == 18
-  #define THERMISTOR_NAME "ATC Semitec 204GT-2"
+  #define THERMISTOR_NAME "204GT-2 Semitec Blk"
 #elif THERMISTOR_ID == 60
   #define THERMISTOR_NAME "Makers Tool"
 #elif THERMISTOR_ID == 70
