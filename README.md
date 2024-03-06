@@ -46,6 +46,15 @@ from various Thingiverse things and Github repos
 that have previously been built to support these modifications,
 however none of these configurations have yet been tested either.
 
+The author is happy to support users **before** they load the firmware onto their
+system in order to ensure that it works for them,
+as well as providing support for issues found after you try it.
+
+If you have a working version of Marlin for your specific configuration,
+then providing that we have access to the source code
+we can almost certainly get the settings we need to make this build
+to support your specific machine.
+
 Some combinations of these options with Standard builds are compiled automatically for each release,
 but an individual build for a single combination of any of these options can be manually initiated and
 built automatically using the same Github Actions workflow.
