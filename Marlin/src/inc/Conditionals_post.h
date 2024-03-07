@@ -2052,7 +2052,7 @@
 #endif
 
 #if HAS_BED_PROBE && PIN_EXISTS(Z_MIN_PROBE)
-  #define HAS_Z_MIN_PROBE_PIN 1
+  #define HAS_Z_MIN_PROBE 1
 #endif
 
 #undef _HAS_STOP
