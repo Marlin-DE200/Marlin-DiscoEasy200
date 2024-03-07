@@ -1543,7 +1543,7 @@
   // Enable this option and set to HIGH if your SD cards are incorrectly detected.
   //#define SD_DETECT_STATE HIGH
 
-  #define SD_IGNORE_AT_STARTUP            // Don't mount the SD card when starting up
+  //#define SD_IGNORE_AT_STARTUP            // Don't mount the SD card when starting up
   //#define SDCARD_READONLY                 // Read-only SD card (to save over 2K of flash)
 
   //#define GCODE_REPEAT_MARKERS            // Enable G-code M808 to set repeat markers and do looping
@@ -2137,12 +2137,23 @@
  *
  * See https://marlinfw.org/docs/features/lin_advance.html for full instructions.
  */
-#define LIN_ADVANCE
+// Linear advance is (currently) incompatible with S-Curve
+// See https://github.com/MarlinFirmware/Marlin/issues/14728#issuecomment-617459154
+#if DISABLED(DE200_EXPERIMENT_S_CURVE)
+  #define LIN_ADVANCE
+#endif
 #if ENABLED(LIN_ADVANCE)
   #if ENABLED(DISTINCT_E_FACTORS)
     #define ADVANCE_K { 0.22 }    // (mm) Compression length per 1mm/s extruder speed, per extruder
   #else
     //#define ADVANCE_K 0.22      // (mm) Compression length applying to all extruders
+  #if ENABLED(DE200_EXTRUDER_STD)
+    #define ADVANCE_K 0.25        // DE200 - Determined by Linear Advance calibration on a DE200 with stock extruder
+                                  // Since this value is mostly about the length of the bowden tube,
+                                  // this should be the same for Extruder+ / Bicolor, however
+                                  // this has not been tested, and until we have verified values
+                                  // we will set the K value to 0 for all other cases.
+  #else
     #define ADVANCE_K 0           // DE200 - K=0 is off - set K in firmware or Cura Start code
   #endif
   //#define ADVANCE_K_EXTRA       // Add a second linear advance constant, configurable with M900 L.

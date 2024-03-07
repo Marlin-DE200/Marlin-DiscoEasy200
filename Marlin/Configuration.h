@@ -1536,7 +1536,7 @@
   #define DEFAULT_XJERK 20.0  // If you change X/YJERK then the Junction Deviation distance will need recalculating
   #define DEFAULT_YJERK 20.0
   //#define DEFAULT_ZJERK  0.4
-  #define DEFAULT_ZJERK  0.2
+  #define DEFAULT_ZJERK  0.1
   //#define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
   //#define DEFAULT_KJERK  0.3
@@ -1901,7 +1901,7 @@
 #define Z_CLEARANCE_MULTI_PROBE     2 // (mm) Z Clearance between multiple probes >= 2
 //#define Z_AFTER_PROBING           5 // (mm) Z position after probing is done
 
-#define Z_PROBE_LOW_POINT          -5 // (mm) Farthest distance below the trigger-point to go before stopping
+#define Z_PROBE_LOW_POINT          -2 // (mm) Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -20
@@ -2283,7 +2283,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of flash!
  */
-#define DEBUG_LEVELING_FEATURE
+//#define DEBUG_LEVELING_FEATURE
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL, PROBE_MANUALLY)
   // Set a height for the start of manual adjustment
