@@ -1566,7 +1566,8 @@
 
   // DE200: According to https://blog.kyneticcnc.com/2018/10/computing-junction-deviation-for-marlin.html
   // d = 0.4 * Jerk^2 / Acceleration = 0.4 * DEFAULT_XJERK * DEFAULT_YJERK / DEFAULT_ACCELERATION
-  #define JUNCTION_DEVIATION_MM (0.4 * 20 * 20 / DEFAULT_ACCELERATION) // For normal Dagoma settings 0.05333
+                                      // Normal Dagoma settings would be 0.05333
+  #define JUNCTION_DEVIATION_MM 0.3   // 0.3 is maximum on UI and gives good corners
 
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
