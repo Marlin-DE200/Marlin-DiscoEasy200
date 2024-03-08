@@ -1536,7 +1536,7 @@
   #define DEFAULT_XJERK 20.0  // If you change X/YJERK then the Junction Deviation distance will need recalculating
   #define DEFAULT_YJERK 20.0
   //#define DEFAULT_ZJERK  0.4
-  #define DEFAULT_ZJERK  0.1
+  #define DEFAULT_ZJERK  0.15
   //#define DEFAULT_IJERK  0.3
   //#define DEFAULT_JJERK  0.3
   //#define DEFAULT_KJERK  0.3
