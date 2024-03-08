@@ -2147,14 +2147,15 @@
     #define ADVANCE_K { 0.22 }    // (mm) Compression length per 1mm/s extruder speed, per extruder
   #else
     //#define ADVANCE_K 0.22      // (mm) Compression length applying to all extruders
-  #if ENABLED(DE200_EXTRUDER_STD)
-    #define ADVANCE_K 0.25        // DE200 - Determined by Linear Advance calibration on a DE200 with stock extruder
-                                  // Since this value is mostly about the length of the bowden tube,
-                                  // this should be the same for Extruder+ / Bicolor, however
-                                  // this has not been tested, and until we have verified values
-                                  // we will set the K value to 0 for all other cases.
-  #else
-    #define ADVANCE_K 0           // DE200 - K=0 is off - set K in firmware or Cura Start code
+    #if ENABLED(DE200_EXTRUDER_STD)
+      #define ADVANCE_K 0.25        // DE200 - Determined by Linear Advance calibration on a DE200 with stock extruder
+                                    // Since this value is mostly about the length of the bowden tube,
+                                    // this should be the same for Extruder+ / Bicolor, however
+                                    // this has not been tested, and until we have verified values
+                                    // we will set the K value to 0 for all other cases.
+    #else
+      #define ADVANCE_K 0           // DE200 - K=0 is off - set K in firmware or Cura Start code
+    #endif
   #endif
   //#define ADVANCE_K_EXTRA       // Add a second linear advance constant, configurable with M900 L.
   //#define LA_DEBUG              // Print debug information to serial during operation. Disable for production use.
